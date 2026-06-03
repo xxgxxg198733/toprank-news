@@ -35,6 +35,22 @@ def _network_footer():
 
 # ═══════════════════════════ HEAD TEMPLATE ═══════════════════════════
 
+def _get_image_url(article, size="large", fallback_size=(1200, 630)):
+    """Get real image URL if available, otherwise fall back to loremflickr."""
+    if article.get("image_url"):
+        # Pexels image available
+        if size == "large":
+            return article["image_url"]
+        elif size == "medium":
+            return article.get("image_medium", article["image_url"])
+        elif size == "small":
+            return article.get("image_small", article.get("image_medium", article["image_url"]))
+    # Fallback to loremflickr
+    keywords = article.get("image_keywords", "news")
+    w, h = fallback_size
+    return f"https://loremflickr.com/{w}/{h}/{keywords}"
+
+
 def build_head(article, site_config):
     """Build the complete <head> section with all SEO meta tags."""
     title = article["title"]
@@ -42,8 +58,7 @@ def build_head(article, site_config):
     domain = site_config["domain"]
     site_name = site_config["name"]
     date_iso = article["date_iso"]
-    image_keywords = article.get("image_keywords", "news")
-    image_url = f"https://loremflickr.com/1200/630/{image_keywords}"
+    image_url = _get_image_url(article, "large", (1200, 630))
 
     jsonld = json.dumps({
         "@context": "https://schema.org",
@@ -162,9 +177,9 @@ def build_article_content(article, site_config):
 </header>
 
 <div class="article-featured-image">
-<img src="https://loremflickr.com/800/450/{image_keywords}?r={random.randint(10000,99999)}"
-     alt="{title}" style="width:100%;height:100%;object-fit:cover"
-     onerror="this.onerror=null;this.src='https://loremflickr.com/800/450/{image_keywords.split(',')[0] if ',' in image_keywords else image_keywords}'">
+<img src="{_get_image_url(article, 'medium', (800, 450))}"
+     alt="{title}" style="width:100%;height:100%;object-fit:cover" loading="eager"
+     onerror="this.onerror=null;this.src='https://loremflickr.com/800/450/{image_keywords.split(",")[0] if "," in image_keywords else image_keywords}'">
 </div>
 
 <div class="article-content">
@@ -303,7 +318,7 @@ def build_card(article, site_config):
     return (
         f'<a href="{slug}.html" class="card-sm">'
         f'<div class="thumb">'
-        f'<img src="https://loremflickr.com/400/250/{image_keywords}?r={random.randint(10000,99999)}" '
+        f'<img src="' + "_get_image_url(article, 'small', (400, 250))" + '" '
         f'alt="{title[:50]}" loading="lazy" '
         f'onerror="this.onerror=null;this.src=\'https://loremflickr.com/400/250/{image_keywords.split(",")[0] if "," in image_keywords else image_keywords}\'">'
         + (f'<span class="badge-sm">{badge_text}</span>' if badge_text else '') +

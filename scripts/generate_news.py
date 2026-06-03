@@ -46,7 +46,44 @@ SITE_KEY = "toprank"
 SITE_CONFIG = SITES[SITE_KEY]
 SITE_DIR = BASE / SITE_CONFIG["folder"]
 
-# --- Claude API ---
+# --- Image Search (Pexels API) ---
+
+def fetch_real_images(articles):
+    """Fetch real images from Pexels API for each article. Falls back to loremflickr."""
+    import requests
+    api_key = os.environ.get("PEXELS_API_KEY", "")
+    if not api_key:
+        print("  ⚠️  PEXELS_API_KEY not set, using placeholder images")
+        return
+
+    for i, article in enumerate(articles):
+        keywords = article.get("image_keywords", "news")
+        # Use the first keyword for better search results
+        query = keywords.split(",")[0].strip()
+        try:
+            resp = requests.get(
+                "https://api.pexels.com/v1/search",
+                headers={"Authorization": api_key},
+                params={"query": query, "per_page": 1, "orientation": "landscape", "size": "large"},
+                timeout=10,
+            )
+            if resp.status_code == 200:
+                data = resp.json()
+                if data.get("photos"):
+                    photo = data["photos"][0]
+                    article["image_url"] = photo["src"]["large"]       # 1200px+
+                    article["image_medium"] = photo["src"]["medium"]    # 700px+
+                    article["image_small"] = photo["src"]["small"]      # 400px+
+                    article["image_photographer"] = photo["photographer"]
+                    article["image_pexels_url"] = photo["url"]
+                    print(f"  🖼️  [{i+1}] {query} → {photo['photographer']}")
+                    time.sleep(0.3)  # Rate limit: ~3 req/sec for free tier
+                    continue
+            print(f"  ⚠️  [{i+1}] No image found for '{query}', using placeholder")
+        except Exception as e:
+            print(f"  ⚠️  [{i+1}] Image search failed: {e}")
+
+# --- DeepSeek API ---
 
 SYSTEM_PROMPT = f"""You are a senior news editor for TopRank (top.zicisi.fun), a popular ranking and trending news site.
 Today's date: {datetime.now().strftime('%B %d, %Y')} ({datetime.now().strftime('%A')}).
@@ -454,6 +491,13 @@ def main(dry_run=False):
         for a in articles:
             print(f"   → {a['slug']}.html")
         return
+
+    # Step 2.5: Fetch real images
+    print(f"\n🖼️  Fetching real images...")
+    try:
+        fetch_real_images(articles)
+    except Exception as e:
+        print(f"  ⚠️  Image fetch failed, using placeholders: {e}")
 
     # Step 3: Build article HTML files
     print(f"\n📄 Building HTML pages...")
