@@ -326,34 +326,64 @@ def _replace_between_markers(content, start_marker, end_marker, new_html):
 
 
 def _replace_auto_cards(content, articles):
-    """Replace content after AUTO_CARDS marker for the card-sm section."""
+    """Replace content after AUTO_CARDS marker for the card-sm section.
+    Also appends links to older articles so past content stays discoverable."""
     marker = "<!-- AUTO_CARDS -->"
     if marker not in content:
         print(f"  ⚠️  AUTO_CARDS marker not found")
         return content
 
-    # Build cards for all 10 articles
+    # Build cards for all 10 new articles
     cards_html = "\n".join(_build_card_sm(a) for a in articles)
 
-    # We want to replace from AUTO_CARDS to the closing </div> of the scroll-row
-    # Find the marker position
+    # Find older generated articles (DeepSeek articles from previous runs)
+    older_links = _build_older_articles_links(articles)
+
+    # Replace from AUTO_CARDS to the closing </div> of scroll-row
     marker_pos = content.index(marker)
-    # Find the next </div> after the marker that closes scroll-row
-    # We look for the pattern: marker ... cards ... </div>
     after_marker = content[marker_pos + len(marker):]
-
-    # Find the closing </div> that ends the scroll-row
-    # The structure is: <!-- AUTO_CARDS -->\n<a ...>\n<a ...>\n<a ...>\n<a ...>\n</div>
-    # We need to replace everything between marker and the </div> before </section>
-    # Use a simpler approach: find the next </div> after marker that is followed by </section>
-
-    # Pattern: after marker, there are some cards, then </div></section>
     section_end = after_marker.index("</div></section>")
-    # The content to replace is from marker_end to section_end
     before = content[:marker_pos + len(marker)]
     after = content[marker_pos + len(marker) + section_end:]
 
-    return before + "\n" + cards_html + "\n" + after
+    # Insert new cards + older article links
+    new_content = "\n" + cards_html + older_links + "\n"
+    return before + new_content + after
+
+
+def _build_older_articles_links(new_articles, max_show=20):
+    """Build HTML links to older articles that aren't in the current batch."""
+    new_slugs = {a["slug"] for a in new_articles}
+    older = []
+
+    for f in sorted(SITE_DIR.glob("*.html"), key=lambda p: p.stat().st_mtime, reverse=True):
+        if f.name in ("index.html", "about.html", "contact.html", "privacy.html",
+                       "terms.html", "article.html", "robots.txt"):
+            continue
+        if f.name.startswith("category-"):
+            continue
+        slug = f.stem
+        if slug in new_slugs:
+            continue
+        # Extract title from filename
+        title = slug.replace("-", " ").title()
+        older.append((slug, title))
+        if len(older) >= max_show:
+            break
+
+    if not older:
+        return ""
+
+    items = ""
+    for slug, title in older:
+        items += f'<a href="{slug}.html" class="card-sm card-sm--archive"><div class="thumb"><div class="archive-thumb">📰</div></div><div class="info"><span class="cat">Previous</span><h3>{title[:80]}</h3><span class="st">Read more →</span></div></a>\n'
+
+    return (
+        '\n</div></section>\n'
+        '<section class="section-row">'
+        '<div class="section-row-head"><h2>📚 Previous Stories</h2></div>'
+        f'<div class="scroll-row">\n{items}</div>'
+    )
 
 
 def _build_hero_main(article):
@@ -525,7 +555,7 @@ def main(dry_run=False):
     # Step 6: Cleanup old articles
     print(f"\n🧹 Cleaning up old articles...")
     try:
-        cleanup_old_articles(max_days=90)
+        cleanup_old_articles(max_days=30)
     except Exception as e:
         print(f"  ❌ Cleanup failed: {e}")
 
