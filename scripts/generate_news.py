@@ -30,7 +30,17 @@ from pathlib import Path
 SCRIPTS_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPTS_DIR))
 
-from config import SITES, BASE, BADGES
+try:
+    from config import SITES, BASE, BADGES
+    from article_builder import build_full_page, write_article
+    from sitemap_updater import update_sitemap
+    print("✅ All local modules imported successfully")
+except ImportError as e:
+    print(f"❌ Import error: {e}")
+    print(f"   sys.path: {sys.path[:3]}")
+    print(f"   SCRIPTS_DIR: {SCRIPTS_DIR}")
+    print(f"   Files in SCRIPTS_DIR: {list(SCRIPTS_DIR.glob('*.py'))}")
+    sys.exit(1)
 
 SITE_KEY = "toprank"
 SITE_CONFIG = SITES[SITE_KEY]
@@ -447,7 +457,6 @@ def main(dry_run=False):
 
     # Step 3: Build article HTML files
     print(f"\n📄 Building HTML pages...")
-    from article_builder import build_full_page, write_article
     for article in articles:
         try:
             filepath = write_article(article, SITE_KEY)
@@ -465,7 +474,6 @@ def main(dry_run=False):
     # Step 5: Update sitemap
     print(f"\n🗺️  Updating sitemap.xml...")
     try:
-        from sitemap_updater import update_sitemap
         update_sitemap(SITE_KEY)
     except Exception as e:
         print(f"  ❌ Failed to update sitemap: {e}")

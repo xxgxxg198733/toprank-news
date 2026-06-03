@@ -29,6 +29,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Debug environment
+        run: |
+          echo "Python version: $(python3 --version)"
+          echo "Working dir: $(pwd)"
+          echo "Files in scripts/:"
+          ls -la scripts/
+          echo "Commit SHA: $(git log -1 --format=%H)"
+
       - name: Generate news articles
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
