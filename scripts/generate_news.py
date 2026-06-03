@@ -26,10 +26,9 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-# Add parent scripts directory to path to reuse existing modules
+# Import from local scripts directory (self-contained for GitHub Actions)
 SCRIPTS_DIR = Path(__file__).resolve().parent
-AD_SCRIPTS_DIR = SCRIPTS_DIR.parent.parent / "scripts"
-sys.path.insert(0, str(AD_SCRIPTS_DIR))
+sys.path.insert(0, str(SCRIPTS_DIR))
 
 from config import SITES, BASE, BADGES
 
