@@ -83,34 +83,34 @@ Important: Generate content based on REAL current events, not generic or fiction
 def call_claude_api(dry_run=False):
     """Call Claude API to generate 10 hot news articles. Returns list of dicts."""
     if dry_run:
-        print("🔍 DRY RUN: Would call Claude API for 10 hot news articles")
-        # Return sample data for testing
+        print("🔍 DRY RUN: Would call DeepSeek API for 10 hot news articles")
         return _sample_articles()
 
-    import anthropic
-    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    from openai import OpenAI
+    api_key = os.environ.get("DEEPSEEK_API_KEY", "")
     if not api_key:
-        print("❌ ANTHROPIC_API_KEY environment variable not set")
+        print("❌ DEEPSEEK_API_KEY environment variable not set")
         sys.exit(1)
 
-    client = anthropic.Anthropic(api_key=api_key)
+    client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
 
     max_retries = 3
     for attempt in range(max_retries):
         try:
-            print(f"🤖 Calling Claude API (attempt {attempt + 1})...")
-            response = client.messages.create(
-                model="claude-sonnet-4-6",
+            print(f"🤖 Calling DeepSeek API (attempt {attempt + 1})...")
+            response = client.chat.completions.create(
+                model="deepseek-chat",
                 max_tokens=16000,
-                system=SYSTEM_PROMPT,
-                messages=[{"role": "user", "content": "Generate 10 hot news articles for today. Output as a JSON array."}],
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": "Generate 10 hot news articles for today. Output as a JSON array."},
+                ],
                 temperature=0.9,
             )
 
-            text = response.content[0].text
-            print(f"✅ Claude API response received ({len(text)} chars)")
+            text = response.choices[0].message.content
+            print(f"✅ DeepSeek API response received ({len(text)} chars)")
 
-            # Parse JSON from response (may have markdown fences)
             return _parse_articles(text)
 
         except Exception as e:
