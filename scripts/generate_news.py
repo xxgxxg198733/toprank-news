@@ -555,7 +555,7 @@ def main(dry_run=False):
     # Step 6: Cleanup old articles
     print(f"\n🧹 Cleaning up old articles...")
     try:
-        cleanup_old_articles(max_days=30)
+        cleanup_old_articles(max_days=90)
     except Exception as e:
         print(f"  ❌ Cleanup failed: {e}")
 
