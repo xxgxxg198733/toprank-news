@@ -100,7 +100,7 @@ def call_claude_api(dry_run=False):
         try:
             print(f"🤖 Calling Claude API (attempt {attempt + 1})...")
             response = client.messages.create(
-                model="claude-sonnet-4-20250514",
+                model="claude-sonnet-4-6",
                 max_tokens=16000,
                 system=SYSTEM_PROMPT,
                 messages=[{"role": "user", "content": "Generate 10 hot news articles for today. Output as a JSON array."}],
