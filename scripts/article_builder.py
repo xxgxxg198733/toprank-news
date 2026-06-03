@@ -99,9 +99,18 @@ def build_header(article, site_config):
     """Build the site header with nav."""
     site_key = site_config.get("_key", "viralnow")
     logo = site_config["logo_html"]
-    nav_links = []
-    for cat_key, cat_info in site_config["categories"].items():
-        nav_links.append(f'<a href="{cat_info["file"]}">{cat_info["name"]}</a>')
+
+    # Fixed nav links matching site structure
+    nav_links = [
+        'Top 10',
+        'VS',
+        'Roundups',
+        'Reviews',
+    ]
+    nav_html = '<a href="index.html">Home</a>' + ''.join(
+        f'<a href="category-{name.lower().replace(" ", "-")}.html">{name}</a>'
+        for name in nav_links
+    )
 
     return f"""<body>
 <header class="site-header">
@@ -109,8 +118,7 @@ def build_header(article, site_config):
 <a href="index.html" class="site-logo">{logo}</a>
 <button class="menu-toggle" aria-label="Menu">☰</button>
 <nav class="main-nav">
-<a href="index.html">Home</a>
-{''.join(nav_links)}
+{nav_html}
 {_network_dropdown(site_key)}
 </nav>
 </div>
