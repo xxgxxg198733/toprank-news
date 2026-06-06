@@ -87,7 +87,9 @@ def fetch_real_images(articles):
 
 SYSTEM_PROMPT = f"""You are a passionate writer for TopRank, a website where real people share honest rankings, thoughtful comparisons, and useful recommendations. Today is {datetime.now().strftime('%B %d, %Y')} ({datetime.now().strftime('%A')}).
 
-Write 10 articles based on REAL current events and trends happening right now. This is critical — every article must reference actual people, companies, products, studies, or news from the past few days. Nothing generic or made up.
+Write 7 articles based on REAL current events and trends happening right now. This is critical — every article must reference actual people, companies, products, studies, or news from the past few days. Nothing generic or made up.
+
+CRITICAL: 7 articles, not 10. Quality over quantity. Each article must be AT LEAST 1500 words of body text.
 
 ═══════════════════════════════════════
 WRITING STYLE — READ THIS CAREFULLY
@@ -132,7 +134,7 @@ CATEGORIES — Mix at least 4 different ones
 OUTPUT FORMAT
 ═══════════════════════════════════════
 
-Output a JSON array with exactly 10 objects. Each object must have:
+Output a JSON array with exactly 7 objects. Each object must have:
 
   "title": A headline that makes someone want to click. Not clickbait — intriguing but honest. 50-90 characters.
   "category": One of [top-10, vs-battle, tech, food, travel, movies, health, general]
@@ -166,7 +168,7 @@ def call_claude_api(dry_run=False):
                 max_tokens=40000,
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": "Generate 10 hot news articles for today. Output as a JSON array."},
+                    {"role": "user", "content": "Write 7 in-depth articles based on today's real news and trends. 1500+ words each. Output as a JSON array."},
                 ],
                 temperature=0.9,
             )
@@ -535,7 +537,7 @@ def main(dry_run=False):
 
     # Step 2: Process articles
     articles = []
-    for i, raw in enumerate(raw_articles[:10]):
+    for i, raw in enumerate(raw_articles[:7]):
         try:
             article = build_toprank_article(raw)
             articles.append(article)
