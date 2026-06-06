@@ -323,12 +323,14 @@ def build_card(article, site_config):
     views = random.randint(15000, 500000)
     badge_class, badge_text = random.choice(BADGES)
 
+    img_url = _get_image_url(article, 'small', (400, 250))
+    onerror_keyword = image_keywords.split(",")[0] if "," in image_keywords else image_keywords
     return (
         f'<a href="{slug}.html" class="card-sm">'
         f'<div class="thumb">'
-        f'<img src="' + "_get_image_url(article, 'small', (400, 250))" + '" '
+        f'<img src="{img_url}" '
         f'alt="{title[:50]}" loading="lazy" '
-        f'onerror="this.onerror=null;this.src=\'https://loremflickr.com/400/250/{image_keywords.split(",")[0] if "," in image_keywords else image_keywords}\'">'
+        f'onerror="this.onerror=null;this.src=\'https://loremflickr.com/400/250/{onerror_keyword}\'">'
         + (f'<span class="badge-sm">{badge_text}</span>' if badge_text else '') +
         f'</div>'
         f'<div class="info"><span class="cat">{cat_name}</span>'

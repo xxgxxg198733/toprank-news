@@ -32,7 +32,7 @@ sys.path.insert(0, str(SCRIPTS_DIR))
 
 try:
     from config import SITES, BASE, BADGES
-    from article_builder import build_full_page, write_article
+    from article_builder import build_full_page, write_article, _get_image_url
     from sitemap_updater import update_sitemap
     print("✅ All local modules imported successfully")
 except ImportError as e:
@@ -346,6 +346,15 @@ def _replace_auto_cards(content, articles):
     before = content[:marker_pos + len(marker)]
     after = content[marker_pos + len(marker) + section_end:]
 
+    # Remove ALL existing "Previous Stories" sections from the rest of the page
+    # to prevent duplication (they get re-added below if there are older links)
+    import re
+    prev_stories_pattern = re.compile(
+        r'<section class="section-row"><div class="section-row-head"><h2>📚 Previous Stories</h2></div><div class="scroll-row">.*?</div>\s*</div></section>',
+        re.DOTALL
+    )
+    after = prev_stories_pattern.sub('', after)
+
     # Insert new cards + older article links
     new_content = "\n" + cards_html + older_links + "\n"
     return before + new_content + after
@@ -389,10 +398,12 @@ def _build_older_articles_links(new_articles, max_show=20):
 def _build_hero_main(article):
     """Build the hero main HTML block."""
     a = article
+    img_url = _get_image_url(a, "large", (800, 450))
+    onerror_keyword = a["image_keywords"].split(",")[0] if "," in a["image_keywords"] else a["image_keywords"]
     return (
         f'<a href="{a["slug"]}.html" class="hero-main">\n'
-        f'<img src="https://loremflickr.com/800/450/{a["image_keywords"]}" alt="{a["title"][:50]}" '
-        f'onerror="this.src=\'https://loremflickr.com/800/450/{a["image_keywords"].split(",")[0] if "," in a["image_keywords"] else a["image_keywords"]}\'">\n'
+        f'<img src="{img_url}" alt="{a["title"][:50]}" '
+        f'onerror="this.onerror=null;this.src=\'https://loremflickr.com/800/450/{onerror_keyword}\'">\n'
         f'<div class="hero-overlay"><span class="tag">{a["category_emoji"]} {a["category_name"]}</span>'
         f'<h1>{a["title"]}</h1>'
         f'<div class="meta">{a.get("views", random.randint(100000, 900000)):,} views · {a["read_time_minutes"]} min read</div></div>'
@@ -403,17 +414,15 @@ def _build_hero_main(article):
 def _build_hero_side(articles):
     """Build the hero side list (4 items)."""
     items = []
-    categories = [
-        ("⚔️ VS Battle", 289000), ("🏅 Top 10", 789000),
-        ("💪 Health", 453000), ("📱 Tech", 521000),
-    ]
     for i, a in enumerate(articles):
         cat_label = a["category_emoji"] + " " + a["category_name"]
         views = random.randint(120000, 900000)
+        img_url = _get_image_url(a, "small", (200, 130))
+        onerror_keyword = a["image_keywords"].split(",")[0] if "," in a["image_keywords"] else a["image_keywords"]
         items.append(
             f'<a href="{a["slug"]}.html" class="hero-side-item">'
-            f'<div class="hero-side-thumb"><img src="https://loremflickr.com/200/130/{a["image_keywords"]}" alt="{a["title"][:30]}" '
-            f'onerror="this.src=\'https://loremflickr.com/200/130/{a["image_keywords"].split(",")[0] if "," in a["image_keywords"] else a["image_keywords"]}\'"></div>'
+            f'<div class="hero-side-thumb"><img src="{img_url}" alt="{a["title"][:30]}" '
+            f'onerror="this.onerror=null;this.src=\'https://loremflickr.com/200/130/{onerror_keyword}\'"></div>'
             f'<div class="hero-side-info"><span class="cat">{cat_label}</span>'
             f'<div class="ttl">{a["title"]}</div><div class="st">{views:,} views</div></div></a>'
         )
@@ -436,11 +445,13 @@ def _build_card_sm(article):
     views = random.randint(80000, 600000)
     badge_class, badge_text = random.choice(BADGES)
     badge_html = f'<span class="badge-sm">{badge_text}</span>' if badge_text else ""
+    img_url = _get_image_url(a, "small", (400, 250))
+    onerror_keyword = a["image_keywords"].split(",")[0] if "," in a["image_keywords"] else a["image_keywords"]
     return (
         f'<a href="{a["slug"]}.html" class="card-sm">'
-        f'<div class="thumb"><img src="https://loremflickr.com/400/250/{a["image_keywords"]}?r={random.randint(10000,99999)}" '
+        f'<div class="thumb"><img src="{img_url}" '
         f'alt="{a["title"][:50]}" loading="lazy" '
-        f'onerror="this.onerror=null;this.src=\'https://loremflickr.com/400/250/{a["image_keywords"].split(",")[0] if "," in a["image_keywords"] else a["image_keywords"]}\'">'
+        f'onerror="this.onerror=null;this.src=\'https://loremflickr.com/400/250/{onerror_keyword}\'">'
         f'{badge_html}'
         f'</div>'
         f'<div class="info"><span class="cat">{a["category_name"]}</span>'
