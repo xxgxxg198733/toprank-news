@@ -112,11 +112,7 @@ def scan_articles():
 # 2. COMMON SITE CHROME
 # ────────────────────────────────────────────────────────────
 
-NETWORK_LINKS = (
-    '<a href="https://zicisi.fun" style="color:var(--text-muted);margin:0 4px">ViralNow</a> · '
-    '<a href="https://weird.zicisi.fun" style="color:var(--text-muted);margin:0 4px">WeirdWorld</a> · '
-    '<a href="https://top.zicisi.fun" style="color:var(--text-muted);margin:0 4px">TopRank</a>'
-)
+NETWORK_LINKS = ""
 
 def _header_html(current_page_title=""):
     return f"""<!DOCTYPE html>
@@ -145,13 +141,7 @@ def _header_html(current_page_title=""):
 <a href="category-vs-battle.html">VS</a>
 <a href="category-roundups.html">Roundups</a>
 <a href="category-reviews.html">Reviews</a>
-<div class="network-dropdown">
-<button class="network-btn">📡 Our Network</button>
-<div class="network-menu">
-<a href="https://zicisi.fun"><span class="network-dot" style="background:#f47521"></span>ViralNow</a>
-<a href="https://weird.zicisi.fun"><span class="network-dot" style="background:#7c3aed"></span>WeirdWorld</a>
-<a href="https://top.zicisi.fun"><span class="network-dot" style="background:#2563eb"></span>TopRank</a>
-</div></div>
+
 </nav>
 </div>
 </header>"""
@@ -159,9 +149,7 @@ def _header_html(current_page_title=""):
 def _footer_html():
     return f"""<footer class="site-footer">
 <div class="footer-inner">
-<div class="footer-network">
-<strong>🌐 Our Network:</strong> {NETWORK_LINKS}
-</div>
+
 <div class="footer-links" style="text-align:center;margin:8px 0;font-size:.75rem">
 <a href="about.html" style="color:var(--text-muted);margin:0 8px">About</a>
 <a href="contact.html" style="color:var(--text-muted);margin:0 8px">Contact</a>
@@ -421,7 +409,7 @@ def rebuild_privacy_page(articles):
 <p style="font-size:.9rem;line-height:1.8;color:var(--text)">We use the information we collect to improve our content, respond to your messages, and send newsletter updates (only if you have subscribed). We never sell your personal information to third parties.</p>
 
 <h2 style="font-size:1.2rem;font-weight:700;margin:20px 0 10px">4. Third-Party Services</h2>
-<p style="font-size:.9rem;line-height:1.8;color:var(--text)">Our site is hosted on Vercel and uses GitHub for content management. These services have their own privacy policies. Our network links point to our sibling sites (ViralNow, WeirdWorld) which follow the same privacy practices.</p>
+<p style="font-size:.9rem;line-height:1.8;color:var(--text)">Our site is hosted on Vercel and uses GitHub for content management. These services have their own privacy policies. </p>
 
 <h2 style="font-size:1.2rem;font-weight:700;margin:20px 0 10px">5. Contact</h2>
 <p style="font-size:.9rem;line-height:1.8;color:var(--text)">Questions about this policy? <a href="contact.html" style="color:var(--primary)">Contact us here</a>.</p>
@@ -456,7 +444,7 @@ def rebuild_terms_page(articles):
 <p style="font-size:.9rem;line-height:1.8;color:var(--text)">All original content on this site — including articles, rankings, and comparisons — is protected by copyright. You may share links to our content freely. Reproduction of full articles requires prior written permission.</p>
 
 <h2 style="font-size:1.2rem;font-weight:700;margin:20px 0 10px">4. External Links</h2>
-<p style="font-size:.9rem;line-height:1.8;color:var(--text)">Our site links to external websites (including our network sites ViralNow and WeirdWorld). We are not responsible for the content or practices of any linked websites.</p>
+<p style="font-size:.9rem;line-height:1.8;color:var(--text)">Our site may link to external websites. We are not responsible for the content or practices of any linked websites.</p>
 
 <h2 style="font-size:1.2rem;font-weight:700;margin:20px 0 10px">5. Changes</h2>
 <p style="font-size:.9rem;line-height:1.8;color:var(--text)">We may update these terms periodically. Continued use of the site after changes constitutes acceptance of the new terms. Questions? <a href="contact.html" style="color:var(--primary)">Contact us</a>.</p>

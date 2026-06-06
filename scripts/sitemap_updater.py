@@ -51,7 +51,7 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Sitemap Updater")
     parser.add_argument("--site", default="all",
-                        choices=["all", "viralnow", "weirdworld", "toprank"])
+                        choices=["all", "toprank"])
     args = parser.parse_args()
 
     targets = list(SITES.keys()) if args.site == "all" else [args.site]

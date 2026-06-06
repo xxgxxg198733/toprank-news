@@ -39,8 +39,6 @@ SITES = {
 # --- Network cross-links ---
 
 NETWORK_SITES = {
-    "viralnow": {"name": "ViralNow", "url": "https://zicisi.fun", "color": "#f47521", "emoji": "🟠"},
-    "weirdworld": {"name": "WeirdWorld", "url": "https://weird.zicisi.fun", "color": "#7c3aed", "emoji": "🟣"},
     "toprank": {"name": "TopRank", "url": "https://top.zicisi.fun", "color": "#2563eb", "emoji": "🔵"},
 }
 

@@ -96,7 +96,7 @@ def build_head(article, site_config):
 
 def build_header(article, site_config):
     """Build the site header with nav."""
-    site_key = site_config.get("_key", "viralnow")
+    site_key = site_config.get("_key", "toprank")
     logo = site_config["logo_html"]
 
     # Fixed nav links matching site structure
@@ -118,7 +118,6 @@ def build_header(article, site_config):
 <button class="menu-toggle" aria-label="Menu">☰</button>
 <nav class="main-nav">
 {nav_html}
-{_network_dropdown(site_key)}
 </nav>
 </div>
 </header>"""
@@ -251,6 +250,14 @@ Get our latest rankings and reviews delivered every week.
 {hotlist}
 </div>
 
+<div class="sidebar-widget" style="background:var(--card);border-radius:8px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-top:20px">
+<h3 style="font-size:.95rem;font-weight:700;margin-bottom:8px">📝 About TopRank</h3>
+<p style="font-size:.78rem;color:var(--text-secondary);line-height:1.6">
+We spend hours researching, comparing, and testing so you can make better decisions in minutes.
+Honest rankings, real reviews, no fluff. Updated daily by humans who actually care about getting it right.
+</p>
+<a href="about.html" style="font-size:.78rem;color:var(--primary);font-weight:600">Learn more about how we work →</a>
+</div>
 </div>
 </aside>
 </div>"""
@@ -263,9 +270,7 @@ def build_footer(article, site_config):
 
     return f"""<footer class="site-footer">
 <div class="footer-inner">
-<div class="footer-network">
-{_network_footer()}
-</div>
+
 <div class="footer-links" style="text-align:center;margin:8px 0;font-size:.75rem">
 <a href="about.html" style="color:var(--text-muted);margin:0 8px">About</a>
 <a href="contact.html" style="color:var(--text-muted);margin:0 8px">Contact</a>
