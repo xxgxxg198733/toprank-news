@@ -77,7 +77,6 @@ def build_head(article, site_config):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="google-adsense-account" content="ca-pub-1078773058136861">
 <meta name="description" content="{excerpt}">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{excerpt}">
@@ -89,7 +88,7 @@ def build_head(article, site_config):
 <meta name="twitter:description" content="{excerpt}">
 <title>{title} | {site_name}</title>
 <link rel="stylesheet" href="style.css">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1078773058136861" crossorigin="anonymous"></script>
+
 <script type="application/ld+json">{jsonld}</script>
 </head>"""
 
@@ -140,7 +139,7 @@ def build_article_content(article, site_config):
     date_str = article.get("date", datetime.now().strftime("%B %d, %Y"))
     views = random.randint(15000, 500000)
 
-    # Split body at midpoint for in-content ad placement
+    # Split body at midpoint for natural content break
     parts = body_html.split('</p>')
     if len(parts) > 3:
         mid = len(parts) // 2
@@ -150,21 +149,10 @@ def build_article_content(article, site_config):
         body_first = body_html
         body_second = ""
 
-    in_content_ad = (
-        '<div class="ad-label">— Advertisement —</div>'
-        '<div class="ad-container ad-rectangle" style="margin:16px auto">'
-        '<!-- AdSense 300×250 --></div>'
-    )
-
     # Truncate title for breadcrumb
     breadcrumb_title = title[:47] + '...' if len(title) > 50 else title
 
-    return f"""<div class="container" style="margin-top:12px">
-<div class="ad-label">— Advertisement —</div>
-<div class="ad-container ad-leaderboard"><!-- AdSense 728×90 --></div>
-</div>
-
-<div class="page-layout">
+    return f"""<div class="page-layout">
 <main class="content-area">
 
 <nav class="breadcrumb" style="font-size:.8rem;color:var(--text-muted);margin-bottom:16px">
@@ -194,8 +182,6 @@ def build_article_content(article, site_config):
 {body_first}
 </div>
 
-{in_content_ad}
-
 <div class="article-content">
 {body_second}
 </div>
@@ -221,15 +207,12 @@ We fact-check all content and update articles as new information becomes availab
 
 </article>
 
-<div class="ad-label">— Advertisement —</div>
-<div class="ad-container ad-leaderboard"><!-- AdSense 728×90 --></div>
-
 </main>"""
 
 # ═══════════════════════════ SIDEBAR ═══════════════════════════
 
 def build_sidebar(article, site_config):
-    """Build the sidebar with ads, newsletter, and hotlist."""
+    """Build the sidebar with newsletter and hotlist."""
     hot_title = site_config.get("hot_title", "🔥 Trending Now")
     hotlist = article.get("_hotlist_html", "")
     domain = site_config["domain"]
@@ -239,12 +222,6 @@ def build_sidebar(article, site_config):
 
     return f"""<aside class="sidebar">
 <div class="sidebar-sticky">
-
-<div class="ad-label">— Advertisement —</div>
-<div class="ad-container ad-rectangle"><!-- AdSense 300×250 --></div>
-
-<div class="ad-label" style="margin-top:20px">— Advertisement —</div>
-<div class="ad-container ad-skyscraper"><!-- AdSense 160×600 --></div>
 
 <div class="sidebar-widget" style="margin-top:20px;background:var(--card);border-radius:8px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:3px solid var(--primary)">
 <h3 style="font-size:.95rem;font-weight:700;margin-bottom:8px">📬 Stay Updated</h3>
@@ -300,12 +277,6 @@ This site is protected by reCAPTCHA and the Google
 </div>
 
 <button class="back-to-top" aria-label="Back to top">↑</button>
-
-<div class="mobile-anchor-ad">
-<button class="anchor-ad-close">✕</button>
-<div class="ad-label">— Advertisement —</div>
-<div class="ad-container ad-mobile-banner" style="margin:0 auto"><!-- AdSense 320×50 --></div>
-</div>
 
 <script src="script.js"></script>
 </body></html>"""
