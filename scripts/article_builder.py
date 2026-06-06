@@ -6,7 +6,7 @@ import random
 from pathlib import Path
 from datetime import datetime
 
-from config import BASE, SITES, NETWORK_SITES, BADGES
+from config import BASE, SITES, NETWORK_SITES
 
 # ═══════════════════════════ NETWORK DROPDOWN HTML ═══════════════════════════
 
@@ -137,7 +137,6 @@ def build_article_content(article, site_config):
     avatar_bg = site_config["avatar_bg"]
     avatar_text = site_config["avatar_text"]
     date_str = article.get("date", datetime.now().strftime("%B %d, %Y"))
-    views = random.randint(15000, 500000)
 
     # Split body at midpoint for natural content break
     parts = body_html.split('</p>')
@@ -197,11 +196,10 @@ def build_article_content(article, site_config):
 <div class="author-box" style="margin-top:24px;padding:20px;background:var(--card);border-radius:8px;border:1px solid var(--border);display:flex;gap:16px;align-items:center">
 <div style="width:56px;height:56px;border-radius:50%;background:{avatar_bg};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.2rem;flex-shrink:0">{avatar_text}</div>
 <div>
-<strong style="font-size:.95rem">{site_config['name']} Editorial Team</strong>
+<strong style="font-size:.95rem">{site_config['name']} Team</strong>
 <p style="font-size:.8rem;color:var(--text-secondary);margin:4px 0 0">
-We research, write, and fact-check every article on {site_config['name']}.
-Articles are updated regularly as new information becomes available.
-<a href="about.html">Learn more →</a>
+We spend hours researching and testing before we write anything. If something changes, we update the article.
+<a href="about.html">About our process →</a>
 </p>
 </div>
 </div>
@@ -302,8 +300,6 @@ def build_card(article, site_config):
     cat_name = article.get("category_name", "General")
     excerpt = article.get("excerpt", "")
     image_keywords = article.get("image_keywords", "news")
-    views = random.randint(15000, 500000)
-    badge_class, badge_text = random.choice(BADGES)
 
     img_url = _get_image_url(article, 'small', (400, 250))
     onerror_keyword = image_keywords.split(",")[0] if "," in image_keywords else image_keywords
@@ -313,11 +309,10 @@ def build_card(article, site_config):
         f'<img src="{img_url}" '
         f'alt="{title[:50]}" loading="lazy" '
         f'onerror="this.onerror=null;this.src=\'https://loremflickr.com/400/250/{onerror_keyword}\'">'
-        + (f'<span class="badge-sm">{badge_text}</span>' if badge_text else '') +
         f'</div>'
         f'<div class="info"><span class="cat">{cat_name}</span>'
         f'<h3>{title[:80]}{"..." if len(title) > 80 else ""}</h3>'
-        f'<span class="st">{views:,} views</span></div>'
+        f'<span class="st">Read more →</span></div>'
         f'</a>'
     )
 

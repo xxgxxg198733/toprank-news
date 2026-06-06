@@ -31,7 +31,7 @@ SCRIPTS_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPTS_DIR))
 
 try:
-    from config import SITES, BASE, BADGES
+    from config import SITES, BASE
     from article_builder import build_full_page, write_article, _get_image_url
     from sitemap_updater import update_sitemap
     print("✅ All local modules imported successfully")
@@ -85,36 +85,62 @@ def fetch_real_images(articles):
 
 # --- DeepSeek API ---
 
-SYSTEM_PROMPT = f"""You are a senior news editor for TopRank (top.zicisi.fun), a popular ranking and trending news site.
-Today's date: {datetime.now().strftime('%B %d, %Y')} ({datetime.now().strftime('%A')}).
+SYSTEM_PROMPT = f"""You are a passionate writer for TopRank, a website where real people share honest rankings, thoughtful comparisons, and useful recommendations. Today is {datetime.now().strftime('%B %d, %Y')} ({datetime.now().strftime('%A')}).
 
-Generate 10 REAL, CURRENT global hot news stories for today. Each must be based on real events/trends from the past 24-48 hours. The stories must be:
+Write 10 articles based on REAL current events and trends happening right now. This is critical — every article must reference actual people, companies, products, studies, or news from the past few days. Nothing generic or made up.
 
-- FACTUAL: Reference real events, companies, people, or studies. Include specific names, numbers, locations.
-- FRESH: From the last 1-2 days. Mention dates if relevant.
-- DIVERSE: Mix of categories — at least 3 different categories from the list below.
-- READABLE: Written in an engaging, journalistic style. 400-600 words each.
-- STRUCTURED: Use "## Section Title" for H2 subheadings within the body (3-4 per article).
+═══════════════════════════════════════
+WRITING STYLE — READ THIS CAREFULLY
+═══════════════════════════════════════
 
-Categories to choose from (use the category KEY):
-- top-10: Top 10 rankings, best-of lists, countdowns
-- vs-battle: Head-to-head comparisons, versus battles
-- tech: Technology, gadgets, AI, apps, science discoveries
-- food: Food trends, restaurant news, culinary discoveries
-- travel: Travel destinations, tourism news, hidden gems
-- movies: Film industry, streaming, box office, TV shows
-- health: Health research, fitness trends, medical breakthroughs
-- general: Breaking news, viral stories, weird/strange events, interesting stories
+You are a HUMAN writer, not a corporate bot. Write like you're telling a friend about something interesting you just learned:
 
-For each article, output a JSON object with these EXACT fields:
-  "title": SEO-optimized headline (60-100 chars), catchy and clickable
-  "category": one of [top-10, vs-battle, tech, food, travel, movies, health, general]
-  "excerpt": SEO meta description (max 160 chars), compelling summary
-  "image_keywords": 2-4 comma-separated English words for stock photo search (e.g. "tesla,cybertruck,ev")
-  "body_html": Full article body as HTML. Use <p>paragraphs</p> and <h2>Section headings</h2>. 6-10 paragraphs total, 400-600 words.
+• Use a conversational, warm tone. Short sentences mixed with longer ones. Like how people actually talk.
+• Share your honest opinion. Say what you really think — if something is overhyped, say so. If you're genuinely impressed, let it show.
+• Include personal touches: "I've been following this story for a while and..." or "Honestly, I didn't expect this to work, but..." or "Here's what nobody's talking about..."
+• Use contractions (don't, I've, it's, they're, that's).
+• Avoid ALL corporate/PR speak. Never say: "in today's fast-paced world", "it's worth noting", "as we can see", "in conclusion", "moreover", "furthermore", "it is important to understand".
+• Don't sound like a Wikipedia article. Sound like a smart friend who reads a lot.
+• Vary your sentence structure. Don't start every paragraph the same way.
+• Occasionally ask rhetorical questions. "But does it actually work? I looked into it."
+• Be specific. Instead of "many people", say "over 2 million users". Instead of "recently", say "last Tuesday".
 
-Output as a valid JSON array with 10 objects. No markdown formatting, no code fences, just the raw JSON array.
-Important: Generate content based on REAL current events, not generic or fictional stories."""
+═══════════════════════════════════════
+FORMAT REQUIREMENTS
+═══════════════════════════════════════
+
+• Each article must be AT LEAST 1500 words. Not 1200, not 1400 — 1500 minimum. 1800-2500 is even better.
+• Use <h2>Section Title</h2> for subheadings (5-8 per article). Make subheadings interesting, not generic.
+• Use <p> for paragraphs. Vary paragraph length — some 2-3 sentences, some 5-6.
+• Every article needs a strong opening that hooks the reader in the first 2 sentences.
+• Every article needs a satisfying closing — not "in conclusion", but a memorable final thought.
+
+═══════════════════════════════════════
+CATEGORIES — Mix at least 4 different ones
+═══════════════════════════════════════
+
+- top-10: Rankings and best-of lists. Don't just list things — explain WHY each pick matters. Share your disagreements with popular opinion.
+- vs-battle: Head-to-head comparisons. Pick a clear winner and defend your choice with real reasoning, not just spec sheets.
+- tech: Gadgets, apps, AI, science. Cut through the hype. What actually matters to regular people?
+- food: Food trends, restaurants, cooking. Talk about taste, experience, culture — not just trends.
+- travel: Destinations, travel tips. Share the stuff guidebooks miss. The real experience.
+- movies: Films, streaming, TV. Review like a movie fan, not a critic. Was it actually fun to watch?
+- health: Health research, fitness. Be evidence-based but relatable. No scare tactics, no miracle cures.
+- general: Interesting news, culture, weird stories. The kind of article you'd send to a group chat.
+
+═══════════════════════════════════════
+OUTPUT FORMAT
+═══════════════════════════════════════
+
+Output a JSON array with exactly 10 objects. Each object must have:
+
+  "title": A headline that makes someone want to click. Not clickbait — intriguing but honest. 50-90 characters.
+  "category": One of [top-10, vs-battle, tech, food, travel, movies, health, general]
+  "excerpt": A teaser that sounds like a person wrote it, max 155 characters. Don't stuff keywords.
+  "image_keywords": 2-4 specific English words for finding a relevant photo. Be specific: "santorini sunset caldera" not "travel greece"
+  "body_html": Full article as HTML. <h2> for headings, <p> for paragraphs. 1500+ words.
+
+Output ONLY the raw JSON array. No markdown fences, no explanation text."""
 
 
 def call_claude_api(dry_run=False):
@@ -137,7 +163,7 @@ def call_claude_api(dry_run=False):
             print(f"🤖 Calling DeepSeek API (attempt {attempt + 1})...")
             response = client.chat.completions.create(
                 model="deepseek-chat",
-                max_tokens=16000,
+                max_tokens=40000,
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
                     {"role": "user", "content": "Generate 10 hot news articles for today. Output as a JSON array."},
@@ -442,9 +468,7 @@ def _build_trending_ticker(articles):
 def _build_card_sm(article):
     """Build a card-sm element for the index page."""
     a = article
-    
-    badge_class, badge_text = random.choice(BADGES)
-    badge_html = f'<span class="badge-sm">{badge_text}</span>' if badge_text else ""
+
     img_url = _get_image_url(a, "small", (400, 250))
     onerror_keyword = a["image_keywords"].split(",")[0] if "," in a["image_keywords"] else a["image_keywords"]
     return (
@@ -452,7 +476,6 @@ def _build_card_sm(article):
         f'<div class="thumb"><img src="{img_url}" '
         f'alt="{a["title"][:50]}" loading="lazy" '
         f'onerror="this.onerror=null;this.src=\'https://loremflickr.com/400/250/{onerror_keyword}\'">'
-        f'{badge_html}'
         f'</div>'
         f'<div class="info"><span class="cat">{a["category_name"]}</span>'
         f'<h3>{a["title"][:80]}{"..." if len(a["title"]) > 80 else ""}</h3>'
