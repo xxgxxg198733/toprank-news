@@ -389,7 +389,8 @@ def _replace_auto_cards(content, articles):
 
 
 def _build_older_articles_links(new_articles, max_show=20):
-    """Build HTML links to older articles that aren't in the current batch."""
+    """Build HTML links to older articles that aren't in the current batch.
+    Extracts real og:image from each article for proper thumbnails."""
     new_slugs = {a["slug"] for a in new_articles}
     older = []
 
@@ -402,9 +403,19 @@ def _build_older_articles_links(new_articles, max_show=20):
         slug = f.stem
         if slug in new_slugs:
             continue
-        # Extract title from filename
-        title = slug.replace("-", " ").title()
-        older.append((slug, title))
+
+        # Extract title and image from the actual article file
+        try:
+            html = f.read_text(encoding="utf-8")
+            title_m = re.search(r'<title>(.*?)\s*\|\s*TopRank</title>', html)
+            title = title_m.group(1).strip() if title_m else slug.replace("-", " ").title()
+            img_m = re.search(r'<meta property="og:image" content="([^"]*)"', html)
+            image_url = img_m.group(1) if img_m else ""
+        except Exception:
+            title = slug.replace("-", " ").title()
+            image_url = ""
+
+        older.append((slug, title, image_url))
         if len(older) >= max_show:
             break
 
@@ -412,8 +423,13 @@ def _build_older_articles_links(new_articles, max_show=20):
         return ""
 
     items = ""
-    for slug, title in older:
-        items += f'<a href="{slug}.html" class="card-sm card-sm--archive"><div class="thumb"><div class="archive-thumb">📰</div></div><div class="info"><span class="cat">Previous</span><h3>{title[:80]}</h3><span class="st">Read more →</span></div></a>\n'
+    for slug, title, image_url in older:
+        if image_url:
+            # Use real image from the article
+            thumb_html = f'<img src="{image_url}" alt="{title[:50]}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML=\'<div class=archive-thumb>📰</div>\'">'
+        else:
+            thumb_html = '<div class="archive-thumb">📰</div>'
+        items += f'<a href="{slug}.html" class="card-sm card-sm--archive"><div class="thumb">{thumb_html}</div><div class="info"><span class="cat">Previous</span><h3>{title[:80]}</h3><span class="st">Read more →</span></div></a>\n'
 
     return (
         '\n</div></section>\n'
