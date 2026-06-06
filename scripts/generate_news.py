@@ -406,7 +406,7 @@ def _build_hero_main(article):
         f'onerror="this.onerror=null;this.src=\'https://loremflickr.com/800/450/{onerror_keyword}\'">\n'
         f'<div class="hero-overlay"><span class="tag">{a["category_emoji"]} {a["category_name"]}</span>'
         f'<h1>{a["title"]}</h1>'
-        f'<div class="meta">{a.get("views", random.randint(100000, 900000)):,} views · {a["read_time_minutes"]} min read</div></div>'
+        f'<div class="meta">{a["read_time_minutes"]} min read</div></div>'
         f'</a>'
     )
 
@@ -416,7 +416,7 @@ def _build_hero_side(articles):
     items = []
     for i, a in enumerate(articles):
         cat_label = a["category_emoji"] + " " + a["category_name"]
-        views = random.randint(120000, 900000)
+        
         img_url = _get_image_url(a, "small", (200, 130))
         onerror_keyword = a["image_keywords"].split(",")[0] if "," in a["image_keywords"] else a["image_keywords"]
         items.append(
@@ -424,7 +424,7 @@ def _build_hero_side(articles):
             f'<div class="hero-side-thumb"><img src="{img_url}" alt="{a["title"][:30]}" '
             f'onerror="this.onerror=null;this.src=\'https://loremflickr.com/200/130/{onerror_keyword}\'"></div>'
             f'<div class="hero-side-info"><span class="cat">{cat_label}</span>'
-            f'<div class="ttl">{a["title"]}</div><div class="st">{views:,} views</div></div></a>'
+            f'<div class="ttl">{a["title"]}</div></div></a>'
         )
     return "\n".join(items)
 
@@ -442,7 +442,7 @@ def _build_trending_ticker(articles):
 def _build_card_sm(article):
     """Build a card-sm element for the index page."""
     a = article
-    views = random.randint(80000, 600000)
+    
     badge_class, badge_text = random.choice(BADGES)
     badge_html = f'<span class="badge-sm">{badge_text}</span>' if badge_text else ""
     img_url = _get_image_url(a, "small", (400, 250))
@@ -456,7 +456,7 @@ def _build_card_sm(article):
         f'</div>'
         f'<div class="info"><span class="cat">{a["category_name"]}</span>'
         f'<h3>{a["title"][:80]}{"..." if len(a["title"]) > 80 else ""}</h3>'
-        f'<span class="st">{views:,} views</span></div>'
+        f'<span class="st">Read more →</span></div>'
         f'</a>'
     )
 

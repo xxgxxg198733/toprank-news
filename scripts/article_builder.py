@@ -165,10 +165,11 @@ def build_article_content(article, site_config):
 <h1 class="article-title">{title}</h1>
 <div class="article-meta">
 <div style="width:36px;height:36px;border-radius:50%;background:{avatar_bg};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.8rem">{avatar_text}</div>
-<span>{site_config['name']} Editorial Team</span>
+<span>By {site_config['name']} Team</span>
+<span>·</span>
 <span>{date_str}</span>
-<span>⏱ {read_time} min read</span>
-<span>{views:,} views</span>
+<span>·</span>
+<span>{read_time} min read</span>
 </div>
 </header>
 
@@ -198,9 +199,9 @@ def build_article_content(article, site_config):
 <div>
 <strong style="font-size:.95rem">{site_config['name']} Editorial Team</strong>
 <p style="font-size:.8rem;color:var(--text-secondary);margin:4px 0 0">
-Our editorial team researches and writes every article on {site_config['name']}.
-We fact-check all content and update articles as new information becomes available.
-<a href="about.html">Learn more about our team →</a>
+We research, write, and fact-check every article on {site_config['name']}.
+Articles are updated regularly as new information becomes available.
+<a href="about.html">Learn more →</a>
 </p>
 </div>
 </div>
@@ -212,7 +213,7 @@ We fact-check all content and update articles as new information becomes availab
 # ═══════════════════════════ SIDEBAR ═══════════════════════════
 
 def build_sidebar(article, site_config):
-    """Build the sidebar with newsletter and hotlist."""
+    """Build the sidebar with category nav, newsletter, and hotlist."""
     hot_title = site_config.get("hot_title", "🔥 Trending Now")
     hotlist = article.get("_hotlist_html", "")
     domain = site_config["domain"]
@@ -223,19 +224,32 @@ def build_sidebar(article, site_config):
     return f"""<aside class="sidebar">
 <div class="sidebar-sticky">
 
-<div class="sidebar-widget" style="margin-top:20px;background:var(--card);border-radius:8px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:3px solid var(--primary)">
-<h3 style="font-size:.95rem;font-weight:700;margin-bottom:8px">📬 Stay Updated</h3>
+<div class="sidebar-widget" style="background:var(--card);border-radius:8px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
+<h3 style="font-size:.95rem;font-weight:700;margin-bottom:10px">📂 Browse by Category</h3>
+<ul style="list-style:none;padding:0;margin:0;font-size:.82rem;line-height:2">
+<li><a href="category-top-10.html">🏅 Top 10</a></li>
+<li><a href="category-vs-battle.html">⚔️ VS Battle</a></li>
+<li><a href="category-tech.html">📱 Tech</a></li>
+<li><a href="category-movies.html">🎬 Movies</a></li>
+<li><a href="category-travel.html">✈️ Travel</a></li>
+<li><a href="category-food.html">🍽️ Food</a></li>
+<li><a href="category-health.html">💪 Health</a></li>
+</ul>
+</div>
+
+<div class="sidebar-widget" style="background:var(--card);border-radius:8px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:3px solid var(--primary)">
+<h3 style="font-size:.95rem;font-weight:700;margin-bottom:8px">📬 Stay in the Loop</h3>
 <p style="font-size:.78rem;color:var(--text-secondary);margin-bottom:10px">
-Get the latest trending stories delivered to your inbox. No spam, unsubscribe anytime.
+Get our latest rankings and reviews delivered every week.
 </p>
 <form onsubmit="event.preventDefault();this.innerHTML='<p style=color:green>✓ Thanks for subscribing!</p>'" style="display:flex;gap:6px">
-<input type="email" placeholder="Your email" required style="flex:1;padding:8px;border:1px solid var(--border);border-radius:4px;font-size:.8rem">
+<input type="email" placeholder="Your email address" required style="flex:1;padding:8px;border:1px solid var(--border);border-radius:4px;font-size:.8rem">
 <button type="submit" style="background:var(--primary);color:#fff;border:none;padding:8px 12px;border-radius:4px;cursor:pointer;font-weight:600;font-size:.8rem">Subscribe</button>
 </form>
 </div>
 
-<div class="sidebar-widget hotlist">
-<h3>{hot_title}</h3>
+<div class="sidebar-widget hotlist" style="background:var(--card);border-radius:8px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
+<h3 style="font-size:.95rem;font-weight:700;margin-bottom:8px">🔥 {hot_title}</h3>
 {hotlist}
 </div>
 
@@ -263,16 +277,13 @@ def build_footer(article, site_config):
 </div>
 <p class="footer-copy">
 © 2026 {domain} — All rights reserved.
-This site is protected by reCAPTCHA and the Google
-<a href="https://policies.google.com/privacy" rel="nofollow">Privacy Policy</a> and
-<a href="https://policies.google.com/terms" rel="nofollow">Terms of Service</a> apply.
 </p>
 </div>
 </footer>
 
 <div id="cookie-consent" style="position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,.9);color:#fff;padding:12px 20px;z-index:9999;display:flex;align-items:center;justify-content:center;gap:16px;font-size:.8rem;flex-wrap:wrap">
-<span>🍪 This website uses cookies to improve your experience and display relevant advertisements. By continuing, you agree to our use of cookies.</span>
-<button onclick="document.getElementById('cookie-consent').style.display='none'" style="background:#fff;color:#000;border:none;padding:6px 16px;border-radius:4px;cursor:pointer;font-weight:600;white-space:nowrap">Got it</button>
+<span>🍪 We use cookies to remember your preferences and understand how you use our site. By continuing, you agree.</span>
+<button onclick="document.getElementById('cookie-consent').style.display='none'" style="background:#fff;color:#000;border:none;padding:6px 16px;border-radius:4px;cursor:pointer;font-weight:600;white-space:nowrap">Accept</button>
 <a href="privacy.html" style="color:#ccc;font-size:.75rem">Learn more</a>
 </div>
 
