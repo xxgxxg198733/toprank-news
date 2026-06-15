@@ -87,9 +87,9 @@ def fetch_real_images(articles):
 
 SYSTEM_PROMPT = f"""You are a passionate writer for TopRank, a website where real people share honest rankings, thoughtful comparisons, and useful recommendations. Today is {datetime.now().strftime('%B %d, %Y')} ({datetime.now().strftime('%A')}).
 
-Write 7 articles based on REAL current events and trends happening right now. This is critical — every article must reference actual people, companies, products, studies, or news from the past few days. Nothing generic or made up.
+Write 10 articles based on REAL current events and trends happening now. CRITICAL: You MUST distribute articles across ALL 8 categories — at least 1 article per category. Each article must reference actual people, companies, products, studies, or news from the past few days. Nothing generic or made up.
 
-CRITICAL: 7 articles, not 10. Quality over quantity. Each article must be AT LEAST 1500 words of body text.
+Category distribution (10 total, at least 1 per category): top-10, vs-battle, tech, food, travel, movies, health, general. Each article must be AT LEAST 1000 words of body text.
 
 ═══════════════════════════════════════
 WRITING STYLE — READ THIS CAREFULLY
@@ -119,7 +119,7 @@ FORMAT REQUIREMENTS
 • Every article needs a satisfying closing — not "in conclusion", but a memorable final thought.
 
 ═══════════════════════════════════════
-CATEGORIES — Mix at least 4 different ones
+CATEGORIES — Include ALL 8 categories, 1-2 articles each
 ═══════════════════════════════════════
 
 - top-10: Rankings and best-of lists. Don't just list things — explain WHY each pick matters. Share your disagreements with popular opinion.
@@ -135,7 +135,7 @@ CATEGORIES — Mix at least 4 different ones
 OUTPUT FORMAT
 ═══════════════════════════════════════
 
-Output a JSON array with exactly 7 objects. Each object must have:
+Output a JSON array with exactly 10 objects. Each object must have:
 
   "title": A headline that makes someone want to click. Not clickbait — intriguing but honest. 50-90 characters.
   "category": One of [top-10, vs-battle, tech, food, travel, movies, health, general]
@@ -169,7 +169,7 @@ def call_claude_api(dry_run=False):
                 max_tokens=40000,
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": "Write 7 in-depth articles based on today's real news and trends. 1500+ words each. Output as a JSON array."},
+                    {"role": "user", "content": "Write 10 in-depth articles covering ALL 8 categories. At least 1 article per category. 1000+ words each. Output as a JSON array."},
                 ],
                 temperature=0.9,
             )
@@ -330,10 +330,15 @@ def update_index_sections(articles):
         _build_hotlist(articles[:8])
     )
 
+    # 6. Per-category sections: auto-populate 10 latest articles each
+    content = _update_category_section(content, "AUTO_CARDS_VS", ["vs-battle"], 10)
+    content = _update_category_section(content, "AUTO_CARDS_TECH", ["tech"], 10)
+    content = _update_category_section(content, "AUTO_CARDS_MT", ["movies", "travel"], 10)
+
     with open(index_path, "w", encoding="utf-8") as f:
         f.write(content)
 
-    print(f"  📌 Updated index.html: hero, side, ticker, cards, hotlist")
+    print(f"  📌 Updated index.html: hero, side, ticker, cards, hotlist, category sections")
 
 
 def _replace_between_markers(content, start_marker, end_marker, new_html):
@@ -515,6 +520,85 @@ def _build_hotlist(articles):
     return "\n".join(items)
 
 
+def _update_category_section(content, marker, category_keys, count=10):
+    """Auto-populate category section with the most recent articles from given categories."""
+    import re as _re
+
+    # Scan all existing article HTML files for category info
+    site_dir = SITE_DIR
+    cat_articles = []
+
+    for f in sorted(site_dir.glob("*.html"), key=lambda p: p.stat().st_mtime, reverse=True):
+        if f.name in ("index.html", "about.html", "contact.html", "privacy.html",
+                       "terms.html", "article.html"):
+            continue
+        if f.name.startswith("category-"):
+            continue
+
+        try:
+            html = f.read_text(encoding="utf-8")
+            # Extract category from breadcrumb or meta
+            cat_m = _re.search(r"category-(\w+)\.html", html)
+            article_cat = cat_m.group(1).replace("-", " ") if cat_m else "general"
+
+            # Map category filename to key
+            cat_map = {
+                "top 10": "top-10", "vs battle": "vs-battle", "tech": "tech",
+                "movies": "movies", "travel": "travel", "food": "food",
+                "health": "health", "general": "general", "reviews": "general",
+                "roundups": "general",
+            }
+            article_cat_key = cat_map.get(article_cat.lower().strip(), "general")
+
+            if article_cat_key in category_keys:
+                title_m = _re.search(r"<title>(.*?)\s*\|\s*TopRank</title>", html)
+                title = title_m.group(1).strip() if title_m else f.stem.replace("-", " ").title()
+                img_m = _re.search(r'<meta property="og:image" content="([^"]*)"', html)
+                image_url = img_m.group(1) if img_m else ""
+                slug = f.stem
+                cat_articles.append({"slug": slug, "title": title, "image_url": image_url})
+        except Exception:
+            continue
+
+        if len(cat_articles) >= count:
+            break
+
+    if not cat_articles:
+        return content
+
+    cards = []
+    for a in cat_articles[:count]:
+        img = a["image_url"] if a["image_url"] else "https://loremflickr.com/400/250/news"
+        title_display = a["title"][:70] + "..." if len(a["title"]) > 70 else a["title"]
+        cards.append(
+            f'<a href="{a["slug"]}.html" class="card-sm">'
+            f'<div class="thumb"><img src="{img}" alt="{a["title"][:50]}" loading="lazy" '
+            f'onerror="this.onerror=null;this.src=\'https://loremflickr.com/400/250/{a["slug"][:20].replace("-","+")}\'">'
+            f'</div>'
+            f'<div class="info"><span class="cat">{category_keys[0].replace("-"," ").title()}</span>'
+            f'<h3>{title_display}</h3>'
+            f'<span class="st">Read more →</span></div>'
+            f'</a>'
+        )
+
+    # Replace content between marker and closing </div> of scroll-row
+    marker_tag = f"<!-- {marker} -->"
+    if marker_tag not in content:
+        print(f"  ⚠️  Marker {marker} not found in index.html")
+        return content
+
+    marker_pos = content.index(marker_tag)
+    after = content[marker_pos + len(marker_tag):]
+    # Find the closing </div> of the scroll-row (next </div></section>)
+    section_end = after.index("</div></section>")
+    before = content[:marker_pos + len(marker_tag)]
+    after_section = after[section_end:]
+
+    new_content = before + "\n" + "\n".join(cards) + "\n" + after_section
+    print(f"  📌 Category section [{marker}]: {len(cards)} articles from {category_keys}")
+    return new_content
+
+
 # --- Cleanup ---
 
 def cleanup_old_articles(max_days=90):
@@ -541,7 +625,7 @@ def main(dry_run=False):
     print("=" * 60)
     print(f"🚀 TopRank News Generator — {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print(f"   Site: {SITE_CONFIG['name']} ({SITE_CONFIG['domain']})")
-    print(f"   Target: 10 articles")
+    print(f"   Target: 10 articles (1+ per category)")
     print(f"   Dry run: {dry_run}")
     print("=" * 60)
 
@@ -554,7 +638,7 @@ def main(dry_run=False):
 
     # Step 2: Process articles
     articles = []
-    for i, raw in enumerate(raw_articles[:7]):
+    for i, raw in enumerate(raw_articles[:10]):
         try:
             article = build_toprank_article(raw)
             articles.append(article)
