@@ -47,6 +47,37 @@
 .cta-banner button{background:#0f172a;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-weight:700;font-size:.85rem;cursor:pointer;white-space:nowrap}
 @media(max-width:1024px){.hero-grid{grid-template-columns:1fr}.hero-side-list{flex-direction:row;overflow-x:auto}.hero-side-item{min-width:280px;flex-shrink:0}.scroll-row{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:768px){.scroll-row{grid-template-columns:1fr}.cta-banner{flex-direction:column;text-align:center}.cta-banner input{min-width:auto;width:100%}}
+
+.cat-section{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+.cat-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.cat-section-head h2{font-size:1.15rem;font-weight:700;display:flex;align-items:center;gap:8px;margin:0}
+.cat-section-head a{font-size:.82rem;color:var(--primary);font-weight:500}
+.cat-featured{display:flex;gap:16px;background:var(--card);border-radius:10px;overflow:hidden;margin-bottom:12px;color:inherit;text-decoration:none;transition:background .2s}
+.cat-featured:hover{background:#f0f4ff}
+.cat-feat-thumb{width:280px;min-height:160px;flex-shrink:0;overflow:hidden}
+.cat-feat-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.cat-featured:hover .cat-feat-thumb img{transform:scale(1.03)}
+.cat-feat-info{flex:1;padding:16px;display:flex;flex-direction:column;justify-content:center}
+.cat-feat-label{font-size:.7rem;color:var(--primary);font-weight:600;text-transform:uppercase;margin-bottom:6px}
+.cat-feat-info h3{font-size:1.05rem;font-weight:700;line-height:1.4;margin:0}
+.cat-list{list-style:none;padding:0;margin:0}
+.cat-list li{border-bottom:1px solid #eee}
+.cat-list li:last-child{border-bottom:none}
+.cat-list a{display:flex;align-items:center;gap:12px;padding:10px 8px;color:inherit;text-decoration:none;font-size:.88rem;line-height:1.4;transition:background .15s}
+.cat-list a:hover{background:#f9fafb;border-radius:6px}
+.cat-list .lnum{font-size:.75rem;color:var(--text-muted);font-weight:600;min-width:24px;text-align:right;flex-shrink:0}
+@media(max-width:768px){.cat-featured{flex-direction:column}.cat-feat-thumb{width:100%;aspect-ratio:16/9}}
+
+
+/* World Cup Nav */
+.nav-worldcup{position:relative;display:inline-flex;align-items:center;padding:6px 14px;margin-left:8px;border-radius:8px;font-weight:800;font-size:.82rem;color:#fff;text-decoration:none;overflow:hidden;background:linear-gradient(135deg,#1a472a,#2d8a4e,#1a472a);background-size:200% 200%;animation:wcBg 3s ease infinite;box-shadow:0 0 20px rgba(255,215,0,.4),0 0 40px rgba(255,215,0,.15);border:1px solid rgba(255,215,0,.3)}
+.nav-worldcup::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 30%,#ff0 1px,transparent 1px),radial-gradient(circle at 50% 60%,#ff6b35 1px,transparent 1px),radial-gradient(circle at 70% 20%,#ffd700 1px,transparent 2px),radial-gradient(circle at 30% 70%,#ff4500 2px,transparent 2px),radial-gradient(circle at 80% 50%,#ff0 1px,transparent 1px),radial-gradient(circle at 60% 80%,#ff6347 2px,transparent 2px),radial-gradient(circle at 10% 40%,#ffd700 1px,transparent 1px),radial-gradient(circle at 90% 70%,#ff4500 1px,transparent 1px);background-size:80px 60px,100px 80px,60px 50px,90px 70px,70px 55px,100px 60px,50px 40px,80px 50px;animation:wcFireworks 2s ease-in-out infinite alternate;opacity:.7;pointer-events:none}
+.nav-worldcup::after{content:"⚽";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:1.1rem;animation:wcBall 1.5s ease-in-out infinite;z-index:1}
+.nav-worldcup span{position:relative;z-index:2;letter-spacing:1px;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+@keyframes wcBg{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes wcFireworks{0%{transform:scale(1);opacity:.5}50%{transform:scale(1.08);opacity:.8}100%{transform:scale(1);opacity:.6}}
+@keyframes wcBall{0%,100%{transform:translateY(-50%) rotate(0deg)}25%{transform:translateY(-80%) rotate(20deg)}75%{transform:translateY(-30%) rotate(-15deg)}}
+
 </style>
 
 
@@ -56,6 +87,8 @@
 <a href="index.html" class="site-logo">Top<span>Rank</span></a><button class="menu-toggle" aria-label="Menu">☰</button>
 <nav class="main-nav">
 <a href="index.html" class="active">Home</a><a href="category-top-10.html">Top 10</a><a href="category-vs-battle.html">VS</a><a href="category-roundups.html">Roundups</a><a href="category-reviews.html">Reviews</a>
+
+<a href="#" class="nav-worldcup"><span>🏆 WORLDCUP</span></a>
 </nav></div></header>
 
 <div class="trending-ticker"><div class="trending-inner">
@@ -108,104 +141,180 @@ and if something changes in the world, we update the article. Got a suggestion o
 <!-- HERO_SIDE_END -->
 </div></section>
 
-<section class="section-row"><div class="section-row-head"><h2>🏅 Top 10 Rankings</h2><a href="category-top-10.html">View all →</a></div><div class="scroll-row"><!-- AUTO_CARDS -->
-<a href="i-tried-the-new-chatgpt-voice-mode-for-a-weekheres-where-it-shocks-you.html" class="card-sm"><div class="thumb"><img src="https://images.pexels.com/photos/32021560/pexels-photo-32021560.jpeg?auto=compress&cs=tinysrgb&h=130" alt="I Tried the New ChatGPT Voice Mode for a Week—Here" loading="lazy" onerror="this.onerror=null;this.src='https://loremflickr.com/400/250/ChatGPT voice mode smartphone'"></div><div class="info"><span class="cat">Tech</span><h3>I Tried the New ChatGPT Voice Mode for a Week—Here’s Where It Shocks You</h3><span class="st">Read more →</span></div></a>
-<a href="why-im-ditching-my-kindle-for-the-new-boox-palma-2-and-you-might-too.html" class="card-sm"><div class="thumb"><img src="https://images.pexels.com/photos/31145644/pexels-photo-31145644.jpeg?auto=compress&cs=tinysrgb&h=130" alt="Why I’m Ditching My Kindle for the New Boox Palma " loading="lazy" onerror="this.onerror=null;this.src='https://loremflickr.com/400/250/Boox Palma 2 e-reader'"></div><div class="info"><span class="cat">Top 10</span><h3>Why I’m Ditching My Kindle for the New Boox Palma 2 (And You Might Too)</h3><span class="st">Read more →</span></div></a>
-<a href="taylor-swift-vs-beyoncé-the-only-2026-tour-comparison-that-matters.html" class="card-sm"><div class="thumb"><img src="https://images.pexels.com/photos/22555264/pexels-photo-22555264.jpeg?auto=compress&cs=tinysrgb&h=130" alt="Taylor Swift vs. Beyoncé: The Only 2026 Tour Compa" loading="lazy" onerror="this.onerror=null;this.src='https://loremflickr.com/400/250/Taylor Swift Eras Tour Beyoncé concert'"></div><div class="info"><span class="cat">VS Battle</span><h3>Taylor Swift vs. Beyoncé: The Only 2026 Tour Comparison That Matters</h3><span class="st">Read more →</span></div></a>
-<a href="the-best-pizza-in-rome-is-not-in-romeits-in-a-200-year-old-mill-outside-the-city.html" class="card-sm"><div class="thumb"><img src="https://images.pexels.com/photos/13366357/pexels-photo-13366357.png?auto=compress&cs=tinysrgb&h=130" alt="The Best Pizza in Rome Is Not in Rome—It’s in a 20" loading="lazy" onerror="this.onerror=null;this.src='https://loremflickr.com/400/250/Subiaco Italy pizza outdoor oven'"></div><div class="info"><span class="cat">Food</span><h3>The Best Pizza in Rome Is Not in Rome—It’s in a 200-Year-Old Mill Outside the Ci...</h3><span class="st">Read more →</span></div></a>
-<a href="i-hiked-the-new-zealand-alps-for-5-daysheres-what-nobody-tells-you-about-the-rou.html" class="card-sm"><div class="thumb"><img src="https://images.pexels.com/photos/30156663/pexels-photo-30156663.jpeg?auto=compress&cs=tinysrgb&h=130" alt="I Hiked the New Zealand Alps for 5 Days—Here’s Wha" loading="lazy" onerror="this.onerror=null;this.src='https://loremflickr.com/400/250/Routeburn Track New Zealand alpine hike'"></div><div class="info"><span class="cat">Travel</span><h3>I Hiked the New Zealand Alps for 5 Days—Here’s What Nobody Tells You About the R...</h3><span class="st">Read more →</span></div></a>
-<a href="the-new-alzheimers-drug-that-actually-works-and-why-your-doctor-might-not-prescr.html" class="card-sm"><div class="thumb"><img src="https://images.pexels.com/photos/4047055/pexels-photo-4047055.jpeg?auto=compress&cs=tinysrgb&h=130" alt="The New Alzheimer’s Drug That Actually Works (And " loading="lazy" onerror="this.onerror=null;this.src='https://loremflickr.com/400/250/Alzheimer's drug donanemab clinical trial'"></div><div class="info"><span class="cat">Health</span><h3>The New Alzheimer’s Drug That Actually Works (And Why Your Doctor Might Not Pres...</h3><span class="st">Read more →</span></div></a>
-<a href="the-day-a-whale-nearly-swallowed-a-kayaker-off-cape-townand-why-it-happened-more.html" class="card-sm"><div class="thumb"><img src="https://images.pexels.com/photos/34072217/pexels-photo-34072217.jpeg?auto=compress&cs=tinysrgb&h=130" alt="The Day a Whale Nearly Swallowed a Kayaker Off Cap" loading="lazy" onerror="this.onerror=null;this.src='https://loremflickr.com/400/250/Bryde's whale Cape Town kayaker incident'"></div><div class="info"><span class="cat">General</span><h3>The Day a Whale Nearly Swallowed a Kayaker Off Cape Town—And Why It Happened Mor...</h3><span class="st">Read more →</span></div></a>
-</div></section>
-<section class="section-row"><div class="section-row-head"><h2>📚 Previous Stories</h2></div><div class="scroll-row">
-<a href="why-i-finally-ditched-spotify-for-tidal-and-you-should-too.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/4162581/pexels-photo-4162581.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Why I Finally Ditched Spotify for Tidal (And You S" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Why I Finally Ditched Spotify for Tidal (And You Should Too)</h3><span class="st">Read more →</span></div></a>
-<a href="why-im-quitting-smartphones-for-a-week-my-nokia-3310-experiment-and-what-i-learn.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/30909634/pexels-photo-30909634.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Why I'm Quitting Smartphones for a Week: My Nokia " loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Why I'm Quitting Smartphones for a Week: My Nokia 3310 Experiment (And What I Le</h3><span class="st">Read more →</span></div></a>
-<a href="why-you-should-see-the-martian-chronicles-in-imax-even-if-you-hate-sci-fi.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/9807585/pexels-photo-9807585.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Why You Should See 'The Martian Chronicles' in IMA" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Why You Should See 'The Martian Chronicles' in IMAX (Even If You Hate Sci-Fi)</h3><span class="st">Read more →</span></div></a>
-<a href="why-i-finally-cancelled-my-netflix-subscription-after-10-years.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/24206767/pexels-photo-24206767.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Why I Finally Cancelled My Netflix Subscription Af" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Why I Finally Cancelled My Netflix Subscription After 10 Years</h3><span class="st">Read more →</span></div></a>
-<a href="why-im-finally-ditching-spotify-for-apple-music-and-you-should-too.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/4114788/pexels-photo-4114788.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Why I'm Finally Ditching Spotify for Apple Music (" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Why I'm Finally Ditching Spotify for Apple Music (And You Should Too)</h3><span class="st">Read more →</span></div></a>
-<a href="zibo-barbecue-in-2026-the-hype-is-gone-but-something-better-took-its-place.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://loremflickr.com/1200/630/zibo-barbecue-chinese-bbq-street-food-grill" alt="Zibo Barbecue in 2026: The Hype Is Gone, But Somet" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Zibo Barbecue in 2026: The Hype Is Gone, But Something Better Took Its Place</h3><span class="st">Read more →</span></div></a>
-<a href="why-the-new-digital-nomad-visa-in-spain-is-actually-worth-it-and-who-shouldnt-ap.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/37569340/pexels-photo-37569340.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Why the New 'Digital Nomad' Visa in Spain Is Actua" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Why the New 'Digital Nomad' Visa in Spain Is Actually Worth It (and Who Shouldn'</h3><span class="st">Read more →</span></div></a>
-<a href="why-the-galaxy-s25-edge-might-actually-be-the-best-samsung-phone-this-year.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/37539124/pexels-photo-37539124.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Why the Galaxy S25 Edge Might Actually Be the Best" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Why the Galaxy S25 Edge Might Actually Be the Best Samsung Phone This Year</h3><span class="st">Read more →</span></div></a>
-<a href="why-the-2026-bird-flu-outbreak-is-different-and-what-you-actually-need-to-do.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/6627687/pexels-photo-6627687.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Why the 2026 Bird Flu Outbreak Is Different — And " loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Why the 2026 Bird Flu Outbreak Is Different — And What You Actually Need to Do</h3><span class="st">Read more →</span></div></a>
-<a href="why-im-actually-excited-about-the-new-kingdom-of-the-planet-of-the-apes-and-you.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/32181432/pexels-photo-32181432.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Why I'm Actually Excited About the New 'Kingdom of" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Why I'm Actually Excited About the New 'Kingdom of the Planet of the Apes' (And </h3><span class="st">Read more →</span></div></a>
-<a href="youtube-tv-vs-hulu-live-tv-the-epic-live-tv-streaming-showdown-of-2026.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/5202925/pexels-photo-5202925.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="YouTube TV vs. Hulu + Live TV: The Epic Live TV St" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>YouTube TV vs. Hulu + Live TV: The Epic Live TV Streaming Showdown of 2026</h3><span class="st">Read more →</span></div></a>
-<a href="why-everyones-talking-about-the-quiet-luxury-trend-in-2026-and-why-its-not-going.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/10464371/pexels-photo-10464371.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Why Everyone’s Talking About the “Quiet Luxury” Tr" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Why Everyone’s Talking About the “Quiet Luxury” Trend in 2026 (And Why It’s Not </h3><span class="st">Read more →</span></div></a>
-<a href="top-10-best-tv-shows-of-2026-so-far-according-to-a-guy-who-watches-too-much-tv.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/5082566/pexels-photo-5082566.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Top 10 Best TV Shows of 2026 So Far (According to " loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Top 10 Best TV Shows of 2026 So Far (According to a Guy Who Watches Too Much TV)</h3><span class="st">Read more →</span></div></a>
-<a href="weight-loss-drugs-are-everywhere-heres-what-the-studies-actually-say-june-2026-u.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/32532049/pexels-photo-32532049.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Weight Loss Drugs Are Everywhere. Here's What the " loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Weight Loss Drugs Are Everywhere. Here's What the Studies Actually Say (June 202</h3><span class="st">Read more →</span></div></a>
-<a href="two-brothers-pizza-in-austin-why-its-becoming-a-cult-icon-and-deserves-the-hype.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/8762783/pexels-photo-8762783.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Two Brothers Pizza in Austin: Why It's Becoming a " loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Two Brothers Pizza in Austin: Why It's Becoming a Cult Icon (And Deserves The Hy</h3><span class="st">Read more →</span></div></a>
-<a href="top-10-travel-destinations-for-summer-2026-where-everyone-is-going-and-why.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/37844496/pexels-photo-37844496.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Top 10 Travel Destinations for Summer 2026: Where " loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Top 10 Travel Destinations for Summer 2026: Where Everyone Is Going (and Why)</h3><span class="st">Read more →</span></div></a>
-<a href="why-everyone-is-suddenly-obsessed-with-sri-lankan-food-and-where-to-find-the-rea.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/20446382/pexels-photo-20446382.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Why Everyone Is Suddenly Obsessed with Sri Lankan " loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Why Everyone Is Suddenly Obsessed with Sri Lankan Food (and Where to Find the Re</h3><span class="st">Read more →</span></div></a>
-<a href="why-i-ditched-my-smartphone-for-the-light-phone-iii-a-30-day-honest-review.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/4429404/pexels-photo-4429404.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Why I Ditched My Smartphone for the Light Phone II" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Why I Ditched My Smartphone for the Light Phone III: A 30-Day Honest Review</h3><span class="st">Read more →</span></div></a>
-<a href="why-everyone-is-suddenly-obsessed-with-sourdough-discard-recipes-june-2026.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/6947243/pexels-photo-6947243.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Why Everyone Is Suddenly Obsessed With Sourdough D" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Why Everyone Is Suddenly Obsessed With Sourdough Discard Recipes (June 2026)</h3><span class="st">Read more →</span></div></a>
-<a href="top-10-sustainable-travel-destinations-in-2026-that-wont-disappoint.html" class="card-sm card-sm--archive"><div class="thumb"><img src="https://images.pexels.com/photos/6146178/pexels-photo-6146178.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Top 10 Sustainable Travel Destinations in 2026 Tha" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=archive-thumb>📰</div>'"></div><div class="info"><span class="cat">Previous</span><h3>Top 10 Sustainable Travel Destinations in 2026 That Won't Disappoint</h3><span class="st">Read more →</span></div></a>
+<div style="margin-top:24px">
+
+<section class="cat-section">
+<div class="cat-section-head"><h2>🏅 Top 10 Rankings</h2><a href="category-top-10.html">View all →</a></div>
+<a href="why-im-ditching-my-kindle-for-the-new-boox-palma-2-and-you-might-too.html" class="cat-featured">
+<div class="cat-feat-thumb"><img src="https://images.pexels.com/photos/31145644/pexels-photo-31145644.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="" loading="lazy"></div>
+<div class="cat-feat-info"><span class="cat-feat-label">🏅 Featured</span><h3>Why I’m Ditching My Kindle for the New Boox Palma 2 (And You Might Too)</h3></div>
+</a>
+<ol class="cat-list" start="2">
+<li><a href="the-10-overlooked-apps-that-actually-made-my-life-better-this-month.html"><span class="lnum">02</span>The 10 Overlooked Apps That Actually Made My Life Better This Month</a></li>
+<li><a href="the-10-best-movies-of-2026-so-far-and-2-that-really-disappointed.html"><span class="lnum">03</span>The 10 Best Movies of 2026 (So Far) — and 2 That Really Disappointed</a></li>
+<li><a href="the-10-best-horror-movies-on-netflix-right-now-june-2026.html"><span class="lnum">04</span>The 10 Best Horror Movies on Netflix Right Now (June 2026)</a></li>
+<li><a href="the-10-best-books-i-read-in-june-2026-before-they-hit-the-best-seller-lists.html"><span class="lnum">05</span>The 10 Best Books I Read in June 2026 (Before They Hit the Best-seller List</a></li>
+<li><a href="i-tested-the-new-google-pixel-10-pro-vs-iphone-17-pro-one-surprised-me.html"><span class="lnum">06</span>I Tested the New Google Pixel 10 Pro vs iPhone 17 Pro — One Surprised Me</a></li>
+<li><a href="top-10-travel-destinations-for-summer-2026-where-everyone-is-going-and-why.html"><span class="lnum">07</span>Top 10 Travel Destinations for Summer 2026: Where Everyone Is Going (and Wh</a></li>
+<li><a href="top-10-best-tv-shows-of-2026-so-far-according-to-a-guy-who-watches-too-much-tv.html"><span class="lnum">08</span>Top 10 Best TV Shows of 2026 So Far (According to a Guy Who Watches Too Muc</a></li>
+<li><a href="the-10-best-travel-destinations-for-summer-2026-based-on-real-data-and-personal.html"><span class="lnum">09</span>The 10 Best Travel Destinations for Summer 2026 (Based on Real Data and Per</a></li>
+<li><a href="the-10-best-new-shows-on-netflix-right-now-june-2026-edition.html"><span class="lnum">10</span>The 10 Best New Shows on Netflix Right Now (June 2026 Edition)</a></li>
+<li><a href="the-10-best-netflix-original-movies-of-2026-so-far-ranked-honestly.html"><span class="lnum">11</span>The 10 Best Netflix Original Movies of 2026 (So Far), Ranked Honestly</a></li>
+
+</ol>
+</section>
+
+<section class="cat-section">
+<div class="cat-section-head"><h2>⚔️ VS Battles</h2><a href="category-vs-battle.html">View all →</a></div>
+<a href="why-im-finally-ditching-spotify-for-apple-music-and-you-should-too.html" class="cat-featured">
+<div class="cat-feat-thumb"><img src="https://images.pexels.com/photos/4114788/pexels-photo-4114788.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="" loading="lazy"></div>
+<div class="cat-feat-info"><span class="cat-feat-label">⚔️ Featured</span><h3>Why I'm Finally Ditching Spotify for Apple Music (And You Should Too)</h3></div>
+</a>
+<ol class="cat-list" start="2">
+<li><a href="taylor-swift-vs-beyoncé-the-only-2026-tour-comparison-that-matters.html"><span class="lnum">02</span>Taylor Swift vs. Beyoncé: The Only 2026 Tour Comparison That Matters</a></li>
+<li><a href="samsung-galaxy-watch-7-vs-apple-watch-series-10-i-wore-both-for-a-week.html"><span class="lnum">03</span>Samsung Galaxy Watch 7 vs Apple Watch Series 10 — I Wore Both for a Week</a></li>
+<li><a href="samsung-galaxy-s27-vs-iphone-18-pro-real-world-test-after-3-weeks.html"><span class="lnum">04</span>Samsung Galaxy S27 vs iPhone 18 Pro: Real-World Test After 3 Weeks</a></li>
+<li><a href="nintendo-switch-2-vs-steam-deck-oled-which-handheld-wins-in-2026.html"><span class="lnum">05</span>Nintendo Switch 2 vs Steam Deck OLED: Which Handheld Wins in 2026?</a></li>
+<li><a href="i-tried-the-google-pixel-11-pro-vs-iphone-17-pro-for-a-weekheres-the-winner.html"><span class="lnum">06</span>I Tried the Google Pixel 11 Pro vs iPhone 17 Pro for a Week—Here's the Winn</a></li>
+<li><a href="the-oura-ring-4-vs-the-apple-watch-series-10-which-health-tracker-actually-wins.html"><span class="lnum">07</span>The Oura Ring 4 vs. the Apple Watch Series 10: Which Health Tracker Actuall</a></li>
+<li><a href="samsung-galaxy-watch-7-vs-apple-watch-series-10-which-one-actually-wins-in-2026.html"><span class="lnum">08</span>Samsung Galaxy Watch 7 vs Apple Watch Series 10: Which One Actually Wins in</a></li>
+<li><a href="metas-llama-3-vs-gpt-4o-which-ai-model-actually-wins-for-real-work.html"><span class="lnum">09</span>Meta's Llama 3 vs GPT-4o: Which AI Model Actually Wins for Real Work?</a></li>
+<li><a href="i-spent-a-week-with-the-amazon-echo-pop-vs-echo-dot-theres-a-clear-winner.html"><span class="lnum">10</span>I Spent a Week with the Amazon Echo Pop vs. Echo Dot: There's a Clear Winne</a></li>
+<li><a href="bali-vs-santorini-which-overcrowded-paradise-is-actually-worth-it-in-2026.html"><span class="lnum">11</span>Bali vs. Santorini: Which Overcrowded Paradise Is Actually Worth It in 2026</a></li>
+
+</ol>
+</section>
+
+<section class="cat-section">
+<div class="cat-section-head"><h2>📱 Tech</h2><a href="category-tech.html">View all →</a></div>
+<a href="why-i-finally-ditched-spotify-for-tidal-and-you-should-too.html" class="cat-featured">
+<div class="cat-feat-thumb"><img src="https://images.pexels.com/photos/4162581/pexels-photo-4162581.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="" loading="lazy"></div>
+<div class="cat-feat-info"><span class="cat-feat-label">📱 Featured</span><h3>Why I Finally Ditched Spotify for Tidal (And You Should Too)</h3></div>
+</a>
+<ol class="cat-list" start="2">
+<li><a href="my-honest-review-of-the-samsung-galaxy-z-fold-7-after-a-week-is-it-worth-2000.html"><span class="lnum">02</span>My Honest Review of the Samsung Galaxy Z Fold 7 After a Week — Is It Worth </a></li>
+<li><a href="i-used-the-rabbit-r2-for-a-week-heres-how-ai-agents-actually-work-today.html"><span class="lnum">03</span>I Used the Rabbit R2 for a Week — Here's How AI Agents Actually Work Today</a></li>
+<li><a href="i-tried-the-new-chatgpt-voice-mode-for-a-weekheres-where-it-shocks-you.html"><span class="lnum">04</span>I Tried the New ChatGPT Voice Mode for a Week—Here’s Where It Shocks You</a></li>
+<li><a href="chatgpt-vs-claude-vs-gemini-vs-llama-the-2026-ai-assistant-shootout.html"><span class="lnum">05</span>ChatGPT vs. Claude vs. Gemini vs. Llama: The 2026 AI Assistant Shootout</a></li>
+<li><a href="apple-intelligence-one-year-later-still-useful-or-still-a-gimmick.html"><span class="lnum">06</span>Apple Intelligence One Year Later — Still Useful or Still a Gimmick?</a></li>
+<li><a href="why-the-galaxy-s25-edge-might-actually-be-the-best-samsung-phone-this-year.html"><span class="lnum">07</span>Why the Galaxy S25 Edge Might Actually Be the Best Samsung Phone This Year</a></li>
+<li><a href="the-new-iphone-screen-protector-that-actually-blocks-all-blue-light-i-tested-it.html"><span class="lnum">08</span>The New iPhone Screen Protector That Actually Blocks All Blue Light — I Tes</a></li>
+<li><a href="the-apple-vision-pro-one-year-in-who-actually-still-uses-it.html"><span class="lnum">09</span>The Apple Vision Pro One Year In: Who Actually Still Uses It?</a></li>
+<li><a href="i-tested-the-new-iphone-17-pro-for-a-week-heres-what-apple-wont-tell-you.html"><span class="lnum">10</span>I Tested the New iPhone 17 Pro for a Week — Here's What Apple Won't Tell Yo</a></li>
+<li><a href="i-switched-from-ios-to-android-after-8-years-with-iphone-honest-thoughts.html"><span class="lnum">11</span>I Switched from iOS to Android After 8 Years with iPhone: Honest Thoughts</a></li>
+
+</ol>
+</section>
+
+<section class="cat-section">
+<div class="cat-section-head"><h2>🎬 Movies</h2><a href="category-movies.html">View all →</a></div>
+<a href="why-you-should-see-the-martian-chronicles-in-imax-even-if-you-hate-sci-fi.html" class="cat-featured">
+<div class="cat-feat-thumb"><img src="https://images.pexels.com/photos/9807585/pexels-photo-9807585.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="" loading="lazy"></div>
+<div class="cat-feat-info"><span class="cat-feat-label">🎬 Featured</span><h3>Why You Should See 'The Martian Chronicles' in IMAX (Even If You Hate Sci-Fi)</h3></div>
+</a>
+<ol class="cat-list" start="2">
+<li><a href="the-acolyte-episode-5-broke-my-brain-heres-what-that-twist-actually-means.html"><span class="lnum">02</span>The Acolyte Episode 5 Broke My Brain. Here's What That Twist Actually Means</a></li>
+<li><a href="5-underrated-movies-streaming-right-now-that-nobodys-talking-about-june-2026.html"><span class="lnum">03</span>5 Underrated Movies Streaming Right Now That Nobody's Talking About (June 2</a></li>
+<li><a href="10-must-watch-movies-mayjune-2026-that-actually-deliver.html"><span class="lnum">04</span>10 Must-Watch Movies (May–June 2026) That Actually Deliver</a></li>
+<li><a href="why-im-actually-excited-about-the-new-kingdom-of-the-planet-of-the-apes-and-you.html"><span class="lnum">05</span>Why I'm Actually Excited About the New 'Kingdom of the Planet of the Apes' </a></li>
+<li><a href="the-dune-part-two-trailer-just-dropped-and-its-everything-we-wanted-and-more.html"><span class="lnum">06</span>The 'Dune: Part Two' Trailer Just Dropped and It's Everything We Wanted (an</a></li>
+<li><a href="the-10-best-new-fictional-characters-of-2026-so-far-ranked.html"><span class="lnum">07</span>The 10 Best New Fictional Characters of 2026 (So Far) — Ranked</a></li>
+<li><a href="10-unbelievable-movies-and-shows-to-watch-in-june-2026-i-actually-watched-every.html"><span class="lnum">08</span>10 Unbelievable Movies and Shows to Watch in June 2026 (I Actually Watched </a></li>
+<li><a href="10-new-movies-to-stream-this-week-june-2026-whats-actually-worth-your-time.html"><span class="lnum">09</span>10 New Movies to Stream This Week (June 2026): What’s Actually Worth Your T</a></li>
+<li><a href="squid-game-season-3-isnt-just-good-its-the-best-show-of-2026-so-far.html"><span class="lnum">10</span>‘Squid Game’ Season 3 Isn’t Just Good — It’s the Best Show of 2026 So Far</a></li>
+<li><a href="the-new-netflix-thriller-the-last-signal-is-the-best-show-youll-binge-this-month.html"><span class="lnum">11</span>The New Netflix Thriller 'The Last Signal' Is the Best Show You'll Binge Th</a></li>
+
+</ol>
+</section>
+
+<section class="cat-section">
+<div class="cat-section-head"><h2>✈️ Travel</h2><a href="category-travel.html">View all →</a></div>
+<a href="inside-the-santorini-tourist-cap-debate-i-went-there-last-week-and-heres-what-it.html" class="cat-featured">
+<div class="cat-feat-thumb"><img src="https://images.pexels.com/photos/15532883/pexels-photo-15532883.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="" loading="lazy"></div>
+<div class="cat-feat-info"><span class="cat-feat-label">✈️ Featured</span><h3>Inside the 'Santorini Tourist Cap' Debate — I Went There Last Week and Here's Wh</h3></div>
+</a>
+<ol class="cat-list" start="2">
+<li><a href="i-spent-a-week-in-the-maldives-on-a-budget-heres-what-actually-worked.html"><span class="lnum">02</span>I Spent a Week in the Maldives on a Budget — Here's What Actually Worked</a></li>
+<li><a href="i-spent-a-week-in-santorini-without-seeing-a-single-cruise-ship-heres-how.html"><span class="lnum">03</span>I Spent a Week in Santorini Without Seeing a Single Cruise Ship. Here's How</a></li>
+<li><a href="i-spent-a-week-in-santorini-in-june-2026-heres-the-honest-truth-about-overtouris.html"><span class="lnum">04</span>I Spent a Week in Santorini in June 2026 — Here's the Honest Truth About Ov</a></li>
+<li><a href="i-hiked-the-new-zealand-alps-for-5-daysheres-what-nobody-tells-you-about-the-rou.html"><span class="lnum">05</span>I Hiked the New Zealand Alps for 5 Days—Here’s What Nobody Tells You About </a></li>
+<li><a href="i-hiked-the-new-inca-trail-to-machu-picchuheres-what-nobody-tells-you.html"><span class="lnum">06</span>I Hiked the 'New' Inca Trail to Machu Picchu—Here's What Nobody Tells You</a></li>
+<li><a href="5-days-in-santorini-the-ultimate-2026-itinerary-without-the-tourist-traps.html"><span class="lnum">07</span>5 Days in Santorini: The Ultimate 2026 Itinerary (Without the Tourist Traps</a></li>
+<li><a href="top-10-sustainable-travel-destinations-in-2026-that-wont-disappoint.html"><span class="lnum">08</span>Top 10 Sustainable Travel Destinations in 2026 That Won't Disappoint</a></li>
+<li><a href="santorini-vs-mykonos-in-2026-which-greek-island-should-you-actually-visit.html"><span class="lnum">09</span>Santorini vs. Mykonos in 2026: Which Greek Island Should You Actually Visit</a></li>
+<li><a href="santorini-in-june-2026-why-you-should-skip-it-and-where-to-go-instead.html"><span class="lnum">10</span>Santorini in June 2026: Why You Should Skip It (and Where to Go Instead)</a></li>
+<li><a href="i-walked-the-new-camino-de-santiago-route-in-portugal-heres-what-nobody-tells-yo.html"><span class="lnum">11</span>I Walked the New Camino de Santiago Route in Portugal: Here's What Nobody T</a></li>
+
+</ol>
+</section>
+
+<section class="cat-section">
+<div class="cat-section-head"><h2>🍽️ Food</h2><a href="category-food.html">View all →</a></div>
+<a href="the-best-pizza-in-rome-is-not-in-romeits-in-a-200-year-old-mill-outside-the-city.html" class="cat-featured">
+<div class="cat-feat-thumb"><img src="https://images.pexels.com/photos/13366357/pexels-photo-13366357.png?auto=compress&cs=tinysrgb&h=650&w=940" alt="" loading="lazy"></div>
+<div class="cat-feat-info"><span class="cat-feat-label">🍽️ Featured</span><h3>The Best Pizza in Rome Is Not in Rome—It’s in a 200-Year-Old Mill Outside the Ci</h3></div>
+</a>
+<ol class="cat-list" start="2">
+<li><a href="the-10-best-meals-i-ate-in-tokyo-this-month-local-spots-not-tourist-traps.html"><span class="lnum">02</span>The 10 Best Meals I Ate in Tokyo This Month (Local Spots, Not Tourist Traps</a></li>
+<li><a href="plant-based-burgers-in-2026-beyond-vs-impossible-vs-the-new-contender-juicy-marb.html"><span class="lnum">03</span>Plant-Based Burgers in 2026: Beyond vs. Impossible vs. The New Contender (J</a></li>
+<li><a href="i-spent-a-week-eating-at-the-10-best-new-restaurants-in-london-heres-my-honest-r.html"><span class="lnum">04</span>I Spent a Week Eating at the 10 Best New Restaurants in London — Here's My </a></li>
+<li><a href="i-finally-tried-the-mcdonalds-chicken-big-mac-heres-where-it-stands.html"><span class="lnum">05</span>I Finally Tried the McDonald's Chicken Big Mac — Here's Where It Stands</a></li>
+<li><a href="i-ate-at-the-worlds-first-ai-generated-restaurant-heres-what-happened.html"><span class="lnum">06</span>I Ate at the World's First AI-Generated Restaurant — Here's What Happened</a></li>
+<li><a href="i-ate-at-the-worlds-best-restaurant-disfrutar-and-heres-what-actually-happened.html"><span class="lnum">07</span>I Ate at the World's Best Restaurant (Disfrutar) and Here's What Actually H</a></li>
+<li><a href="why-everyone-is-suddenly-obsessed-with-sri-lankan-food-and-where-to-find-the-rea.html"><span class="lnum">08</span>Why Everyone Is Suddenly Obsessed with Sri Lankan Food (and Where to Find t</a></li>
+<li><a href="the-10-best-new-restaurants-in-chicago-right-now-summer-2026-edition.html"><span class="lnum">09</span>The 10 Best New Restaurants in Chicago Right Now (Summer 2026 Edition)</a></li>
+<li><a href="mcdonalds-cosmic-crisp-pie-vs-the-mcflurry-my-honest-taste-test-battle.html"><span class="lnum">10</span>McDonald's Cosmic Crisp Pie vs. The McFlurry: My Honest Taste Test Battle</a></li>
+<li><a href="i-tried-the-tonys-chocolonely-pandemic-pack-is-this-the-best-chocolate-of-2026.html"><span class="lnum">11</span>I Tried the Tony's Chocolonely 'Pandemic Pack' — Is This the Best Chocolate</a></li>
+
+</ol>
+</section>
+
+<section class="cat-section">
+<div class="cat-section-head"><h2>💪 Health</h2><a href="category-health.html">View all →</a></div>
+<a href="weight-loss-drugs-are-everywhere-heres-what-the-studies-actually-say-june-2026-u.html" class="cat-featured">
+<div class="cat-feat-thumb"><img src="https://images.pexels.com/photos/32532049/pexels-photo-32532049.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="" loading="lazy"></div>
+<div class="cat-feat-info"><span class="cat-feat-label">💪 Featured</span><h3>Weight Loss Drugs Are Everywhere. Here's What the Studies Actually Say (June 202</h3></div>
+</a>
+<ol class="cat-list" start="2">
+<li><a href="the-truth-about-the-ozempic-babies-trend-what-the-new-study-really-says.html"><span class="lnum">02</span>The Truth About the 'Ozempic Babies' Trend — What the New Study Really Says</a></li>
+<li><a href="the-truth-about-ozempic-and-muscle-loss-what-new-2026-studies-reveal.html"><span class="lnum">03</span>The Truth About Ozempic and Muscle Loss: What New 2026 Studies Reveal</a></li>
+<li><a href="the-new-alzheimers-drug-that-actually-works-and-why-your-doctor-might-not-prescr.html"><span class="lnum">04</span>The New Alzheimer’s Drug That Actually Works (And Why Your Doctor Might Not</a></li>
+<li><a href="i-tried-the-new-glp-1-pill-from-pfizer-smaller-cheaper-no-injection.html"><span class="lnum">05</span>I Tried the New GLP-1 Pill from Pfizer — Smaller, Cheaper, No Injection</a></li>
+<li><a href="i-tried-the-new-adhd-medication-joy-and-it-changed-my-focus-but-theres-a-catch.html"><span class="lnum">06</span>I Tried the New ADHD Medication Joy and It Changed My Focus — But There's a</a></li>
+<li><a href="7-health-habits-i-started-after-reading-a-new-study-and-they-actually-worked.html"><span class="lnum">07</span>7 Health Habits I Started After Reading a New Study (And They Actually Work</a></li>
+<li><a href="the-truth-about-omega-3-supplements-do-they-actually-work-a-deep-dive-into-the-l.html"><span class="lnum">08</span>The Truth About Omega-3 Supplements: Do They Actually Work? (a close look a</a></li>
+<li><a href="the-new-ozempic-for-the-brain-trend-a-deep-dive-into-the-latest-cognitive-enhanc.html"><span class="lnum">09</span>The New Ozempic-for-the-Brain Trend: a close look at the Latest Cognitive E</a></li>
+<li><a href="the-new-blood-test-that-detects-alzheimers-years-early-what-you-need-to-know.html"><span class="lnum">10</span>The New Blood Test That Detects Alzheimer's Years Early: What You Need to K</a></li>
+<li><a href="the-10-best-protein-powders-for-2026-ranked-by-a-dietitian-with-honest-taste-tes.html"><span class="lnum">11</span>The 10 Best Protein Powders for 2026, Ranked by a Dietitian (With Honest Ta</a></li>
+
+</ol>
+</section>
+
+<section class="cat-section">
+<div class="cat-section-head"><h2>📰 General</h2><a href="index.html">View all →</a></div>
+<a href="why-everyone-in-nyc-is-suddenly-obsessed-with-olipop-and-yes-its-worth-the-hype.html" class="cat-featured">
+<div class="cat-feat-thumb"><img src="https://images.pexels.com/photos/19354737/pexels-photo-19354737.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="" loading="lazy"></div>
+<div class="cat-feat-info"><span class="cat-feat-label">📰 Featured</span><h3>Why Everyone in NYC Is Suddenly Obsessed With Olipop (And Yes, It's Worth the Hy</h3></div>
+</a>
+<ol class="cat-list" start="2">
+<li><a href="the-strange-disappearance-of-a-10-billion-ship-what-actually-happened-to-the-msc.html"><span class="lnum">02</span>The Strange Disappearance of a $10 Billion Ship: What Actually Happened to </a></li>
+<li><a href="the-manhattanhenge-photos-that-broke-instagram-and-the-controversy-behind-them.html"><span class="lnum">03</span>The Manhattanhenge Photos That Broke Instagram — and the Controversy Behind</a></li>
+<li><a href="the-great-taylor-swift-ticketmaster-collapse-how-we-got-here-and-what-it-means-f.html"><span class="lnum">04</span>The Great Taylor Swift Ticketmaster Collapse: How We Got Here and What It M</a></li>
+<li><a href="the-great-ai-layoff-7-jobs-that-disappeared-this-month-and-whats-next.html"><span class="lnum">05</span>The Great AI Layoff: 7 Jobs That Disappeared This Month (And What's Next)</a></li>
+<li><a href="the-day-a-whale-nearly-swallowed-a-kayaker-off-cape-townand-why-it-happened-more.html"><span class="lnum">06</span>The Day a Whale Nearly Swallowed a Kayaker Off Cape Town—And Why It Happene</a></li>
+<li><a href="why-the-new-digital-nomad-visa-in-spain-is-actually-worth-it-and-who-shouldnt-ap.html"><span class="lnum">07</span>Why the New 'Digital Nomad' Visa in Spain Is Actually Worth It (and Who Sho</a></li>
+<li><a href="why-i-finally-cancelled-my-netflix-subscription-after-10-years.html"><span class="lnum">08</span>Why I Finally Cancelled My Netflix Subscription After 10 Years</a></li>
+<li><a href="the-weirdest-ai-news-of-june-2026-a-chatbot-that-refused-to-answer-a-deepfake-tr.html"><span class="lnum">09</span>The Weirdest AI News of June 2026: A Chatbot That Refused to Answer, a Deep</a></li>
+<li><a href="the-rise-of-ai-girlfriends-in-2026-a-deep-dive-into-the-loneliness-economy.html"><span class="lnum">10</span>The Rise of 'AI Girlfriends' in 2026 — a close look at the Loneliness Econo</a></li>
+<li><a href="the-city-that-banned-cars-and-what-happened-next.html"><span class="lnum">11</span>The City That Banned Cars (and What Happened Next)</a></li>
+
+</ol>
+</section>
+
 </div>
-</div></section>
+</main>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<section class="section-row"><div class="section-row-head"><h2>⚔️ VS Battles</h2><a href="category-vs-battle.html">View all →</a></div><div class="scroll-row">
-<!-- AUTO_CARDS_VS -->
-
-<a href="airpods-max-2-vs-sony-wh-1000xm6-i-tested-both-for-a-week.html" class="card-sm"><div class="thumb"><img src="https://images.pexels.com/photos/10024624/pexels-photo-10024624.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="AirPods Max 2 vs. Sony WH-1000XM6: I Tes" loading="lazy" onerror="this.onerror=null;this.src='https://loremflickr.com/400/250/airpods+max+2+vs+son'"><span class="badge-sm">Hot</span></div><div class="info"><span class="cat">VS Battle</span><h3>AirPods Max 2 vs. Sony WH-1000XM6: I Tested Both for a ...</h3><span class="st">Read more →</span></div></a>
-<a href="airpods-max-vs-sony-wh-1000xm6-which-premium-headphones-actually-win-in-june-202.html" class="card-sm"><div class="thumb"><img src="https://images.pexels.com/photos/5699208/pexels-photo-5699208.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="AirPods Max vs. Sony WH-1000XM6: Which P" loading="lazy" onerror="this.onerror=null;this.src='https://loremflickr.com/400/250/airpods+max+vs+sony+'"><span class="badge-sm">Trending</span></div><div class="info"><span class="cat">VS Battle</span><h3>AirPods Max vs. Sony WH-1000XM6: Which Premium Headphon...</h3><span class="st">Read more →</span></div></a>
-<a href="category-vs-battle.html" class="card-sm"><div class="thumb"><img src="https://picsum.photos/id/122/1200/630"category-vs-battle.html" class="card-sm"><div class="thumb"><img src="https://picsum.photos/id/155/1200/630"cta-banner"><div><h3>🏆 Get the Best Picks Weekly</h3><p>Rankings, comparisons & recommendations in your inbox.</p></div><form onsubmit="event.preventDefault();this.innerHTML='<p style=font-size:1.1rem>✓ Welcome to TopRank!</p>'"><input type="email" placeholder="Enter your email" required><button type="submit">Subscribe</button></form></div>
-
-<section class="section-row"><div class="section-row-head"><h2>📱 Tech</h2><a href="category-tech.html">View all →</a></div><div class="scroll-row">
-<!-- AUTO_CARDS_TECH -->
-
-<a href="10-under-25-gadgets-on-amazon-that-actually-work-june-2026.html" class="card-sm"><div class="thumb"><img src="https://picsum.photos/id/45/1200/630" alt="10 Under-$25 Gadgets on Amazon That Actu" loading="lazy" onerror="this.onerror=null;this.src='https://loremflickr.com/400/250/10+under+25+gadgets+'"><span class="badge-sm">Hot</span></div><div class="info"><span class="cat">Tech</span><h3>10 Under-$25 Gadgets on Amazon That Actually Work (June...</h3><span class="st">Read more →</span></div></a>
-<a href="googles-ai-overviews-are-a-mess-heres-what-happened-and-what-to-do.html" class="card-sm"><div class="thumb"><img src="https://images.pexels.com/photos/30530407/pexels-photo-30530407.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Google's AI Overviews Are a Mess: Here's" loading="lazy" onerror="this.onerror=null;this.src='https://loremflickr.com/400/250/googles+ai+overviews'"><span class="badge-sm">Trending</span></div><div class="info"><span class="cat">Tech</span><h3>Google's AI Overviews Are a Mess: Here's What Happened ...</h3><span class="st">Read more →</span></div></a>
-<a href="category-tech.html" class="card-sm"><div class="thumb"><img src="https://picsum.photos/id/45/1200/630
-<a href=" loading="lazy">category-tech.html" class="card-sm"><div class="thumb"><img src="https://picsum.photos/id/45/1200/630 loading=" loading="lazy">lazy">
-</div></section>
-
-
-
-<section class="section-row"><div class="section-row-head"><h2>🎬 Movies & Travel</h2><a href="category-movies.html">View all →</a></div><div class="scroll-row">
-<!-- AUTO_CARDS_MT -->
-
-<a href="10-best-new-movies-to-stream-this-week-june-17-2026.html" class="card-sm"><div class="thumb"><img src="https://picsum.photos/id/10/1200/630" alt="10 Best New Movies to Stream This Week (" loading="lazy" onerror="this.onerror=null;this.src='https://loremflickr.com/400/250/10+best+new+movies+t'"><span class="badge-sm">Hot</span></div><div class="info"><span class="cat">Movies</span><h3>10 Best New Movies to Stream This Week (June 1–7, 2026)</h3><span class="st">Read more →</span></div></a>
-<a href="i-flew-on-the-new-airbus-a321xlrheres-how-it-changes-budget-travel-forever.html" class="card-sm"><div class="thumb"><img src="https://images.pexels.com/photos/16562837/pexels-photo-16562837.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="I Flew on the New Airbus A321XLR—Here’s " loading="lazy" onerror="this.onerror=null;this.src='https://loremflickr.com/400/250/i+flew+on+the+new+ai'"><span class="badge-sm">Popular</span></div><div class="info"><span class="cat">Travel</span><h3>I Flew on the New Airbus A321XLR—Here’s How It Changes ...</h3><span class="st">Read more →</span></div></a>
-<a href="category-movies.html" class="card-sm"><div class="thumb"><img src="https://picsum.photos/id/10/1200/630
-<a href=" loading="lazy">category-travel.html" class="card-sm"><div class="thumb"><img src="https://picsum.photos/id/274/1200/630"sidebar">
+<aside class="sidebar">
 <div class="sidebar-sticky">
 
 <div class="sidebar-widget" style="background:var(--card);border-radius:8px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
