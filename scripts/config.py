@@ -11,7 +11,7 @@ SCRIPTS = BASE / "scripts"
 SITES = {
     "toprank": {
         "name": "TopRank",
-        "domain": "top.zicisi.fun",
+        "domain": "zicisi.fun",
         "folder": ".",  # repo root
         "logo_html": "Top<span>Rank</span>",
         "avatar_bg": "linear-gradient(135deg,#2563eb,#60a5fa)",
