@@ -3,6 +3,14 @@
 
 import json
 import random
+
+AUTHOR_NAMES = [
+    "Michael Chen", "Sarah Mitchell", "James Rodriguez", "Emily Watson",
+    "David Kim", "Jessica Thompson", "Robert Martinez", "Amanda Brooks",
+    "Christopher Lee", "Lauren Davis", "Daniel Wilson", "Rachel Greene",
+    "Matthew Anderson", "Nicole Barnes", "Andrew Foster", "Megan O'Brien",
+    "Joshua Reed", "Samantha Cole", "Ryan Cooper", "Hannah Powell"
+]
 from pathlib import Path
 from datetime import datetime
 
@@ -67,7 +75,7 @@ def build_head(article, site_config):
         "description": excerpt,
         "publisher": {"@type": "Organization", "name": site_name},
         "datePublished": date_iso,
-        "author": {"@type": "Person", "name": f"{site_name} Editorial Team"},
+        "author": {"@type": "Person", "name": random.choice(AUTHOR_NAMES)},
         "wordCount": article.get("word_count", 500),
         "image": image_url,
     }, ensure_ascii=False)
@@ -137,6 +145,8 @@ def build_article_content(article, site_config):
     avatar_text = site_config["avatar_text"]
     date_str = article.get("date", datetime.now().strftime("%B %d, %Y"))
 
+    author_name = random.choice(AUTHOR_NAMES)
+
     # Split body at midpoint for natural content break
     parts = body_html.split('</p>')
     if len(parts) > 3:
@@ -163,7 +173,7 @@ def build_article_content(article, site_config):
 <h1 class="article-title">{title}</h1>
 <div class="article-meta">
 <div style="width:36px;height:36px;border-radius:50%;background:{avatar_bg};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.8rem">{avatar_text}</div>
-<span>By {site_config['name']} Team</span>
+<span>By {author_name}</span>
 <span>·</span>
 <span>{date_str}</span>
 <span>·</span>
@@ -195,7 +205,7 @@ def build_article_content(article, site_config):
 <div class="author-box" style="margin-top:24px;padding:20px;background:var(--card);border-radius:8px;border:1px solid var(--border);display:flex;gap:16px;align-items:center">
 <div style="width:56px;height:56px;border-radius:50%;background:{avatar_bg};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.2rem;flex-shrink:0">{avatar_text}</div>
 <div>
-<strong style="font-size:.95rem">{site_config['name']} Team</strong>
+<strong style="font-size:.95rem">{author_name}</strong>
 <p style="font-size:.8rem;color:var(--text-secondary);margin:4px 0 0">
 We spend hours researching and testing before we write anything. If something changes, we update the article.
 <a href="about.html">About our process →</a>

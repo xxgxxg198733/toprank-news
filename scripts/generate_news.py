@@ -145,6 +145,15 @@ Output a JSON array with exactly 10 objects. Each object must have:
 
 Output ONLY the raw JSON array. No markdown fences, no explanation text."""
 
+AUTHOR_NAMES = [
+    "Michael Chen", "Sarah Mitchell", "James Rodriguez", "Emily Watson",
+    "David Kim", "Jessica Thompson", "Robert Martinez", "Amanda Brooks",
+    "Christopher Lee", "Lauren Davis", "Daniel Wilson", "Rachel Greene",
+    "Matthew Anderson", "Nicole Barnes", "Andrew Foster", "Megan O'Brien",
+    "Joshua Reed", "Samantha Cole", "Ryan Cooper", "Hannah Powell"
+]
+
+
 
 def call_claude_api(dry_run=False):
     """Call Claude API to generate 10 hot news articles. Returns list of dicts."""
