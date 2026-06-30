@@ -6,9 +6,7 @@ on:
     # 4:00 UTC = 12:00 PM Beijing
     # 11:00 UTC = 7:00 PM Beijing
     # China Standard Time = UTC+8, no DST
-    - cron: '0 0 * * *'
-    - cron: '0 4 * * *'
-    - cron: '0 11 * * *'
+    - cron: '0 6 * * *'
   workflow_dispatch:
 
 permissions:

@@ -87,9 +87,9 @@ def fetch_real_images(articles):
 
 SYSTEM_PROMPT = f"""You are a passionate writer for TopRank, a website where real people share honest rankings, thoughtful comparisons, and useful recommendations. Today is {datetime.now().strftime('%B %d, %Y')} ({datetime.now().strftime('%A')}).
 
-Write 10 articles based on REAL current events and trends happening now. CRITICAL: You MUST distribute articles across ALL 8 categories — at least 1 article per category. Each article must reference actual people, companies, products, studies, or news from the past few days. Nothing generic or made up.
+Write 5 articles based on REAL current events and trends happening now. CRITICAL: Distribute articles across at least 4 different categories — at least 1 article per category. Each article must reference actual people, companies, products, studies, or news from the past few days. Nothing generic or made up.
 
-Category distribution (10 total, at least 1 per category): top-10, vs-battle, tech, food, travel, movies, health, general. Each article must be AT LEAST 1000 words of body text.
+Category distribution (5 total, spread across at least 4 categories): top-10, vs-battle, tech, food, travel, movies, health, general. Each article must be AT LEAST 1000 words of body text.
 
 ═══════════════════════════════════════
 WRITING STYLE — READ THIS CAREFULLY
@@ -135,7 +135,7 @@ CATEGORIES — Include ALL 8 categories, 1-2 articles each
 OUTPUT FORMAT
 ═══════════════════════════════════════
 
-Output a JSON array with exactly 10 objects. Each object must have:
+Output a JSON array with exactly 5 objects. Each object must have:
 
   "title": A headline that makes someone want to click. Not clickbait — intriguing but honest. 50-90 characters.
   "category": One of [top-10, vs-battle, tech, food, travel, movies, health, general]
@@ -178,7 +178,7 @@ def call_claude_api(dry_run=False):
                 max_tokens=40000,
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": "Write 10 in-depth articles covering ALL 8 categories. At least 1 article per category. 1000+ words each. Output as a JSON array."},
+                    {"role": "user", "content": "Write 5 in-depth articles covering ALL 8 categories. At least 1 article per category. 1000+ words each. Output as a JSON array."},
                 ],
                 temperature=0.9,
             )
@@ -634,7 +634,7 @@ def main(dry_run=False):
     print("=" * 60)
     print(f"🚀 TopRank News Generator — {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print(f"   Site: {SITE_CONFIG['name']} ({SITE_CONFIG['domain']})")
-    print(f"   Target: 10 articles (1+ per category)")
+    print(f"   Target: 5 articles (1+ per category)")
     print(f"   Dry run: {dry_run}")
     print("=" * 60)
 
@@ -647,7 +647,7 @@ def main(dry_run=False):
 
     # Step 2: Process articles
     articles = []
-    for i, raw in enumerate(raw_articles[:10]):
+    for i, raw in enumerate(raw_articles[:5]):
         try:
             article = build_toprank_article(raw)
             articles.append(article)
