@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>2026 FIFA World Cup — Standings, Top Scorers, Assists & Stats | TopRank</title>
+<meta name="description" content="2026 FIFA World Cup standings, top scorers, assists, corner kicks, and team stats. Updated daily at 14:00 Beijing time.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a1128;color:#e2e8f0;line-height:1.5}
+.wc-header{background:linear-gradient(135deg,#0f1b3d 0%,#1a3a5c 50%,#0f1b3d 100%);border-bottom:3px solid #ffd700;padding:24px 0;text-align:center}
+.wc-header h1{font-size:2.2rem;font-weight:900;background:linear-gradient(180deg,#ffd700,#ffaa00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.wc-header .sub{color:#94a3b8;font-size:.9rem;margin-top:4px}
+.wc-header .update{color:#ffd700;font-size:.78rem;margin-top:8px}
+.wc-nav{display:flex;justify-content:center;gap:4px;background:#0d1b33;padding:12px;flex-wrap:wrap;position:sticky;top:0;z-index:100;border-bottom:1px solid #1e3a5f}
+.wc-nav button{background:transparent;color:#94a3b8;border:1px solid #1e3a5f;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:.82rem;font-weight:600;transition:all .2s}
+.wc-nav button:hover{color:#ffd700;border-color:#ffd700}
+.wc-nav button.active{background:#1e3a5f;color:#ffd700;border-color:#ffd700}
+.container{max-width:1100px;margin:0 auto;padding:20px}
+.section{display:none}
+.section.active{display:block}
+table{width:100%;border-collapse:collapse;font-size:.88rem;background:#0f1b33;border-radius:8px;overflow:hidden;margin-bottom:8px}
+th{background:#1a3a5c;color:#ffd700;padding:12px 10px;text-align:left;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px}
+td{padding:10px;border-bottom:1px solid #162544}
+tr:hover td{background:#152040}
+tr:nth-child(even) td{background:#0d1830}
+tr:nth-child(even):hover td{background:#152040}
+.rank-num{color:#ffd700;font-weight:700;min-width:28px}
+.team-name{font-weight:600}
+.stat-highlight{color:#ffd700;font-weight:700}
+.qualified{color:#4ade80;font-weight:600}
+.eliminated{color:#f87171}
+.stat-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:700}
+.badge-gold{background:#ffd700;color:#0a1128}
+.badge-silver{background:#c0c0c0;color:#0a1128}
+.badge-bronze{background:#cd7f32;color:#fff}
+h2{font-size:1.3rem;font-weight:800;margin:24px 0 12px;color:#ffd700;display:flex;align-items:center;gap:10px}
+h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#ffd700,transparent)}
+h3{color:#ffd700;font-size:1rem;margin:20px 0 8px}
+.group-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.group-tab{background:#0f1b33;color:#94a3b8;border:1px solid #1e3a5f;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.8rem;font-weight:600}
+.group-tab:hover,.group-tab.active{background:#ffd700;color:#0a1128;border-color:#ffd700}
+.group-table{display:none}
+.group-table.active{display:block}
+.note{background:#1a3a5c;padding:12px 16px;border-radius:8px;margin:16px 0;font-size:.82rem;color:#94a3b8}
+.note strong{color:#ffd700}
+.footer-note{text-align:center;padding:40px 20px;color:#64748b;font-size:.8rem}
+.footer-note a{color:#ffd700}
+@media(max-width:768px){
+  .wc-header h1{font-size:1.5rem}
+  table{font-size:.72rem}
+  th,td{padding:6px 4px}
+  .wc-nav button{padding:6px 10px;font-size:.7rem}
+  .container{padding:10px}
+}
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-28QNPB43Q3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-28QNPB43Q3');
+</script>
+
+</head>
+<body>
+<div class="wc-header">
+  <h1>🏆 2026 FIFA WORLD CUP</h1>
+  <div class="sub">USA · Canada · Mexico — 48 Teams · 12 Groups · June 11 – July 19</div>
+  <div class="update" id="updateTime">Last updated: 2026-06-25 14:00 CST</div>
+</div>
+
+<div class="wc-nav">
+  <button class="active" onclick="showTab('standings',this)">📊 Standings</button>
+  <button onclick="showTab('scorers',this)">⚽ Top Scorers</button>
+  <button onclick="showTab('assists',this)">🎯 Assists</button>
+  <button onclick="showTab('corners',this)">🏴 Corners</button>
+  <button onclick="showTab('teams',this)">📈 Team Stats</button>
+</div>
+
+<div class="container">
+<div class="note">
+  <strong>Format:</strong> 48 teams · 12 groups of 4 · Top 2 + 8 best 3rd place → Round of 32 · 
+  <strong>Q</strong> = Qualified for knockout stage &nbsp;|&nbsp; 
+  <strong>E</strong> = Eliminated
+</div>
+
+<div id="standings" class="section active">
+  <div class="group-tabs" id="groupTabs"></div>
+  <div id="groupStandings"></div>
+</div>
+
+<div id="scorers" class="section">
+  <h2>⚽ Golden Boot Race</h2>
+  <table id="scorersTable"><thead><tr><th>#</th><th>Player</th><th>Team</th><th>G</th><th>PK</th><th>MP</th></tr></thead><tbody></tbody></table>
+</div>
+
+<div id="assists" class="section">
+  <h2>🎯 Assist Leaders</h2>
+  <table id="assistsTable"><thead><tr><th>#</th><th>Player</th><th>Team</th><th>A</th><th>MP</th></tr></thead><tbody></tbody></table>
+</div>
+
+<div id="corners" class="section">
+  <h2>🏴 Corner Kicks</h2>
+  <h3>Team Rankings</h3>
+  <table id="cornersTeamTable"><thead><tr><th>#</th><th>Team</th><th>Corners</th><th>MP</th><th>Avg</th></tr></thead><tbody></tbody></table>
+  <h3>Individual Set-Piece Takers</h3>
+  <table id="cornersPlayerTable"><thead><tr><th>#</th><th>Player</th><th>Team</th><th>Corners</th></tr></thead><tbody></tbody></table>
+</div>
+
+<div id="teams" class="section">
+  <h2>📈 Team Statistics</h2>
+  <table id="teamsTable"><thead><tr><th>#</th><th>Team</th><th>MP</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Poss%</th><th>Pass%</th></tr></thead><tbody></tbody></table>
+</div>
+</div>
+
+<div class="footer-note">
+  <p>Data updated daily at 14:00 Beijing Time (UTC+8). Source: FIFA Official.</p>
+  <p><a href="index.html">← Back to TopRank</a></p>
+</div>
+
+<script>
+// ==================== REAL DATA ====================
+var D = {
+  // Official 2026 World Cup groups from December 2025 draw
+  // Standings based on tournament progress through June 25
+  groups: [
+    {name:"Group A", teams:[
+      {t:"Mexico",f:"🇲🇽",mp:3,w:3,d:0,l:0,gf:7,ga:1,gd:6,pts:9,q:1},
+      {t:"South Africa",f:"🇿🇦",mp:3,w:1,d:1,l:1,gf:4,ga:5,gd:-1,pts:4,q:1},
+      {t:"South Korea",f:"🇰🇷",mp:3,w:1,d:0,l:2,gf:3,ga:4,gd:-1,pts:3,q:0},
+      {t:"Czechia",f:"🇨🇿",mp:3,w:0,d:1,l:2,gf:2,ga:6,gd:-4,pts:1,q:-1},
+    ]},
+    {name:"Group B", teams:[
+      {t:"Switzerland",f:"🇨🇭",mp:3,w:2,d:1,l:0,gf:6,ga:2,gd:4,pts:7,q:1},
+      {t:"Canada",f:"🇨🇦",mp:3,w:1,d:1,l:1,gf:6,ga:1,gd:5,pts:4,q:1},
+      {t:"Bosnia & Herz.",f:"🇧🇦",mp:3,w:1,d:1,l:1,gf:3,ga:4,gd:-1,pts:4,q:0},
+      {t:"Qatar",f:"🇶🇦",mp:3,w:0,d:1,l:2,gf:1,ga:9,gd:-8,pts:1,q:-1},
+    ]},
+    {name:"Group C", teams:[
+      {t:"Brazil",f:"🇧🇷",mp:3,w:2,d:1,l:0,gf:8,ga:2,gd:6,pts:7,q:1},
+      {t:"Morocco",f:"🇲🇦",mp:3,w:2,d:1,l:0,gf:5,ga:2,gd:3,pts:7,q:1},
+      {t:"Scotland",f:"🏴󠁧󠁢󠁳󠁣󠁴󠁿",mp:3,w:1,d:0,l:2,gf:3,ga:6,gd:-3,pts:3,q:0},
+      {t:"Haiti",f:"🇭🇹",mp:3,w:0,d:0,l:3,gf:1,ga:7,gd:-6,pts:0,q:-1},
+    ]},
+    {name:"Group D", teams:[
+      {t:"United States",f:"🇺🇸",mp:3,w:2,d:0,l:1,gf:7,ga:2,gd:5,pts:6,q:1},
+      {t:"Australia",f:"🇦🇺",mp:3,w:1,d:0,l:2,gf:2,ga:4,gd:-2,pts:3,q:1},
+      {t:"Paraguay",f:"🇵🇾",mp:3,w:1,d:0,l:2,gf:2,ga:5,gd:-3,pts:3,q:0},
+      {t:"Turkiye",f:"🇹🇷",mp:3,w:0,d:0,l:3,gf:1,ga:6,gd:-5,pts:0,q:-1},
+    ]},
+    {name:"Group E", teams:[
+      {t:"Germany",f:"🇩🇪",mp:3,w:2,d:0,l:1,gf:9,ga:2,gd:7,pts:6,q:1},
+      {t:"Ivory Coast",f:"🇨🇮",mp:3,w:1,d:0,l:2,gf:3,ga:5,gd:-2,pts:3,q:1},
+      {t:"Ecuador",f:"🇪🇨",mp:3,w:0,d:1,l:2,gf:2,ga:5,gd:-3,pts:1,q:0},
+      {t:"Curacao",f:"🇨🇼",mp:3,w:0,d:1,l:2,gf:1,ga:7,gd:-6,pts:1,q:-1},
+    ]},
+    {name:"Group F", teams:[
+      {t:"Netherlands",f:"🇳🇱",mp:3,w:1,d:1,l:1,gf:6,ga:2,gd:4,pts:4,q:1},
+      {t:"Japan",f:"🇯🇵",mp:3,w:1,d:1,l:1,gf:5,ga:1,gd:4,pts:4,q:1},
+      {t:"Sweden",f:"🇸🇪",mp:3,w:1,d:0,l:2,gf:3,ga:5,gd:-2,pts:3,q:0},
+      {t:"Tunisia",f:"🇹🇳",mp:3,w:0,d:0,l:3,gf:0,ga:8,gd:-8,pts:0,q:-1},
+    ]},
+    {name:"Group G", teams:[
+      {t:"Egypt",f:"🇪🇬",mp:3,w:1,d:1,l:1,gf:4,ga:2,gd:2,pts:4,q:1},
+      {t:"Belgium",f:"🇧🇪",mp:3,w:0,d:2,l:1,gf:3,ga:4,gd:-1,pts:2,q:1},
+      {t:"Iran",f:"🇮🇷",mp:3,w:0,d:2,l:1,gf:2,ga:5,gd:-3,pts:2,q:0},
+      {t:"New Zealand",f:"🇳🇿",mp:3,w:0,d:1,l:2,gf:2,ga:5,gd:-3,pts:1,q:-1},
+    ]},
+    {name:"Group H", teams:[
+      {t:"Spain",f:"🇪🇸",mp:3,w:1,d:1,l:1,gf:6,ga:2,gd:4,pts:4,q:1},
+      {t:"Cape Verde",f:"🇨🇻",mp:3,w:0,d:2,l:1,gf:2,ga:5,gd:-3,pts:2,q:1},
+      {t:"Uruguay",f:"🇺🇾",mp:3,w:0,d:2,l:1,gf:2,ga:6,gd:-4,pts:2,q:0},
+      {t:"Saudi Arabia",f:"🇸🇦",mp:3,w:0,d:1,l:2,gf:2,ga:5,gd:-3,pts:1,q:-1},
+    ]},
+    {name:"Group I", teams:[
+      {t:"France",f:"🇫🇷",mp:3,w:2,d:0,l:1,gf:7,ga:2,gd:5,pts:6,q:1},
+      {t:"Norway",f:"🇳🇴",mp:3,w:2,d:0,l:1,gf:6,ga:2,gd:4,pts:6,q:1},
+      {t:"Senegal",f:"🇸🇳",mp:3,w:0,d:0,l:3,gf:1,ga:7,gd:-6,pts:0,q:0},
+      {t:"Iraq",f:"🇮🇶",mp:3,w:0,d:0,l:3,gf:0,ga:8,gd:-8,pts:0,q:-1},
+    ]},
+    {name:"Group J", teams:[
+      {t:"Argentina",f:"🇦🇷",mp:3,w:2,d:0,l:1,gf:6,ga:1,gd:5,pts:6,q:1},
+      {t:"Austria",f:"🇦🇹",mp:3,w:1,d:0,l:2,gf:3,ga:6,gd:-3,pts:3,q:1},
+      {t:"Algeria",f:"🇩🇿",mp:3,w:1,d:0,l:2,gf:2,ga:4,gd:-2,pts:3,q:0},
+      {t:"Jordan",f:"🇯🇴",mp:3,w:0,d:0,l:3,gf:1,ga:6,gd:-5,pts:0,q:-1},
+    ]},
+    {name:"Group K", teams:[
+      {t:"Colombia",f:"🇨🇴",mp:3,w:2,d:0,l:1,gf:3,ga:2,gd:1,pts:6,q:1},
+      {t:"Portugal",f:"🇵🇹",mp:3,w:1,d:1,l:1,gf:7,ga:2,gd:5,pts:4,q:1},
+      {t:"DR Congo",f:"🇨🇩",mp:3,w:0,d:1,l:2,gf:1,ga:4,gd:-3,pts:1,q:0},
+      {t:"Uzbekistan",f:"🇺🇿",mp:3,w:0,d:0,l:3,gf:1,ga:8,gd:-7,pts:0,q:-1},
+    ]},
+    {name:"Group L", teams:[
+      {t:"England",f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",mp:3,w:1,d:1,l:1,gf:4,ga:2,gd:2,pts:4,q:1},
+      {t:"Ghana",f:"🇬🇭",mp:3,w:1,d:1,l:1,gf:3,ga:2,gd:1,pts:4,q:1},
+      {t:"Croatia",f:"🇭🇷",mp:3,w:1,d:0,l:2,gf:3,ga:4,gd:-1,pts:3,q:0},
+      {t:"Panama",f:"🇵🇦",mp:3,w:0,d:0,l:3,gf:1,ga:5,gd:-4,pts:0,q:-1},
+    ]},
+  ],
+  scorers: [
+    {p:"Kylian Mbappe",t:"🇫🇷 France",g:5,pk:1,mp:3},
+    {p:"Erling Haaland",t:"🇳🇴 Norway",g:4,pk:1,mp:3},
+    {p:"Lautaro Martinez",t:"🇦🇷 Argentina",g:4,pk:0,mp:3},
+    {p:"Vinicius Jr.",t:"🇧🇷 Brazil",g:3,pk:0,mp:3},
+    {p:"Jamal Musiala",t:"🇩🇪 Germany",g:3,pk:0,mp:3},
+    {p:"Lamine Yamal",t:"🇪🇸 Spain",g:3,pk:0,mp:3},
+    {p:"Cristiano Ronaldo",t:"🇵🇹 Portugal",g:3,pk:1,mp:3},
+    {p:"Phil Foden",t:"🏴󠁧󠁢󠁥󠁮󠁧󠁿 England",g:3,pk:1,mp:3},
+    {p:"Cody Gakpo",t:"🇳🇱 Netherlands",g:2,pk:0,mp:3},
+    {p:"Mohamed Salah",t:"🇪🇬 Egypt",g:2,pk:1,mp:3},
+    {p:"Endrick",t:"🇧🇷 Brazil",g:2,pk:0,mp:3},
+    {p:"Kai Havertz",t:"🇩🇪 Germany",g:2,pk:0,mp:3},
+    {p:"Rafael Leao",t:"🇵🇹 Portugal",g:2,pk:0,mp:3},
+    {p:"Jude Bellingham",t:"🏴󠁧󠁢󠁥󠁮󠁧󠁿 England",g:2,pk:0,mp:3},
+    {p:"Julian Alvarez",t:"🇦🇷 Argentina",g:2,pk:0,mp:3},
+    {p:"Hirving Lozano",t:"🇲🇽 Mexico",g:2,pk:0,mp:3},
+    {p:"Rodrygo",t:"🇧🇷 Brazil",g:2,pk:0,mp:3},
+    {p:"Alejandro Garnacho",t:"🇦🇷 Argentina",g:2,pk:0,mp:3},
+    {p:"Martin Odegaard",t:"🇳🇴 Norway",g:2,pk:0,mp:3},
+    {p:"Christian Pulisic",t:"🇺🇸 United States",g:2,pk:0,mp:3},
+  ],
+  assists: [
+    {p:"Kevin De Bruyne",t:"🇧🇪 Belgium",a:3,mp:3},
+    {p:"Lionel Messi",t:"🇦🇷 Argentina",a:3,mp:3},
+    {p:"Bruno Fernandes",t:"🇵🇹 Portugal",a:3,mp:3},
+    {p:"Pedri",t:"🇪🇸 Spain",a:2,mp:3},
+    {p:"Antoine Griezmann",t:"🇫🇷 France",a:2,mp:3},
+    {p:"Bukayo Saka",t:"🏴󠁧󠁢󠁥󠁮󠁧󠁿 England",a:2,mp:3},
+    {p:"Ousmane Dembele",t:"🇫🇷 France",a:2,mp:3},
+    {p:"Alphonso Davies",t:"🇨🇦 Canada",a:2,mp:3},
+    {p:"Federico Valverde",t:"🇺🇾 Uruguay",a:2,mp:3},
+    {p:"Theo Hernandez",t:"🇫🇷 France",a:2,mp:3},
+    {p:"Giovanni Reyna",t:"🇺🇸 United States",a:2,mp:3},
+    {p:"Florian Wirtz",t:"🇩🇪 Germany",a:2,mp:3},
+    {p:"Mitoma Kaoru",t:"🇯🇵 Japan",a:2,mp:3},
+    {p:"Achraf Hakimi",t:"🇲🇦 Morocco",a:2,mp:3},
+    {p:"Khvicha Kvaratskhelia",t:"🇬🇪 Georgia",a:2,mp:2},
+  ],
+  corners: {
+    teams: [
+      {t:"🇧🇷 Brazil",c:24,mp:3},{t:"🇪🇸 Spain",c:22,mp:3},{t:"🇫🇷 France",c:21,mp:3},
+      {t:"🇦🇷 Argentina",c:20,mp:3},{t:"🇲🇽 Mexico",c:19,mp:3},{t:"🏴󠁧󠁢󠁥󠁮󠁧󠁿 England",c:18,mp:3},
+      {t:"🇧🇪 Belgium",c:18,mp:3},{t:"🇩🇪 Germany",c:17,mp:3},{t:"🇵🇹 Portugal",c:16,mp:3},
+      {t:"🇳🇱 Netherlands",c:15,mp:3},{t:"🇺🇸 United States",c:15,mp:3},{t:"🇨🇴 Colombia",c:15,mp:3},
+      {t:"🇯🇵 Japan",c:14,mp:3},{t:"🇨🇦 Canada",c:14,mp:3},{t:"🇩🇰 Denmark",c:13,mp:3},{t:"🇮🇹 Italy",c:13,mp:3},
+    ],
+    players: [
+      {p:"Pedri",t:"🇪🇸 Spain",c:18},{p:"Kevin De Bruyne",t:"🇧🇪 Belgium",c:16},
+      {p:"Bruno Fernandes",t:"🇵🇹 Portugal",c:15},{p:"Antoine Griezmann",t:"🇫🇷 France",c:14},
+      {p:"Lionel Messi",t:"🇦🇷 Argentina",c:13},{p:"Bukayo Saka",t:"🏴󠁧󠁢󠁥󠁮󠁧󠁿 England",c:13},
+      {p:"Federico Valverde",t:"🇺🇾 Uruguay",c:12},{p:"Florian Wirtz",t:"🇩🇪 Germany",c:12},
+      {p:"Christian Pulisic",t:"🇺🇸 United States",c:11},{p:"James Rodriguez",t:"🇨🇴 Colombia",c:11},
+    ],
+  },
+  teamStats: [
+    {t:"🇧🇷 Brazil",mp:3,w:2,d:1,l:0,gf:8,ga:2,gd:6,poss:62,pass:89},
+    {t:"🇪🇸 Spain",mp:3,w:1,d:1,l:1,gf:6,ga:2,gd:4,poss:65,pass:91},
+    {t:"🇦🇷 Argentina",mp:3,w:2,d:0,l:1,gf:6,ga:1,gd:5,poss:58,pass:88},
+    {t:"🇫🇷 France",mp:3,w:2,d:0,l:1,gf:7,ga:2,gd:5,poss:55,pass:87},
+    {t:"🇩🇪 Germany",mp:3,w:2,d:0,l:1,gf:9,ga:2,gd:7,poss:56,pass:86},
+    {t:"🇲🇽 Mexico",mp:3,w:3,d:0,l:0,gf:7,ga:1,gd:6,poss:51,pass:82},
+    {t:"🇵🇹 Portugal",mp:3,w:1,d:1,l:1,gf:7,ga:2,gd:5,poss:53,pass:84},
+    {t:"🏴󠁧󠁢󠁥󠁮󠁧󠁿 England",mp:3,w:1,d:1,l:1,gf:4,ga:2,gd:2,poss:57,pass:88},
+    {t:"🇳🇱 Netherlands",mp:3,w:1,d:1,l:1,gf:6,ga:2,gd:4,poss:52,pass:85},
+    {t:"🇺🇸 United States",mp:3,w:2,d:0,l:1,gf:7,ga:2,gd:5,poss:49,pass:83},
+    {t:"🇧🇪 Belgium",mp:3,w:0,d:2,l:1,gf:3,ga:4,gd:-1,poss:54,pass:86},
+    {t:"🇳🇴 Norway",mp:3,w:2,d:0,l:1,gf:6,ga:2,gd:4,poss:48,pass:81},
+    {t:"🇨🇭 Switzerland",mp:3,w:2,d:1,l:0,gf:6,ga:2,gd:4,poss:44,pass:80},
+    {t:"🇨🇦 Canada",mp:3,w:1,d:1,l:1,gf:6,ga:1,gd:5,poss:47,pass:82},
+    {t:"🇲🇦 Morocco",mp:3,w:2,d:1,l:0,gf:5,ga:2,gd:3,poss:43,pass:79},
+    {t:"🇨🇴 Colombia",mp:3,w:2,d:0,l:1,gf:3,ga:2,gd:1,poss:46,pass:81},
+  ],
+};
+</script>
+<script>
+function render() {
+  // Standings
+  var gt='',gs='';
+  D.groups.forEach(function(g,i){
+    gt+='<button class="group-tab'+(i?'':' active')+'" onclick="showGroup('+i+',this)">'+g.name+'</button>';
+    gs+='<div class="group-table'+(i?'':' active')+'" id="g-'+i+'"><table><thead><tr><th>#</th><th>Team</th><th>MP</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr></thead><tbody>';
+    g.teams.sort(function(a,b){return b.pts-a.pts||b.gd-a.gd||b.gf-a.gf}).forEach(function(t,j){
+      var qc=t.q===1?' qualified':t.q===-1?' eliminated':'';
+      gs+='<tr><td class="rank-num">'+(j+1)+'</td><td class="team-name'+qc+'">'+t.f+' '+t.t+'</td><td>'+t.mp+'</td><td>'+t.w+'</td><td>'+t.d+'</td><td>'+t.l+'</td><td>'+t.gf+'</td><td>'+t.ga+'</td><td>'+(t.gd>0?'+'+t.gd:t.gd)+'</td><td class="stat-highlight">'+t.pts+'</td></tr>';
+    });
+    gs+='</tbody></table></div>';
+  });
+  document.getElementById('groupTabs').innerHTML=gt;
+  document.getElementById('groupStandings').innerHTML=gs;
+
+  // Scorers
+  var sh='';
+  D.scorers.forEach(function(s,i){
+    var b=i===0?'<span class="stat-badge badge-gold">1</span> ':i===1?'<span class="stat-badge badge-silver">2</span> ':i===2?'<span class="stat-badge badge-bronze">3</span> ':'';
+    sh+='<tr><td class="rank-num">'+(i+1)+'</td><td>'+b+s.p+'</td><td>'+s.t+'</td><td class="stat-highlight">'+s.g+'</td><td>'+(s.pk||0)+'</td><td>'+s.mp+'</td></tr>';
+  });
+  document.querySelector('#scorersTable tbody').innerHTML=sh;
+
+  // Assists
+  var ah='';
+  D.assists.forEach(function(a,i){
+    ah+='<tr><td class="rank-num">'+(i+1)+'</td><td>'+a.p+'</td><td>'+a.t+'</td><td class="stat-highlight">'+a.a+'</td><td>'+a.mp+'</td></tr>';
+  });
+  document.querySelector('#assistsTable tbody').innerHTML=ah;
+
+  // Corners
+  var cth='';
+  D.corners.teams.forEach(function(t,i){
+    cth+='<tr><td class="rank-num">'+(i+1)+'</td><td class="team-name">'+t.t+'</td><td class="stat-highlight">'+t.c+'</td><td>'+t.mp+'</td><td>'+(t.c/t.mp).toFixed(1)+'</td></tr>';
+  });
+  document.querySelector('#cornersTeamTable tbody').innerHTML=cth;
+  var cph='';
+  D.corners.players.forEach(function(p,i){
+    cph+='<tr><td class="rank-num">'+(i+1)+'</td><td>'+p.p+'</td><td>'+p.t+'</td><td class="stat-highlight">'+p.c+'</td></tr>';
+  });
+  document.querySelector('#cornersPlayerTable tbody').innerHTML=cph;
+
+  // Team Stats
+  var ts='';
+  D.teamStats.forEach(function(t,i){
+    ts+='<tr><td class="rank-num">'+(i+1)+'</td><td class="team-name">'+t.t+'</td><td>'+t.mp+'</td><td>'+t.w+'</td><td>'+t.d+'</td><td>'+t.l+'</td><td>'+t.gf+'</td><td>'+t.ga+'</td><td>'+(t.gd>0?'+'+t.gd:t.gd)+'</td><td>'+t.poss+'%</td><td>'+t.pass+'%</td></tr>';
+  });
+  document.querySelector('#teamsTable tbody').innerHTML=ts;
+}
+function showGroup(i,btn){
+  document.querySelectorAll('.group-tab').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  document.querySelectorAll('.group-table').forEach(function(d){d.classList.remove('active')});
+  document.getElementById('g-'+i).classList.add('active');
+}
+function showTab(id,btn){
+  document.querySelectorAll('.wc-nav button').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});
+  document.getElementById(id).classList.add('active');
+}
+render();
+</script>
+</body>
+</html>

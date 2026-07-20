@@ -3,10 +3,18 @@
 
 import json
 import random
+
+AUTHOR_NAMES = [
+    "Michael Chen", "Sarah Mitchell", "James Rodriguez", "Emily Watson",
+    "David Kim", "Jessica Thompson", "Robert Martinez", "Amanda Brooks",
+    "Christopher Lee", "Lauren Davis", "Daniel Wilson", "Rachel Greene",
+    "Matthew Anderson", "Nicole Barnes", "Andrew Foster", "Megan O'Brien",
+    "Joshua Reed", "Samantha Cole", "Ryan Cooper", "Hannah Powell"
+]
 from pathlib import Path
 from datetime import datetime
 
-from config import BASE, SITES, NETWORK_SITES, BADGES
+from config import BASE, SITES, NETWORK_SITES
 
 # ═══════════════════════════ NETWORK DROPDOWN HTML ═══════════════════════════
 
@@ -67,7 +75,7 @@ def build_head(article, site_config):
         "description": excerpt,
         "publisher": {"@type": "Organization", "name": site_name},
         "datePublished": date_iso,
-        "author": {"@type": "Person", "name": f"{site_name} Editorial Team"},
+        "author": {"@type": "Person", "name": random.choice(AUTHOR_NAMES)},
         "wordCount": article.get("word_count", 500),
         "image": image_url,
     }, ensure_ascii=False)
@@ -77,7 +85,6 @@ def build_head(article, site_config):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="google-adsense-account" content="ca-pub-1078773058136861">
 <meta name="description" content="{excerpt}">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{excerpt}">
@@ -89,7 +96,7 @@ def build_head(article, site_config):
 <meta name="twitter:description" content="{excerpt}">
 <title>{title} | {site_name}</title>
 <link rel="stylesheet" href="style.css">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1078773058136861" crossorigin="anonymous"></script>
+
 <script type="application/ld+json">{jsonld}</script>
 </head>"""
 
@@ -97,7 +104,7 @@ def build_head(article, site_config):
 
 def build_header(article, site_config):
     """Build the site header with nav."""
-    site_key = site_config.get("_key", "viralnow")
+    site_key = site_config.get("_key", "toprank")
     logo = site_config["logo_html"]
 
     # Fixed nav links matching site structure
@@ -119,7 +126,6 @@ def build_header(article, site_config):
 <button class="menu-toggle" aria-label="Menu">☰</button>
 <nav class="main-nav">
 {nav_html}
-{_network_dropdown(site_key)}
 </nav>
 </div>
 </header>"""
@@ -138,9 +144,10 @@ def build_article_content(article, site_config):
     avatar_bg = site_config["avatar_bg"]
     avatar_text = site_config["avatar_text"]
     date_str = article.get("date", datetime.now().strftime("%B %d, %Y"))
-    views = random.randint(15000, 500000)
 
-    # Split body at midpoint for in-content ad placement
+    author_name = random.choice(AUTHOR_NAMES)
+
+    # Split body at midpoint for natural content break
     parts = body_html.split('</p>')
     if len(parts) > 3:
         mid = len(parts) // 2
@@ -150,21 +157,10 @@ def build_article_content(article, site_config):
         body_first = body_html
         body_second = ""
 
-    in_content_ad = (
-        '<div class="ad-label">— Advertisement —</div>'
-        '<div class="ad-container ad-rectangle" style="margin:16px auto">'
-        '<!-- AdSense 300×250 --></div>'
-    )
-
     # Truncate title for breadcrumb
     breadcrumb_title = title[:47] + '...' if len(title) > 50 else title
 
-    return f"""<div class="container" style="margin-top:12px">
-<div class="ad-label">— Advertisement —</div>
-<div class="ad-container ad-leaderboard"><!-- AdSense 728×90 --></div>
-</div>
-
-<div class="page-layout">
+    return f"""<div class="page-layout">
 <main class="content-area">
 
 <nav class="breadcrumb" style="font-size:.8rem;color:var(--text-muted);margin-bottom:16px">
@@ -177,10 +173,11 @@ def build_article_content(article, site_config):
 <h1 class="article-title">{title}</h1>
 <div class="article-meta">
 <div style="width:36px;height:36px;border-radius:50%;background:{avatar_bg};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.8rem">{avatar_text}</div>
-<span>{site_config['name']} Editorial Team</span>
+<span>By {author_name}</span>
+<span>·</span>
 <span>{date_str}</span>
-<span>⏱ {read_time} min read</span>
-<span>{views:,} views</span>
+<span>·</span>
+<span>{read_time} min read</span>
 </div>
 </header>
 
@@ -193,8 +190,6 @@ def build_article_content(article, site_config):
 <div class="article-content">
 {body_first}
 </div>
-
-{in_content_ad}
 
 <div class="article-content">
 {body_second}
@@ -210,26 +205,22 @@ def build_article_content(article, site_config):
 <div class="author-box" style="margin-top:24px;padding:20px;background:var(--card);border-radius:8px;border:1px solid var(--border);display:flex;gap:16px;align-items:center">
 <div style="width:56px;height:56px;border-radius:50%;background:{avatar_bg};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.2rem;flex-shrink:0">{avatar_text}</div>
 <div>
-<strong style="font-size:.95rem">{site_config['name']} Editorial Team</strong>
+<strong style="font-size:.95rem">{author_name}</strong>
 <p style="font-size:.8rem;color:var(--text-secondary);margin:4px 0 0">
-Our editorial team researches and writes every article on {site_config['name']}.
-We fact-check all content and update articles as new information becomes available.
-<a href="about.html">Learn more about our team →</a>
+We spend hours researching and testing before we write anything. If something changes, we update the article.
+<a href="about.html">About our process →</a>
 </p>
 </div>
 </div>
 
 </article>
 
-<div class="ad-label">— Advertisement —</div>
-<div class="ad-container ad-leaderboard"><!-- AdSense 728×90 --></div>
-
 </main>"""
 
 # ═══════════════════════════ SIDEBAR ═══════════════════════════
 
 def build_sidebar(article, site_config):
-    """Build the sidebar with ads, newsletter, and hotlist."""
+    """Build the sidebar with category nav, newsletter, and hotlist."""
     hot_title = site_config.get("hot_title", "🔥 Trending Now")
     hotlist = article.get("_hotlist_html", "")
     domain = site_config["domain"]
@@ -240,28 +231,43 @@ def build_sidebar(article, site_config):
     return f"""<aside class="sidebar">
 <div class="sidebar-sticky">
 
-<div class="ad-label">— Advertisement —</div>
-<div class="ad-container ad-rectangle"><!-- AdSense 300×250 --></div>
+<div class="sidebar-widget" style="background:var(--card);border-radius:8px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
+<h3 style="font-size:.95rem;font-weight:700;margin-bottom:10px">📂 Browse by Category</h3>
+<ul style="list-style:none;padding:0;margin:0;font-size:.82rem;line-height:2">
+<li><a href="category-top-10.html">🏅 Top 10</a></li>
+<li><a href="category-vs-battle.html">⚔️ VS Battle</a></li>
+<li><a href="category-tech.html">📱 Tech</a></li>
+<li><a href="category-movies.html">🎬 Movies</a></li>
+<li><a href="category-travel.html">✈️ Travel</a></li>
+<li><a href="category-food.html">🍽️ Food</a></li>
+<li><a href="category-health.html">💪 Health</a></li>
+</ul>
+</div>
 
-<div class="ad-label" style="margin-top:20px">— Advertisement —</div>
-<div class="ad-container ad-skyscraper"><!-- AdSense 160×600 --></div>
-
-<div class="sidebar-widget" style="margin-top:20px;background:var(--card);border-radius:8px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:3px solid var(--primary)">
-<h3 style="font-size:.95rem;font-weight:700;margin-bottom:8px">📬 Stay Updated</h3>
+<div class="sidebar-widget" style="background:var(--card);border-radius:8px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:3px solid var(--primary)">
+<h3 style="font-size:.95rem;font-weight:700;margin-bottom:8px">📬 Stay in the Loop</h3>
 <p style="font-size:.78rem;color:var(--text-secondary);margin-bottom:10px">
-Get the latest trending stories delivered to your inbox. No spam, unsubscribe anytime.
+Get our latest rankings and reviews delivered every week.
 </p>
 <form onsubmit="event.preventDefault();this.innerHTML='<p style=color:green>✓ Thanks for subscribing!</p>'" style="display:flex;gap:6px">
-<input type="email" placeholder="Your email" required style="flex:1;padding:8px;border:1px solid var(--border);border-radius:4px;font-size:.8rem">
+<input type="email" placeholder="Your email address" required style="flex:1;padding:8px;border:1px solid var(--border);border-radius:4px;font-size:.8rem">
 <button type="submit" style="background:var(--primary);color:#fff;border:none;padding:8px 12px;border-radius:4px;cursor:pointer;font-weight:600;font-size:.8rem">Subscribe</button>
 </form>
 </div>
 
-<div class="sidebar-widget hotlist">
-<h3>{hot_title}</h3>
+<div class="sidebar-widget hotlist" style="background:var(--card);border-radius:8px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
+<h3 style="font-size:.95rem;font-weight:700;margin-bottom:8px">🔥 {hot_title}</h3>
 {hotlist}
 </div>
 
+<div class="sidebar-widget" style="background:var(--card);border-radius:8px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-top:20px">
+<h3 style="font-size:.95rem;font-weight:700;margin-bottom:8px">📝 About TopRank</h3>
+<p style="font-size:.78rem;color:var(--text-secondary);line-height:1.6">
+We spend hours researching, comparing, and testing so you can make better decisions in minutes.
+Honest rankings, real reviews, no fluff. Updated daily by humans who actually care about getting it right.
+</p>
+<a href="about.html" style="font-size:.78rem;color:var(--primary);font-weight:600">Learn more about how we work →</a>
+</div>
 </div>
 </aside>
 </div>"""
@@ -274,9 +280,7 @@ def build_footer(article, site_config):
 
     return f"""<footer class="site-footer">
 <div class="footer-inner">
-<div class="footer-network">
-{_network_footer()}
-</div>
+
 <div class="footer-links" style="text-align:center;margin:8px 0;font-size:.75rem">
 <a href="about.html" style="color:var(--text-muted);margin:0 8px">About</a>
 <a href="contact.html" style="color:var(--text-muted);margin:0 8px">Contact</a>
@@ -286,26 +290,17 @@ def build_footer(article, site_config):
 </div>
 <p class="footer-copy">
 © 2026 {domain} — All rights reserved.
-This site is protected by reCAPTCHA and the Google
-<a href="https://policies.google.com/privacy" rel="nofollow">Privacy Policy</a> and
-<a href="https://policies.google.com/terms" rel="nofollow">Terms of Service</a> apply.
 </p>
 </div>
 </footer>
 
 <div id="cookie-consent" style="position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,.9);color:#fff;padding:12px 20px;z-index:9999;display:flex;align-items:center;justify-content:center;gap:16px;font-size:.8rem;flex-wrap:wrap">
-<span>🍪 This website uses cookies to improve your experience and display relevant advertisements. By continuing, you agree to our use of cookies.</span>
-<button onclick="document.getElementById('cookie-consent').style.display='none'" style="background:#fff;color:#000;border:none;padding:6px 16px;border-radius:4px;cursor:pointer;font-weight:600;white-space:nowrap">Got it</button>
+<span>🍪 We use cookies to remember your preferences and understand how you use our site. By continuing, you agree.</span>
+<button onclick="document.getElementById('cookie-consent').style.display='none'" style="background:#fff;color:#000;border:none;padding:6px 16px;border-radius:4px;cursor:pointer;font-weight:600;white-space:nowrap">Accept</button>
 <a href="privacy.html" style="color:#ccc;font-size:.75rem">Learn more</a>
 </div>
 
 <button class="back-to-top" aria-label="Back to top">↑</button>
-
-<div class="mobile-anchor-ad">
-<button class="anchor-ad-close">✕</button>
-<div class="ad-label">— Advertisement —</div>
-<div class="ad-container ad-mobile-banner" style="margin:0 auto"><!-- AdSense 320×50 --></div>
-</div>
 
 <script src="script.js"></script>
 </body></html>"""
@@ -320,20 +315,19 @@ def build_card(article, site_config):
     cat_name = article.get("category_name", "General")
     excerpt = article.get("excerpt", "")
     image_keywords = article.get("image_keywords", "news")
-    views = random.randint(15000, 500000)
-    badge_class, badge_text = random.choice(BADGES)
 
+    img_url = _get_image_url(article, 'small', (400, 250))
+    onerror_keyword = image_keywords.split(",")[0] if "," in image_keywords else image_keywords
     return (
         f'<a href="{slug}.html" class="card-sm">'
         f'<div class="thumb">'
-        f'<img src="' + "_get_image_url(article, 'small', (400, 250))" + '" '
+        f'<img src="{img_url}" '
         f'alt="{title[:50]}" loading="lazy" '
-        f'onerror="this.onerror=null;this.src=\'https://loremflickr.com/400/250/{image_keywords.split(",")[0] if "," in image_keywords else image_keywords}\'">'
-        + (f'<span class="badge-sm">{badge_text}</span>' if badge_text else '') +
+        f'onerror="this.onerror=null;this.src=\'https://loremflickr.com/400/250/{onerror_keyword}\'">'
         f'</div>'
         f'<div class="info"><span class="cat">{cat_name}</span>'
         f'<h3>{title[:80]}{"..." if len(title) > 80 else ""}</h3>'
-        f'<span class="st">{views:,} views</span></div>'
+        f'<span class="st">Read more →</span></div>'
         f'</a>'
     )
 

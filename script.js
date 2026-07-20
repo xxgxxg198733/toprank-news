@@ -12,8 +12,6 @@ document.addEventListener('DOMContentLoaded',function(){
     if(more.disabled)return;more.disabled=true;more.textContent='Loading...';
     setTimeout(function(){var cards=grid.querySelectorAll('.card');for(var i=0;i<4&&i<cards.length;i++)grid.appendChild(cards[cards.length-1-i].cloneNode(true));more.disabled=false;more.textContent='Load More'},800);
   });
-  var close=document.querySelector('.anchor-ad-close'),anchor=document.querySelector('.mobile-anchor-ad');
-  close&&anchor&&close.addEventListener('click',function(){anchor.style.display='none'});
   document.querySelectorAll('.share-btn').forEach(function(btn){btn.addEventListener('click',function(){
     var p=btn.dataset.platform,u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);
     if(p==='twitter')window.open('https://twitter.com/intent/tweet?url='+u+'&text='+t,'_blank','width=600,height=400');

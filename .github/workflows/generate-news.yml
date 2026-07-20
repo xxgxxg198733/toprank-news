@@ -9,8 +9,7 @@ on:
     # 20:00 UTC = 04:00 Beijing — overnight
     # 23:00 UTC = 07:00 Beijing — final update before pause
     #
-    # Outside this window (Beijing 07:00-20:00 / UTC 23:00-12:00):
-    # NO updates — site remains static
+    # Beijing 07:00-20:00 (UTC 23:00-12:00): NO updates
     - cron: '0 12 * * *'
     - cron: '0 16 * * *'
     - cron: '0 20 * * *'
