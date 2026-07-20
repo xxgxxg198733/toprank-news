@@ -2,13 +2,19 @@ name: TopRank News Generator
 
 on:
   schedule:
-    # 0:00 UTC = 8:00 AM Beijing (CST)
-    # 4:00 UTC = 12:00 PM Beijing
-    # 11:00 UTC = 7:00 PM Beijing
-    # China Standard Time = UTC+8, no DST
-    - cron: '0 0 * * *'
-    - cron: '0 4 * * *'
-    - cron: '0 11 * * *'
+    # Update window: Beijing 20:00 - 07:00 (next day)
+    # In UTC (UTC+8): 12:00 - 23:00
+    # 12:00 UTC = 20:00 Beijing — evening update
+    # 16:00 UTC = 00:00 Beijing — midnight refresh
+    # 20:00 UTC = 04:00 Beijing — overnight
+    # 23:00 UTC = 07:00 Beijing — final update before pause
+    #
+    # Outside this window (Beijing 07:00-20:00 / UTC 23:00-12:00):
+    # NO updates — site remains static
+    - cron: '0 12 * * *'
+    - cron: '0 16 * * *'
+    - cron: '0 20 * * *'
+    - cron: '0 23 * * *'
   workflow_dispatch:
 
 permissions:
