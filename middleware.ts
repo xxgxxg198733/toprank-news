@@ -1,22 +1,27 @@
-import { auth } from "@/lib/auth";
+import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-// Routes that require authentication
 const protectedPaths = ["/tools", "/profile"];
 
-export default auth((req) => {
-  const { pathname } = req.nextUrl;
-  const isLoggedIn = !!req.auth?.user;
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
-  // Redirect to login if accessing protected routes without auth
-  if (protectedPaths.some((p) => pathname.startsWith(p)) && !isLoggedIn) {
-    const loginUrl = new URL("/login", req.url);
-    loginUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(loginUrl);
+  if (protectedPaths.some((p) => pathname.startsWith(p))) {
+    const token = await getToken({
+      req: request,
+      secret: process.env.AUTH_SECRET,
+    });
+
+    if (!token) {
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.svg|robots.txt|sitemap.xml).*)"],
