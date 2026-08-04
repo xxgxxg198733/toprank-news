@@ -63,12 +63,12 @@ export function getProvider(providerId: string) {
 }
 
 export function getDefaultProvider() {
-  return getDoubaoModel() || getDeepSeekModel() || getOpenAIModel() || getAnthropicModel() || getGoogleModel();
+  return getDeepSeekModel() || getDoubaoModel() || getOpenAIModel() || getAnthropicModel() || getGoogleModel();
 }
 
 export function getDefaultProviderId(): string {
-  if (env.DOUBAO_API_KEY) return "doubao";
   if (env.DEEPSEEK_API_KEY) return "deepseek";
+  if (env.DOUBAO_API_KEY) return "doubao";
   if (env.OPENAI_API_KEY) return "openai";
   if (env.ANTHROPIC_API_KEY) return "anthropic";
   if (env.GOOGLE_GENERATIVE_AI_API_KEY) return "google";
