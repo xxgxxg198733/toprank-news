@@ -1,17 +1,11 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { compare } from "bcryptjs";
-import { db } from "./db";
-import * as schema from "./db/schema";
+import { getUserByEmail, getUserById, getUserIdByOAuth, linkOAuthAccount, createUser } from "./kv";
+import { v4 as uuid } from "uuid";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: DrizzleAdapter(db, {
-    usersTable: schema.users,
-    accountsTable: schema.accounts,
-    sessionsTable: schema.sessions,
-  }),
   session: { strategy: "jwt" },
   providers: [
     Google({
@@ -26,27 +20,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
-
         const { email, password } = credentials as { email: string; password: string };
 
-        // Find user
-        const result = await db.select().from(schema.users).where(
-          // Use sql for the where clause
-          (await import("drizzle-orm")).eq(schema.users.email, email)
-        ).limit(1);
-
-        const user = result[0];
+        const user = await getUserByEmail(email);
         if (!user || !user.passwordHash) return null;
 
         const isValid = await compare(password, user.passwordHash);
         if (!isValid) return null;
 
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          image: user.image,
-        };
+        return { id: user.id, email: user.email, name: user.name, image: user.image };
       },
     }),
   ],
@@ -55,9 +37,48 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     error: "/login",
   },
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === "google") {
+        const existingOAuth = await getUserIdByOAuth("google", account.providerAccountId);
+        if (existingOAuth) {
+          // Link existing user
+          const existingUser = await getUserById(existingOAuth);
+          if (existingUser) {
+            (user as { id: string }).id = existingUser.id;
+            user.name = existingUser.name;
+            user.email = existingUser.email;
+            user.image = existingUser.image;
+            return true;
+          }
+        }
+
+        // Check if email exists (merge accounts)
+        if (user.email) {
+          const emailUser = await getUserByEmail(user.email);
+          if (emailUser) {
+            await linkOAuthAccount("google", account.providerAccountId, emailUser.id);
+            (user as { id: string }).id = emailUser.id;
+            return true;
+          }
+        }
+
+        // Create new user from Google
+        const userId = uuid();
+        await createUser({
+          id: userId,
+          name: user.name || "Google 用户",
+          email: user.email!,
+          image: user.image ?? undefined,
+          createdAt: new Date().toISOString(),
+        });
+        await linkOAuthAccount("google", account.providerAccountId, userId);
+        (user as { id: string }).id = userId;
+      }
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        token.id = user.id as string;
       }
       return token;
     },

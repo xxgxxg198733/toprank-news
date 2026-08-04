@@ -1,56 +1,38 @@
 import "server-only";
-import { db } from "./db";
-import { creditBalances, creditTransactions } from "./db/schema";
-import { eq, sql } from "drizzle-orm";
 import { v4 as uuid } from "uuid";
+import {
+  getCreditBalance as kvGetBalance,
+  setCreditBalance as kvSetBalance,
+  addTransaction,
+} from "./kv";
 
-// Credit costs per tool
 export const CREDIT_COSTS: Record<string, number> = {
-  chat: 1,       // 1 credit per chat message
-  image: 5,      // 5 credits per image generation
-  writing: 2,    // 2 credits per writing request
-  analysis: 3,   // 3 credits per analysis
-  video: 10,     // 10 credits per video generation
+  chat: 1,
+  image: 5,
+  writing: 2,
+  analysis: 3,
+  video: 10,
 };
 
 export async function getCreditBalance(userId: string): Promise<number> {
-  const result = await db
-    .select({ balance: creditBalances.balance })
-    .from(creditBalances)
-    .where(eq(creditBalances.userId, userId))
-    .limit(1);
-
-  return result[0]?.balance ?? 0;
+  return kvGetBalance(userId);
 }
 
 export async function ensureCreditBalance(userId: string): Promise<number> {
-  const existing = await getCreditBalance(userId);
-  if (existing === 0 && !(await hasCreditRecord(userId))) {
-    // Create initial balance record with 10 free credits
-    await db.insert(creditBalances).values({
+  const balance = await kvGetBalance(userId);
+  if (balance === 0) {
+    // Give 10 free credits to new users
+    await kvSetBalance(userId, 10);
+    await addTransaction(userId, {
       id: uuid(),
-      userId,
-      balance: 10,
-    });
-    await db.insert(creditTransactions).values({
-      id: uuid(),
-      userId,
       amount: 10,
       type: "bonus",
       description: "新用户注册赠送",
+      createdAt: new Date().toISOString(),
     });
     return 10;
   }
-  return existing;
-}
-
-async function hasCreditRecord(userId: string): Promise<boolean> {
-  const result = await db
-    .select({ id: creditBalances.id })
-    .from(creditBalances)
-    .where(eq(creditBalances.userId, userId))
-    .limit(1);
-  return result.length > 0;
+  return balance;
 }
 
 export async function deductCredits(
@@ -58,7 +40,7 @@ export async function deductCredits(
   tool: keyof typeof CREDIT_COSTS
 ): Promise<{ success: boolean; remaining: number; message: string }> {
   const cost = CREDIT_COSTS[tool] || 1;
-  const balance = await getCreditBalance(userId);
+  const balance = await kvGetBalance(userId);
 
   if (balance < cost) {
     return {
@@ -68,63 +50,41 @@ export async function deductCredits(
     };
   }
 
-  await db
-    .update(creditBalances)
-    .set({
-      balance: sql`${creditBalances.balance} - ${cost}`,
-      updatedAt: new Date(),
-    })
-    .where(eq(creditBalances.userId, userId));
-
-  await db.insert(creditTransactions).values({
+  const newBalance = balance - cost;
+  await kvSetBalance(userId, newBalance);
+  await addTransaction(userId, {
     id: uuid(),
-    userId,
     amount: -cost,
     type: "usage",
     description: `使用 ${tool} 工具`,
+    createdAt: new Date().toISOString(),
   });
 
-  return {
-    success: true,
-    remaining: balance - cost,
-    message: `已消耗 ${cost} 积分`,
-  };
+  return { success: true, remaining: newBalance, message: `已消耗 ${cost} 积分` };
 }
 
 export async function addCredits(
   userId: string,
   amount: number,
-  type: string = "purchase",
-  description: string = "购买积分",
+  type = "purchase",
+  description = "购买积分",
   paypalOrderId?: string
 ): Promise<number> {
-  await ensureCreditBalance(userId);
-
-  await db
-    .update(creditBalances)
-    .set({
-      balance: sql`${creditBalances.balance} + ${amount}`,
-      updatedAt: new Date(),
-    })
-    .where(eq(creditBalances.userId, userId));
-
-  await db.insert(creditTransactions).values({
+  const balance = await kvGetBalance(userId);
+  const newBalance = balance + amount;
+  await kvSetBalance(userId, newBalance);
+  await addTransaction(userId, {
     id: uuid(),
-    userId,
     amount,
     type,
     description,
-    paypalOrderId: paypalOrderId || null,
+    paypalOrderId,
+    createdAt: new Date().toISOString(),
   });
-
-  return getCreditBalance(userId);
+  return newBalance;
 }
 
 export async function getTransactionHistory(userId: string) {
-  return db
-    .select()
-    .from(creditTransactions)
-    .where(eq(creditTransactions.userId, userId))
-    .orderBy(sql`${creditTransactions.createdAt} DESC`)
-    .limit(50);
+  const { getTransactions } = await import("./kv");
+  return getTransactions(userId);
 }
