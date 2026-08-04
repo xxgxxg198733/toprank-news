@@ -15,12 +15,12 @@ export default function VideoPage() {
       <div>
         <h2 className="text-xl font-bold mb-1">Video Generation</h2>
         <p className="text-sm text-muted-foreground mb-4">
-          AI Text to Video · Kling v2, MiniMax
+          AI Text to Video · Volcano Engine (Doubao)
         </p>
         <Alert className="mb-4">
           <Info className="h-4 w-4" />
           <AlertDescription>
-            AI video generation costs more credits. Consider using AI Chat or Writing tools to refine your idea first.
+            AI video generation costs 10 credits. Consider using AI Chat or Writing tools to refine your idea first.
           </AlertDescription>
         </Alert>
         <VideoForm />

@@ -1,37 +1,74 @@
 "use client";
 
-import { useState } from "react";
-import { Video, AlertCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Video, Loader2, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export function VideoForm() {
   const [prompt, setPrompt] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [taskId, setTaskId] = useState<string | null>(null);
+  const [status, setStatus] = useState<string | null>(null);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Poll status
+  useEffect(() => {
+    if (!taskId || status === "completed" || status === "failed") return;
+
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/video/status?id=${taskId}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        setStatus(data.status);
+        if (data.videoUrl) {
+          setVideoUrl(data.videoUrl);
+          setStatus("completed");
+        }
+        if (data.status === "failed") {
+          setError("Video generation failed. Please try again.");
+        }
+      } catch {
+        // retry next poll
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [taskId, status]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!prompt.trim()) return;
-    setSubmitted(true);
+    setLoading(true);
+    setError("");
+    setVideoUrl(null);
+    setStatus(null);
+
+    try {
+      const res = await fetch("/api/video/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: prompt.trim() }),
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text);
+      }
+
+      const data = await res.json();
+      setTaskId(data.taskId);
+      setStatus(data.status);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Generation failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (submitted) {
-    return (
-      <Alert>
-        <AlertCircle className="h-4 w-4" />
-        <AlertDescription>
-          Video generation requires a Fal.ai API Key. Set <code className="text-xs bg-muted px-1 rounded">FAL_KEY</code> in <code className="text-xs bg-muted px-1 rounded">.env.local</code> to use this feature.
-          <br />
-          支持的模型：Kling v2、MiniMax 等。
-          <Button variant="link" size="xs" className="px-0" onClick={() => setSubmitted(false)}>
-            返回编辑
-          </Button>
-        </AlertDescription>
-      </Alert>
-    );
-  }
+  const isGenerating = loading || (status && status !== "completed" && status !== "failed");
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -42,14 +79,43 @@ export function VideoForm() {
         rows={4}
         className="min-h-[100px]"
       />
-      <div className="flex gap-2">
-        <Button type="submit" disabled={!prompt.trim()}>
-          <Video className="h-4 w-4 mr-1" /> Generate Video
+
+      <div className="flex gap-2 items-center">
+        <Button type="submit" disabled={!prompt.trim() || isGenerating}>
+          {isGenerating ? (
+            <Loader2 className="h-4 w-4 animate-spin mr-1" />
+          ) : (
+            <Video className="h-4 w-4 mr-1" />
+          )}
+          {isGenerating ? "Generating..." : "Generate Video"}
         </Button>
-        <span className="text-xs text-muted-foreground self-center">
-          需要配置 Fal.ai API Key
-        </span>
+        <span className="text-xs text-muted-foreground">Powered by Volcano Engine (Doubao)</span>
       </div>
+
+      {error && (
+        <div className="p-3 bg-destructive/10 text-destructive text-sm rounded-lg">{error}</div>
+      )}
+
+      {isGenerating && !loading && (
+        <div className="p-4 bg-card border rounded-xl text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2 text-primary" />
+          <p className="text-sm text-muted-foreground">Generating video... This may take 1-3 minutes.</p>
+          <p className="text-xs text-muted-foreground mt-1">Status: {status}</p>
+        </div>
+      )}
+
+      {videoUrl && (
+        <div className="rounded-xl overflow-hidden border bg-card">
+          <video controls className="w-full" src={videoUrl} />
+          <div className="p-2 flex justify-end">
+            <Button size="sm" variant="outline" asChild>
+              <a href={videoUrl} target="_blank" rel="noopener noreferrer">
+                <Download className="h-3.5 w-3.5 mr-1" /> Download
+              </a>
+            </Button>
+          </div>
+        </div>
+      )}
     </form>
   );
 }
