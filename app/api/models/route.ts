@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getEnabledProviders } from "@/lib/ai/providers";
+import { getEnabledProviders, getDefaultProviderId } from "@/lib/ai/providers";
 import { MODEL_CATALOG, getDefaultModel } from "@/lib/ai/models";
 
 export async function GET() {
@@ -14,7 +14,7 @@ export async function GET() {
 
   return NextResponse.json({
     providers: providers.filter((p) => p.enabled),
-    defaultProvider: providers.find((p) => p.enabled)?.id || "deepseek",
+    defaultProvider: getDefaultProviderId(),
     models,
     defaults: Object.fromEntries(
       providers
