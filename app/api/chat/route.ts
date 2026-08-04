@@ -8,14 +8,12 @@ import { deductCredits } from "@/lib/credits";
 export async function POST(request: Request) {
   // Auth check
   const session = await auth();
-  if (!session?.user?.id) {
+  if (!session?.user) {
     return new Response("请先登录后再使用 AI 工具。", { status: 401 });
   }
 
-  const userId = (session.user as { id: string }).id;
-
   // Credit check
-  const creditCheck = await deductCredits(userId, "chat");
+  const creditCheck = await deductCredits("chat");
   if (!creditCheck.success) {
     return new Response(creditCheck.message, { status: 402 });
   }
@@ -43,7 +41,7 @@ export async function POST(request: Request) {
       return new Response("没有可用的 AI 提供商，请在服务端配置 API Key。", { status: 500 });
     }
 
-    const effectiveProviderId = providerId || "deepseek";
+    const effectiveProviderId = providerId || "doubao";
     const effectiveModelId = modelId || getDefaultModel(effectiveProviderId);
     if (modelId && !isModelIdValid(modelId, effectiveProviderId)) {
       return new Response(`无效的模型 ID: ${modelId}`, { status: 400 });

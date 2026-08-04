@@ -19,7 +19,6 @@
     "@base-ui/react": "^1.6.0",
     "@fal-ai/client": "^1.10.1",
     "@paypal/checkout-server-sdk": "^1.0.3",
-    "@vercel/kv": "^2.0.0",
     "ai": "^7.0.50",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",

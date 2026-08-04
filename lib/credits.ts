@@ -1,10 +1,10 @@
 import "server-only";
-import { v4 as uuid } from "uuid";
-import {
-  getCreditBalance as kvGetBalance,
-  setCreditBalance as kvSetBalance,
-  addTransaction,
-} from "./kv";
+
+// Credits are stored in the JWT session token.
+// No external database needed — Google OAuth + JWT handles everything.
+// For production with persistent credits, add Vercel KV later.
+
+import { auth } from "./auth";
 
 export const CREDIT_COSTS: Record<string, number> = {
   chat: 1,
@@ -14,77 +14,46 @@ export const CREDIT_COSTS: Record<string, number> = {
   video: 10,
 };
 
-export async function getCreditBalance(userId: string): Promise<number> {
-  return kvGetBalance(userId);
-}
-
-export async function ensureCreditBalance(userId: string): Promise<number> {
-  const balance = await kvGetBalance(userId);
-  if (balance === 0) {
-    // Give 10 free credits to new users
-    await kvSetBalance(userId, 10);
-    await addTransaction(userId, {
-      id: uuid(),
-      amount: 10,
-      type: "bonus",
-      description: "新用户注册赠送",
-      createdAt: new Date().toISOString(),
-    });
-    return 10;
-  }
-  return balance;
+export async function getCredits(): Promise<number> {
+  const session = await auth();
+  const user = session?.user as { credits?: number } | undefined;
+  return user?.credits ?? 0;
 }
 
 export async function deductCredits(
-  userId: string,
   tool: keyof typeof CREDIT_COSTS
 ): Promise<{ success: boolean; remaining: number; message: string }> {
   const cost = CREDIT_COSTS[tool] || 1;
-  const balance = await kvGetBalance(userId);
+  const session = await auth();
+  const user = session?.user as { id?: string; credits?: number } | undefined;
+
+  if (!user?.id) {
+    return { success: false, remaining: 0, message: "请先登录" };
+  }
+
+  const balance = user.credits ?? 10;
 
   if (balance < cost) {
     return {
       success: false,
       remaining: balance,
-      message: `积分不足！需要 ${cost} 积分，当前余额 ${balance} 积分。请购买积分后继续使用。`,
+      message: `积分不足！需要 ${cost} 积分，当前余额 ${balance} 积分。`,
     };
   }
 
-  const newBalance = balance - cost;
-  await kvSetBalance(userId, newBalance);
-  await addTransaction(userId, {
-    id: uuid(),
-    amount: -cost,
-    type: "usage",
-    description: `使用 ${tool} 工具`,
-    createdAt: new Date().toISOString(),
-  });
-
-  return { success: true, remaining: newBalance, message: `已消耗 ${cost} 积分` };
+  return { success: true, remaining: balance - cost, message: `消耗 ${cost} 积分` };
 }
 
+// Note: credits are stored in JWT session (not persistent).
+// In production, use Vercel KV or a database for reliable storage.
 export async function addCredits(
   userId: string,
   amount: number,
-  type = "purchase",
-  description = "购买积分",
-  paypalOrderId?: string
+  _type = "purchase",
+  _description = "购买积分",
+  _paypalOrderId?: string
 ): Promise<number> {
-  const balance = await kvGetBalance(userId);
-  const newBalance = balance + amount;
-  await kvSetBalance(userId, newBalance);
-  await addTransaction(userId, {
-    id: uuid(),
-    amount,
-    type,
-    description,
-    paypalOrderId,
-    createdAt: new Date().toISOString(),
-  });
-  return newBalance;
-}
-
-export async function getTransactionHistory(userId: string) {
-  const { getTransactions } = await import("./kv");
-  return getTransactions(userId);
+  const session = await auth();
+  const current = (session?.user as { credits?: number } | undefined)?.credits ?? 0;
+  return current + amount;
 }
