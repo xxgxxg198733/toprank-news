@@ -13,24 +13,24 @@ import { getMessageText } from "@/lib/utils";
 import { MessageMarkdown } from "@/components/chat/message-markdown";
 
 const TABS = [
-  { id: "article", label: "文章生成", placeholder: "描述你想要的文章主题和内容..." },
-  { id: "rewrite", label: "改写润色", placeholder: "粘贴需要改写的文本..." },
-  { id: "translate", label: "翻译", placeholder: "粘贴需要翻译的文本..." },
-  { id: "seo", label: "SEO 优化", placeholder: "输入目标关键词或主题..." },
+  { id: "article", label: "Article", placeholder: "Describe the article topic and content you want..." },
+  { id: "rewrite", label: "Rewrite", placeholder: "Paste the text you want to rewrite..." },
+  { id: "translate", label: "Translate", placeholder: "Paste the text you want to translate..." },
+  { id: "seo", label: "SEO", placeholder: "Enter your target keywords or topic..." },
 ];
 
 const tones = [
-  { value: "professional", label: "专业正式" },
-  { value: "casual", label: "轻松随意" },
-  { value: "academic", label: "学术严谨" },
-  { value: "friendly", label: "亲切友好" },
-  { value: "enthusiastic", label: "热情洋溢" },
+  { value: "professional", label: "Professional" },
+  { value: "casual", label: "Casual" },
+  { value: "academic", label: "Academic" },
+  { value: "friendly", label: "Friendly" },
+  { value: "enthusiastic", label: "Enthusiastic" },
 ];
 
 const languages = [
-  { value: "英文", label: "英文" }, { value: "中文", label: "中文" },
-  { value: "日文", label: "日文" }, { value: "韩文", label: "韩文" },
-  { value: "法文", label: "法文" }, { value: "德文", label: "德文" },
+  { value: "English", label: "English" }, { value: "Chinese", label: "Chinese" },
+  { value: "Japanese", label: "Japanese" }, { value: "Korean", label: "Korean" },
+  { value: "French", label: "French" }, { value: "German", label: "German" },
 ];
 
 export function WritingShell() {
@@ -93,7 +93,7 @@ export function WritingShell() {
               <>
                 <Select value={tone} onValueChange={(v) => setTone(v || "")}>
                   <SelectTrigger className="h-8 w-[120px] text-xs">
-                    <SelectValue placeholder="语气风格" />
+                    <SelectValue placeholder="Tone" />
                   </SelectTrigger>
                   <SelectContent>
                     {tones.map((t) => (
@@ -103,7 +103,7 @@ export function WritingShell() {
                 </Select>
                 {activeTab === "article" && (
                   <Input
-                    placeholder="字数要求（如 800字）"
+                    placeholder="Word count (e.g. 800 words)"
                     value={length}
                     onChange={(e) => setLength(e.target.value)}
                     className="h-8 w-[140px] text-xs"
@@ -114,7 +114,7 @@ export function WritingShell() {
             {activeTab === "translate" && (
               <Select value={targetLang} onValueChange={(v) => v && setTargetLang(v)}>
                 <SelectTrigger className="h-8 w-[100px] text-xs">
-                  <SelectValue placeholder="目标语言" />
+                  <SelectValue placeholder="Language" />
                 </SelectTrigger>
                 <SelectContent>
                   {languages.map((l) => (
@@ -125,7 +125,7 @@ export function WritingShell() {
             )}
             {activeTab === "seo" && (
               <Input
-                placeholder="核心关键词"
+                placeholder="Core keywords"
                 value={keywords}
                 onChange={(e) => setKeywords(e.target.value)}
                 className="h-8 w-[180px] text-xs"
@@ -134,7 +134,7 @@ export function WritingShell() {
           </div>
 
           <Textarea
-            placeholder={currentTab?.placeholder || "输入内容..."}
+            placeholder={currentTab?.placeholder || "Enter your content..."}
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={6}
@@ -144,16 +144,16 @@ export function WritingShell() {
           <div className="flex gap-2">
             {isLoading ? (
               <Button type="button" variant="destructive" size="sm" onClick={() => stop()}>
-                <Square className="h-4 w-4 mr-1" /> 停止生成
+                <Square className="h-4 w-4 mr-1" /> Stop
               </Button>
             ) : (
               <Button type="button" size="sm" disabled={!text.trim()} onClick={handleGenerate}>
-                <Send className="h-4 w-4 mr-1" /> 生成
+                <Send className="h-4 w-4 mr-1" /> Generate
               </Button>
             )}
             {result && (
               <Button type="button" variant="outline" size="sm" onClick={handleDownload}>
-                <FileDown className="h-4 w-4 mr-1" /> 下载
+                <FileDown className="h-4 w-4 mr-1" /> Download
               </Button>
             )}
           </div>

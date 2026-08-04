@@ -28,7 +28,7 @@ export async function deductCredits(
   const user = session?.user as { id?: string; credits?: number } | undefined;
 
   if (!user?.id) {
-    return { success: false, remaining: 0, message: "请先登录" };
+    return { success: false, remaining: 0, message: "Please sign in first" };
   }
 
   const balance = user.credits ?? 10;
@@ -37,11 +37,11 @@ export async function deductCredits(
     return {
       success: false,
       remaining: balance,
-      message: `积分不足！需要 ${cost} 积分，当前余额 ${balance} 积分。`,
+      message: `Insufficient credits! Need ${cost}, current balance: ${balance}. Please purchase more.`,
     };
   }
 
-  return { success: true, remaining: balance - cost, message: `消耗 ${cost} 积分` };
+  return { success: true, remaining: balance - cost, message: `${cost} credits used` };
 }
 
 // Note: credits are stored in JWT session (not persistent).
@@ -50,7 +50,7 @@ export async function addCredits(
   userId: string,
   amount: number,
   _type = "purchase",
-  _description = "购买积分",
+  _description = "Purchased credits",
   _paypalOrderId?: string
 ): Promise<number> {
   const session = await auth();

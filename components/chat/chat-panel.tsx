@@ -82,7 +82,7 @@ export function ChatPanel() {
           onProviderChange={handleProviderChange}
         />
         <Button variant="ghost" size="xs" onClick={() => setMessages([])} className="text-xs text-muted-foreground">
-          清空对话
+          Clear Chat
         </Button>
       </div>
 
@@ -95,7 +95,7 @@ export function ChatPanel() {
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="输入你的问题..."
+            placeholder="Type your message..."
             rows={2}
             className="min-h-[48px] resize-none"
             onKeyDown={handleKeyDown}

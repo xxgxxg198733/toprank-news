@@ -43,13 +43,13 @@ export function UploadDropzone({ onDataParsed }: Props) {
         const sheet = workbook.Sheets[sheetName];
         rows = XLSX.utils.sheet_to_json(sheet);
       } else {
-        setError("不支持的文件格式，请上传 CSV 或 Excel 文件。");
+        setError("Unsupported file format. Please upload a CSV or Excel file.");
         setParsing(false);
         return;
       }
 
       if (rows.length === 0) {
-        setError("文件中没有数据。");
+        setError("No data found in the file.");
         setParsing(false);
         return;
       }
@@ -102,13 +102,13 @@ export function UploadDropzone({ onDataParsed }: Props) {
           {parsing ? (
             <div className="space-y-2">
               <FileSpreadsheet className="h-10 w-10 mx-auto text-primary animate-pulse" />
-              <p className="text-sm text-muted-foreground">正在解析文件...</p>
+              <p className="text-sm text-muted-foreground">Parsing file...</p>
             </div>
           ) : (
             <div className="space-y-2">
               <Upload className="h-10 w-10 mx-auto text-primary/60" />
-              <p className="text-sm font-medium">拖拽文件到此处或点击上传</p>
-              <p className="text-xs text-muted-foreground">支持 CSV、Excel (.xlsx/.xls) 格式</p>
+              <p className="text-sm font-medium">Drag & drop your file here, or click to browse</p>
+              <p className="text-xs text-muted-foreground">Supports CSV, Excel (.xlsx/.xls) formats</p>
             </div>
           )}
         </label>

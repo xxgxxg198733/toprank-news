@@ -6,11 +6,11 @@ import { MessageCircle, Image, Pen, BarChart3, Video } from "lucide-react";
 import type { ReactNode } from "react";
 
 const tools = [
-  { href: "/tools/chat", label: "AI 对话", icon: MessageCircle, desc: "多模型智能聊天" },
-  { href: "/tools/image", label: "图片生成", icon: Image, desc: "文本转图片" },
-  { href: "/tools/writing", label: "AI 写作", icon: Pen, desc: "文章改写翻译" },
-  { href: "/tools/analysis", label: "数据分析", icon: BarChart3, desc: "文件智能分析" },
-  { href: "/tools/video", label: "视频生成", icon: Video, desc: "AI 视频创作" },
+  { href: "/tools/chat", label: "AI Chat", icon: MessageCircle, desc: "Multi-model chat" },
+  { href: "/tools/image", label: "Image Gen", icon: Image, desc: "Text to image" },
+  { href: "/tools/writing", label: "Writing", icon: Pen, desc: "Rewrite & translate" },
+  { href: "/tools/analysis", label: "Analysis", icon: BarChart3, desc: "File data insights" },
+  { href: "/tools/video", label: "Video", icon: Video, desc: "AI video creation" },
 ];
 
 export function ToolShell({ children }: { children: ReactNode }) {

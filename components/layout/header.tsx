@@ -4,11 +4,11 @@ import { UserMenu } from "./user-menu";
 import { Wrench } from "lucide-react";
 
 const navLinks = [
-  { href: "/tools/chat", label: "对话" },
-  { href: "/tools/image", label: "图片" },
-  { href: "/tools/writing", label: "写作" },
-  { href: "/tools/analysis", label: "分析" },
-  { href: "/tools/video", label: "视频" },
+  { href: "/tools/chat", label: "Chat" },
+  { href: "/tools/image", label: "Image" },
+  { href: "/tools/writing", label: "Writing" },
+  { href: "/tools/analysis", label: "Analysis" },
+  { href: "/tools/video", label: "Video" },
 ];
 
 export function Header() {

@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   const ip = getClientIp(request);
   const rateLimit = checkRateLimit(ip, { interval: 60000, maxRequests: 20 });
   if (!rateLimit.allowed) {
-    return new Response("请求过于频繁，请稍后再试。", {
+    return new Response("Too many requests. Please try again later.", {
       status: 429,
       headers: { "Retry-After": String(Math.ceil((rateLimit.resetAt - Date.now()) / 1000)) },
     });
@@ -19,23 +19,23 @@ export async function POST(request: Request) {
     const { messages, tool, providerId, modelId } = body;
 
     if (!tool || !writingPrompts[tool]) {
-      return new Response("无效的写作工具类型", { status: 400 });
+      return new Response("Invalid writing tool type", { status: 400 });
     }
 
     if (!messages || !Array.isArray(messages)) {
-      return new Response("缺少 messages", { status: 400 });
+      return new Response("Missing messages", { status: 400 });
     }
 
     const prov = providerId ? getProvider(providerId) : getDefaultProvider();
     if (!prov) {
-      return new Response("没有可用的 AI 提供商", { status: 500 });
+      return new Response("No AI provider available", { status: 500 });
     }
 
     const effectiveProviderId = providerId || "deepseek";
     const effectiveModelId = modelId || getDefaultModel(effectiveProviderId);
 
     if (modelId && !isModelIdValid(modelId, effectiveProviderId)) {
-      return new Response(`无效的模型 ID: ${modelId}`, { status: 400 });
+      return new Response(`Invalid model ID: ${modelId}`, { status: 400 });
     }
 
     const systemPrompt = writingPrompts[tool];

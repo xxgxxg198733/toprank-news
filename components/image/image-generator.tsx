@@ -52,7 +52,7 @@ export function ImageGenerator() {
         img.url ? img.url : `data:${img.mediaType};base64,${img.base64}`
       ));
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "生成失败");
+      setError(err instanceof Error ? err.message : "Generation failed");
     } finally {
       setLoading(false);
     }
@@ -69,7 +69,7 @@ export function ImageGenerator() {
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row gap-2">
         <Input
-          placeholder="描述你想要的图片...（如：一只可爱的橘猫在阳光下睡觉）"
+          placeholder="Describe the image you want... (e.g. A cute orange cat sleeping in the sun)"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
@@ -112,7 +112,7 @@ export function ImageGenerator() {
             ) : (
               <Sparkles className="h-4 w-4 mr-1" />
             )}
-            生成
+            Generate
           </Button>
         </div>
       </div>
@@ -132,7 +132,7 @@ export function ImageGenerator() {
           {images.map((dataUrl, i) => (
             <div key={i} className="relative group rounded-xl overflow-hidden border bg-card">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={dataUrl} alt={`AI 生成图片 ${i + 1}`} className="w-full h-auto" />
+              <img src={dataUrl} alt={`AI Generated Image ${i + 1}`} className="w-full h-auto" />
               <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <Button size="icon-xs" variant="secondary" onClick={() => handleDownload(dataUrl, i)}>
                   <Download className="h-3.5 w-3.5" />

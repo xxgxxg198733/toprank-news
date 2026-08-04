@@ -7,9 +7,9 @@ export interface ModelInfo {
 
 export const MODEL_CATALOG: ModelInfo[] = [
   // 豆包 (ByteDance)
-  { id: "doubao-pro-256k", name: "豆包 Pro 256K", provider: "doubao", category: "chat" },
-  { id: "doubao-lite-128k", name: "豆包 Lite 128K", provider: "doubao", category: "chat" },
-  { id: "doubao-seedream-5-0-pro-260628", name: "豆包 Seedream 5.0 Pro", provider: "doubao", category: "image" },
+  { id: "doubao-pro-256k", name: "Doubao Pro 256K", provider: "doubao", category: "chat" },
+  { id: "doubao-lite-128k", name: "Doubao Lite 128K", provider: "doubao", category: "chat" },
+  { id: "doubao-seedream-5-0-pro-260628", name: "Doubao Seedream 5.0 Pro", provider: "doubao", category: "image" },
   // DeepSeek
   { id: "deepseek-chat", name: "DeepSeek Chat", provider: "deepseek", category: "chat" },
   // OpenAI

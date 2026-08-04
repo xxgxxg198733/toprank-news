@@ -14,7 +14,7 @@ export interface ProviderInfo {
 
 export function getEnabledProviders(): ProviderInfo[] {
   return [
-    { id: "doubao", name: "豆包", enabled: !!env.DOUBAO_API_KEY },
+    { id: "doubao", name: "Doubao", enabled: !!env.DOUBAO_API_KEY },
     { id: "deepseek", name: "DeepSeek", enabled: !!env.DEEPSEEK_API_KEY },
     { id: "openai", name: "OpenAI", enabled: !!env.OPENAI_API_KEY },
     { id: "anthropic", name: "Anthropic", enabled: !!env.ANTHROPIC_API_KEY },

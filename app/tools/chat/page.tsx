@@ -3,8 +3,8 @@ import { ToolShell } from "@/components/shared/tool-shell";
 import { ChatPanel } from "@/components/chat/chat-panel";
 
 export const metadata: Metadata = {
-  title: "AI 对话",
-  description: "多模型 AI 智能对话，支持 DeepSeek、GPT、Claude、Gemini，实时流式回复。",
+  title: "AI Chat",
+  description: "Multi-model AI chat with Doubao, DeepSeek, GPT, Claude, Gemini. Real-time streaming responses.",
 };
 
 export default function ChatPage() {

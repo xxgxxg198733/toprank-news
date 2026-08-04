@@ -9,17 +9,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Coins, ShoppingCart, Loader2 } from "lucide-react";
 
 const PACKAGES = [
-  { id: "basic", credits: 100, price: 5, name: "基础包" },
-  { id: "standard", credits: 500, price: 20, name: "标准包" },
-  { id: "premium", credits: 1500, price: 50, name: "高级包" },
+  { id: "basic", credits: 100, price: 5, name: "Starter" },
+  { id: "standard", credits: 500, price: 20, name: "Standard" },
+  { id: "premium", credits: 1500, price: 50, name: "Premium" },
 ];
 
 const creditUsageCosts = [
-  { tool: "AI 对话", cost: "1 积分/次" },
-  { tool: "AI 写作", cost: "2 积分/次" },
-  { tool: "数据分析", cost: "3 积分/次" },
-  { tool: "图片生成", cost: "5 积分/次" },
-  { tool: "视频生成", cost: "10 积分/次" },
+  { tool: "AI Chat", cost: "1 credit" },
+  { tool: "AI Writing", cost: "2 credits" },
+  { tool: "Data Analysis", cost: "3 credits" },
+  { tool: "Image Generation", cost: "5 credits" },
+  { tool: "Video Generation", cost: "10 credits" },
 ];
 
 export default function ProfilePage() {
@@ -38,7 +38,7 @@ export default function ProfilePage() {
       fetch("/api/credits")
         .then((r) => r.json())
         .then((data) => setBalance(data.balance))
-        .catch(() => setError("获取积分信息失败"));
+        .catch(() => setError("Failed to load credit info"));
     }
   }, [status, router]);
 
@@ -101,11 +101,11 @@ export default function ProfilePage() {
         <CardContent className="py-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground mb-1">积分余额</p>
+              <p className="text-sm text-muted-foreground mb-1">Credit Balance</p>
               <p className="text-4xl font-extrabold text-primary">
                 {balance !== null ? balance : "..."}
               </p>
-              <p className="text-xs text-muted-foreground mt-1">新用户登录即送 10 积分</p>
+              <p className="text-xs text-muted-foreground mt-1">New users get 10 free credits on sign in</p>
             </div>
             <Coins className="h-10 w-10 text-primary/50" />
           </div>
@@ -115,7 +115,7 @@ export default function ProfilePage() {
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
-            <ShoppingCart className="h-5 w-5" /> 购买积分 (PayPal)
+            <ShoppingCart className="h-5 w-5" /> Buy Credits (PayPal)
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -129,7 +129,7 @@ export default function ProfilePage() {
                 onClick={() => handleBuy(pkg.id)}
               >
                 <span className="text-lg font-bold text-primary">{pkg.credits}</span>
-                <span className="text-xs text-muted-foreground">积分</span>
+                <span className="text-xs text-muted-foreground">credits</span>
                 <span className="text-xs font-medium mt-1">${pkg.price}</span>
               </Button>
             ))}
@@ -144,7 +144,7 @@ export default function ProfilePage() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">积分消耗规则</CardTitle>
+          <CardTitle className="text-lg">Credit Usage Rates</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">

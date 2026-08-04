@@ -22,7 +22,7 @@ export function VideoForm() {
       <Alert>
         <AlertCircle className="h-4 w-4" />
         <AlertDescription>
-          视频生成功能需要配置 Fal.ai API Key。请在 <code className="text-xs bg-muted px-1 rounded">.env.local</code> 中设置 <code className="text-xs bg-muted px-1 rounded">FAL_KEY</code> 后使用。
+          Video generation requires a Fal.ai API Key. Set <code className="text-xs bg-muted px-1 rounded">FAL_KEY</code> in <code className="text-xs bg-muted px-1 rounded">.env.local</code> to use this feature.
           <br />
           支持的模型：Kling v2、MiniMax 等。
           <Button variant="link" size="xs" className="px-0" onClick={() => setSubmitted(false)}>
@@ -36,7 +36,7 @@ export function VideoForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <Textarea
-        placeholder="描述你想要的视频内容...（如：一只金毛犬在海边奔跑，夕阳西下，电影质感）"
+        placeholder="Describe the video you want... (e.g. A golden retriever running on the beach at sunset, cinematic quality)"
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
         rows={4}
@@ -44,7 +44,7 @@ export function VideoForm() {
       />
       <div className="flex gap-2">
         <Button type="submit" disabled={!prompt.trim()}>
-          <Video className="h-4 w-4 mr-1" /> 生成视频
+          <Video className="h-4 w-4 mr-1" /> Generate Video
         </Button>
         <span className="text-xs text-muted-foreground self-center">
           需要配置 Fal.ai API Key

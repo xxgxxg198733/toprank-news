@@ -6,13 +6,13 @@ export async function POST(request: Request) {
     const { prompt, providerId = "doubao", modelId = "doubao-seedream-5-0-pro-260628", size = "1024x1024", n = 1 } = body;
 
     if (!prompt || typeof prompt !== "string" || prompt.trim().length === 0) {
-      return new Response("请输入图片描述", { status: 400 });
+      return new Response("Please enter an image description", { status: 400 });
     }
 
     // 豆包 uses direct API call (returns URL, not base64)
     if (providerId === "doubao") {
       if (!env.DOUBAO_API_KEY) {
-        return new Response("请配置 DOUBAO_API_KEY 环境变量", { status: 500 });
+        return new Response("Please configure DOUBAO_API_KEY environment variable", { status: 500 });
       }
 
       const doubaoRes = await fetch("https://ark.cn-beijing.volces.com/api/v3/images/generations", {
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
       if (!doubaoRes.ok) {
         const err = await doubaoRes.text();
         console.error("Doubao image error:", err);
-        return new Response(`豆包图片生成失败: ${err}`, { status: 500 });
+        return new Response(`Doubao image generation failed: ${err}`, { status: 500 });
       }
 
       const doubaoData = await doubaoRes.json();
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
 
     const prov = getProvider(providerId) || getDefaultProvider();
     if (!prov) {
-      return new Response("没有可用的 AI 提供商", { status: 500 });
+      return new Response("No AI provider available", { status: 500 });
     }
 
     const result = await generateImage({

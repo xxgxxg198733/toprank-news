@@ -7,7 +7,7 @@ export async function POST(request: Request) {
   const ip = getClientIp(request);
   const rateLimit = checkRateLimit(ip, { interval: 60000, maxRequests: 15 });
   if (!rateLimit.allowed) {
-    return new Response("请求过于频繁，请稍后再试。", { status: 429 });
+    return new Response("Too many requests. Please try again later.", { status: 429 });
   }
 
   try {
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     const { messages, columns, sampleRows, question, providerId, modelId } = body;
 
     if (!messages || !Array.isArray(messages)) {
-      return new Response("请上传数据文件", { status: 400 });
+      return new Response("Please upload a data file", { status: 400 });
     }
 
     const prov = providerId ? getProvider(providerId) : getDefaultProvider();
@@ -34,18 +34,17 @@ export async function POST(request: Request) {
     const result = streamText({
       model: prov(effectiveModelId),
       messages: await convertToModelMessages(messages),
-      system: `你是一个专业的数据分析师。分析用户提供的数据并给出有价值的洞察。
+      system: `You are a professional data analyst. Analyze user-provided data and provide valuable insights.
 
 ${dataSummary}
 
-分析要求：
-- 数据概览：行数、列数、数据类型
-- 描述性统计：数值列的均值、中位数、范围等
-- 趋势和模式：发现数据中的规律
-- 异常值检测：指出可能的异常
-- 业务建议：基于数据的可操作建议
-- 用表格展示关键数据
-- 用中文回复`,
+Analysis requirements:
+- Data overview: row count, column count, data types
+- Descriptive statistics: mean, median, range for numeric columns
+- Trends and patterns: discover regularities in the data
+- Anomaly detection: identify potential outliers
+- Business recommendations: actionable advice based on data
+- Present key data in tables`,
       temperature: 0.3,
     });
 

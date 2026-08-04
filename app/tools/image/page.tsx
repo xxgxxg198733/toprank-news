@@ -3,17 +3,17 @@ import { ToolShell } from "@/components/shared/tool-shell";
 import { ImageGenerator } from "@/components/image/image-generator";
 
 export const metadata: Metadata = {
-  title: "图片生成",
-  description: "AI 图片生成工具，用文字描述创建精美图片，支持多种风格和尺寸。",
+  title: "Image Generation",
+  description: "AI Image Generator — create stunning images from text descriptions. Multiple styles and sizes.",
 };
 
 export default function ImagePage() {
   return (
     <ToolShell>
       <div>
-        <h2 className="text-xl font-bold mb-1">图片生成</h2>
+        <h2 className="text-xl font-bold mb-1">Image Generation</h2>
         <p className="text-sm text-muted-foreground mb-4">
-          用文字描述生成 AI 图片 · 支持多种尺寸
+          AI Image Generation from Text · Multiple Sizes
         </p>
         <ImageGenerator />
       </div>

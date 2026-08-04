@@ -45,7 +45,7 @@ export function AnalysisShell() {
   const handleAnalyze = () => {
     if (rows.length === 0) return;
     setReportContent("");
-    const msg = question || "请分析数据并给出洞察";
+    const msg = question || "Please analyze the data and provide insights";
     sendMessage({ text: msg });
   };
 
@@ -68,7 +68,7 @@ export function AnalysisShell() {
             <div className="flex items-center gap-2 px-4 py-2 bg-muted/50 border-b">
               <Table className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm font-medium">
-                数据预览 ({columns.length} 列, {rows.length} 行)
+                Data Preview ({columns.length} columns, {rows.length} rows)
               </span>
             </div>
             <div className="overflow-x-auto max-h-64">
@@ -100,7 +100,7 @@ export function AnalysisShell() {
 
           <div className="flex gap-2">
             <Input
-              placeholder="向 AI 提问（可选，如：这些数据的趋势是什么？）"
+              placeholder="Ask AI a question (optional, e.g. What are the trends?)"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               className="flex-1 text-sm"
@@ -108,11 +108,11 @@ export function AnalysisShell() {
             />
             {isLoading ? (
               <Button type="button" variant="destructive" size="sm" onClick={() => stop()}>
-                <Square className="h-4 w-4 mr-1" /> 停止
+                <Square className="h-4 w-4 mr-1" /> Stop
               </Button>
             ) : (
               <Button type="button" size="sm" disabled={rows.length === 0} onClick={handleAnalyze}>
-                <Send className="h-4 w-4 mr-1" /> 分析
+                <Send className="h-4 w-4 mr-1" /> Analyze
               </Button>
             )}
           </div>
