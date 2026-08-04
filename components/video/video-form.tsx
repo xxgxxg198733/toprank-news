@@ -81,7 +81,7 @@ export function VideoForm() {
       />
 
       <div className="flex gap-2 items-center">
-        <Button type="submit" disabled={!prompt.trim() || isGenerating}>
+        <Button type="submit" disabled={!prompt.trim() || !!isGenerating}>
           {isGenerating ? (
             <Loader2 className="h-4 w-4 animate-spin mr-1" />
           ) : (
