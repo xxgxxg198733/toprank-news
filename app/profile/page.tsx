@@ -105,7 +105,7 @@ export default function ProfilePage() {
               <p className="text-4xl font-extrabold text-primary">
                 {balance !== null ? balance : "..."}
               </p>
-              <p className="text-xs text-muted-foreground mt-1">Purchase credits to use all AI tools</p>
+              <p className="text-xs text-muted-foreground mt-1">New users get 20 free credits on sign in</p>
             </div>
             <Coins className="h-10 w-10 text-primary/50" />
           </div>

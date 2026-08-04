@@ -9,7 +9,7 @@ export async function GET() {
 
   const user = session.user as { credits?: number };
   return NextResponse.json({
-    balance: user.credits ?? 0,
+    balance: user.credits ?? 20,
     transactions: [],
   });
 }

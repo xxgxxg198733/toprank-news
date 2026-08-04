@@ -25,8 +25,8 @@ export default function LoginPage() {
           <div className="flex items-center gap-3 p-4 bg-primary/5 rounded-lg">
             <Sparkles className="h-5 w-5 text-primary flex-shrink-0" />
             <div className="text-xs text-muted-foreground">
-              Purchase credits via <strong className="text-primary">PayPal</strong> to use AI tools.
-              Credits never expire — use them anytime.
+              New users get <strong className="text-primary">20 free credits</strong> to try all tools.
+              Purchase more credits via PayPal when needed.
             </div>
           </div>
         </CardContent>
