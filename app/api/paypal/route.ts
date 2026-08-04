@@ -4,9 +4,9 @@ import { addCredits } from "@/lib/credits";
 
 // Credit packages
 const PACKAGES: Record<string, { credits: number; price: number; name: string }> = {
-  "basic": { credits: 50, price: 5, name: "Starter - 50 Credits" },
-  "standard": { credits: 200, price: 15, name: "Standard - 200 Credits" },
-  "premium": { credits: 600, price: 35, name: "Premium - 600 Credits" },
+  "basic": { credits: 100, price: 20.10, name: "Starter - 100 Credits" },
+  "standard": { credits: 500, price: 45, name: "Standard - 500 Credits" },
+  "premium": { credits: 1500, price: 80, name: "Premium - 1500 Credits" },
 };
 
 export async function POST(request: Request) {

@@ -16,7 +16,7 @@ const tools = [
     icon: Image,
     title: "Image Generation",
     desc: "Create stunning images from text descriptions. Multiple styles and sizes supported.",
-    features: ["Text to image", "Multiple styles", "10 credits/img"],
+    features: ["Text to image", "Multiple styles", "8 credits/img"],
     color: "from-purple-500 to-pink-500",
   },
   {
@@ -24,7 +24,7 @@ const tools = [
     icon: Pen,
     title: "AI Writing",
     desc: "Article generation, content rewriting, multi-language translation, and SEO optimization.",
-    features: ["Article generation", "Rewrite & polish", "3 credits/req", "SEO optimization"],
+    features: ["Article generation", "Rewrite & polish", "2 credits/req", "SEO optimization"],
     color: "from-green-500 to-emerald-600",
   },
   {
@@ -32,7 +32,7 @@ const tools = [
     icon: BarChart3,
     title: "Data Analysis",
     desc: "Upload CSV/Excel files. AI auto-analyzes trends, generates insights and charts.",
-    features: ["File upload", "Trend analysis", "5 credits/report"],
+    features: ["File upload", "Trend analysis", "3 credits/report"],
     color: "from-orange-500 to-red-500",
   },
   {
@@ -40,7 +40,7 @@ const tools = [
     icon: Video,
     title: "Video Generation",
     desc: "Turn text ideas into dynamic videos with AI. Multiple styles and resolutions.",
-    features: ["Text to video", "Multiple styles", "25 credits/video"],
+    features: ["Text to video", "Multiple styles", "20 credits/video"],
     color: "from-cyan-500 to-blue-600",
   },
 ];

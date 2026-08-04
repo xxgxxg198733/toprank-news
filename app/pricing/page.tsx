@@ -9,22 +9,22 @@ export const metadata: Metadata = {
 const packages = [
   {
     name: "Starter",
-    credits: 50,
-    price: 5,
+    credits: 100,
+    price: 20.10,
     desc: "Perfect for trying out all tools",
     popular: false,
   },
   {
     name: "Standard",
-    credits: 200,
-    price: 15,
+    credits: 500,
+    price: 45,
     desc: "Best value for regular users",
     popular: true,
   },
   {
     name: "Premium",
-    credits: 600,
-    price: 35,
+    credits: 1500,
+    price: 80,
     desc: "For power users and creators",
     popular: false,
   },
@@ -32,10 +32,10 @@ const packages = [
 
 const costs = [
   { tool: "AI Chat", cost: "1 credit / message" },
-  { tool: "AI Writing", cost: "3 credits / request" },
-  { tool: "Data Analysis", cost: "5 credits / report" },
-  { tool: "Image Generation", cost: "10 credits / image" },
-  { tool: "Video Generation", cost: "25 credits / video" },
+  { tool: "AI Writing", cost: "2 credits / request" },
+  { tool: "Data Analysis", cost: "3 credits / report" },
+  { tool: "Image Generation", cost: "8 credits / image" },
+  { tool: "Video Generation", cost: "20 credits / video" },
 ];
 
 export default function PricingPage() {
