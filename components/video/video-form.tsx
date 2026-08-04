@@ -108,11 +108,9 @@ export function VideoForm() {
         <div className="rounded-xl overflow-hidden border bg-card">
           <video controls className="w-full" src={videoUrl} />
           <div className="p-2 flex justify-end">
-            <Button size="sm" variant="outline" asChild>
-              <a href={videoUrl} target="_blank" rel="noopener noreferrer">
+            <a href={videoUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center rounded-lg border border-border bg-background hover:bg-muted hover:text-foreground h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] font-medium transition-all">
                 <Download className="h-3.5 w-3.5 mr-1" /> Download
-              </a>
-            </Button>
+            </a>
           </div>
         </div>
       )}
