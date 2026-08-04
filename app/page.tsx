@@ -48,14 +48,14 @@ const tools = [
 const features = [
   { icon: Sparkles, title: "Multi-Model Switching", desc: "Integrated DeepSeek, GPT, Claude, Gemini and more. Choose freely based on your needs." },
   { icon: Shield, title: "Data Security", desc: "Your API keys are server-side only. Never uploaded, shared, or used for any other purpose." },
-  { icon: Zap, title: "No Registration Required", desc: "Just log in with Google and start using all tools immediately. No sign-up forms." },
+  { icon: Zap, title: "Pay As You Go", desc: "Purchase credits via PayPal only when you need them. No subscription, no monthly fees." },
 ];
 
 const faqs = [
-  { q: "Is it free to use?", a: "The tools are completely free. You just need to provide your own AI provider API key, and fees are paid directly to the provider based on usage." },
+  { q: "Is it free to use?", a: "You need to purchase credits to use the AI tools. The tools themselves don't charge per-use fees beyond the credits you buy — you're paying for the AI API usage." },
   { q: "Are my API keys safe?", a: "API keys are stored only in your environment variables. All AI requests are proxied through server-side API routes and never exposed to the frontend." },
   { q: "Which AI models are supported?", a: "Currently supporting Doubao, DeepSeek, OpenAI GPT, Anthropic Claude, Google Gemini, and more coming soon." },
-  { q: "Do I need to register?", a: "Nope! Just log in with Google, get 10 free credits, and you're good to go." },
+  { q: "Do I need to register?", a: "Nope! Just sign in with Google, purchase credits, and you're ready to use all tools." },
 ];
 
 export default function Home() {
@@ -71,7 +71,7 @@ export default function Home() {
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
               An integrated collection of AI tools — Chat, Image Generation, Writing, Data Analysis, Video Creation.
-              No registration needed — just log in and start.
+              No subscription — purchase credits and pay as you go.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link href="/tools/chat" className="inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/80 h-9 gap-1.5 px-8 text-sm font-medium transition-all">

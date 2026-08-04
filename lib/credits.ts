@@ -31,7 +31,7 @@ export async function deductCredits(
     return { success: false, remaining: 0, message: "Please sign in first" };
   }
 
-  const balance = user.credits ?? 10;
+  const balance = user.credits ?? 0;
 
   if (balance < cost) {
     return {

@@ -16,9 +16,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id || token.sub;
-        // New user: give 10 free credits
+        // Credits start at 0 — must purchase to use
         if (token.credits === undefined) {
-          token.credits = 10;
+          token.credits = 0;
         }
       }
       return token;
@@ -27,7 +27,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (session.user) {
         const user = session.user as unknown as Record<string, unknown>;
         user.id = token.sub || "";
-        user.credits = (token.credits as number) ?? 10;
+        user.credits = (token.credits as number) ?? 0;
       }
       return session;
     },

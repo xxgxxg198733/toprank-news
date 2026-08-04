@@ -11,7 +11,7 @@ export default function LoginPage() {
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Welcome to Zicisi AI</CardTitle>
-          <CardDescription>Log in to access all AI tools. New users get 10 free credits.</CardDescription>
+          <CardDescription>Log in to access AI tools. Purchase credits to get started.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <Button
@@ -25,8 +25,8 @@ export default function LoginPage() {
           <div className="flex items-center gap-3 p-4 bg-primary/5 rounded-lg">
             <Sparkles className="h-5 w-5 text-primary flex-shrink-0" />
             <div className="text-xs text-muted-foreground">
-              New users get <strong className="text-primary">10 free credits</strong> to try all AI tools.
-              Purchase more credits via PayPal when needed.
+              Purchase credits via <strong className="text-primary">PayPal</strong> to use AI tools.
+              Credits never expire — use them anytime.
             </div>
           </div>
         </CardContent>
