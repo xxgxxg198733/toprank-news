@@ -14,11 +14,21 @@ export interface ProviderInfo {
 
 export function getEnabledProviders(): ProviderInfo[] {
   return [
+    { id: "doubao", name: "豆包", enabled: !!env.DOUBAO_API_KEY },
     { id: "deepseek", name: "DeepSeek", enabled: !!env.DEEPSEEK_API_KEY },
     { id: "openai", name: "OpenAI", enabled: !!env.OPENAI_API_KEY },
     { id: "anthropic", name: "Anthropic", enabled: !!env.ANTHROPIC_API_KEY },
     { id: "google", name: "Google Gemini", enabled: !!env.GOOGLE_GENERATIVE_AI_API_KEY },
   ];
+}
+
+function getDoubaoModel() {
+  if (!env.DOUBAO_API_KEY) return null;
+  // 豆包 uses OpenAI-compatible API
+  return createOpenAI({
+    apiKey: env.DOUBAO_API_KEY,
+    baseURL: "https://ark.cn-beijing.volces.com/api/v3",
+  });
 }
 
 function getDeepSeekModel() {
@@ -43,6 +53,7 @@ function getGoogleModel() {
 
 export function getProvider(providerId: string) {
   switch (providerId) {
+    case "doubao": return getDoubaoModel();
     case "deepseek": return getDeepSeekModel();
     case "openai": return getOpenAIModel();
     case "anthropic": return getAnthropicModel();
@@ -52,13 +63,14 @@ export function getProvider(providerId: string) {
 }
 
 export function getDefaultProvider() {
-  return getDeepSeekModel() || getOpenAIModel() || getAnthropicModel() || getGoogleModel();
+  return getDoubaoModel() || getDeepSeekModel() || getOpenAIModel() || getAnthropicModel() || getGoogleModel();
 }
 
 export function getDefaultProviderId(): string {
+  if (env.DOUBAO_API_KEY) return "doubao";
   if (env.DEEPSEEK_API_KEY) return "deepseek";
   if (env.OPENAI_API_KEY) return "openai";
   if (env.ANTHROPIC_API_KEY) return "anthropic";
   if (env.GOOGLE_GENERATIVE_AI_API_KEY) return "google";
-  return "deepseek"; // fallback
+  return "doubao"; // fallback
 }

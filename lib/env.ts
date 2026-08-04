@@ -1,6 +1,7 @@
 import "server-only";
 
 export const env = {
+  DOUBAO_API_KEY: process.env.DOUBAO_API_KEY,
   DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY,
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,

@@ -14,14 +14,21 @@ const sizes = [
 ];
 
 const models = [
+  { value: "doubao-seedream-5-0-pro-260628", label: "豆包 Seedream 5.0" },
   { value: "gpt-image-1", label: "GPT Image 1" },
   { value: "dall-e-3", label: "DALL·E 3" },
+];
+
+const providers = [
+  { value: "doubao", label: "豆包" },
+  { value: "openai", label: "OpenAI" },
 ];
 
 export function ImageGenerator() {
   const [prompt, setPrompt] = useState("");
   const [size, setSize] = useState("1024x1024");
-  const [modelId, setModelId] = useState("gpt-image-1");
+  const [modelId, setModelId] = useState("doubao-seedream-5-0-pro-260628");
+  const [providerId, setProviderId] = useState("doubao");
   const [loading, setLoading] = useState(false);
   const [images, setImages] = useState<string[]>([]);
   const [error, setError] = useState("");
@@ -34,15 +41,15 @@ export function ImageGenerator() {
       const res = await fetch("/api/image/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: prompt.trim(), size, modelId, providerId: "openai", n: 1 }),
+        body: JSON.stringify({ prompt: prompt.trim(), size, modelId, providerId, n: 1 }),
       });
       if (!res.ok) {
         const text = await res.text();
         throw new Error(text);
       }
       const data = await res.json();
-      setImages(data.images.map((img: { base64: string; mediaType: string }) =>
-        `data:${img.mediaType};base64,${img.base64}`
+      setImages(data.images.map((img: { base64: string | null; url: string | null; mediaType: string }) =>
+        img.url ? img.url : `data:${img.mediaType};base64,${img.base64}`
       ));
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "生成失败");
@@ -69,6 +76,16 @@ export function ImageGenerator() {
           className="flex-1"
         />
         <div className="flex gap-2">
+          <Select value={providerId} onValueChange={(v) => { if (v) { setProviderId(v); setModelId(v === "doubao" ? "doubao-seedream-5-0-pro-260628" : "gpt-image-1"); } }}>
+            <SelectTrigger className="w-[80px] text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {providers.map((p) => (
+                <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Select value={modelId} onValueChange={(v) => v && setModelId(v)}>
             <SelectTrigger className="w-[130px] text-xs">
               <SelectValue />

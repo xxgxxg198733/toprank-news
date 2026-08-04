@@ -6,6 +6,10 @@ export interface ModelInfo {
 }
 
 export const MODEL_CATALOG: ModelInfo[] = [
+  // 豆包 (ByteDance)
+  { id: "doubao-pro-256k", name: "豆包 Pro 256K", provider: "doubao", category: "chat" },
+  { id: "doubao-lite-128k", name: "豆包 Lite 128K", provider: "doubao", category: "chat" },
+  { id: "doubao-seedream-5-0-pro-260628", name: "豆包 Seedream 5.0 Pro", provider: "doubao", category: "image" },
   // DeepSeek
   { id: "deepseek-chat", name: "DeepSeek Chat", provider: "deepseek", category: "chat" },
   // OpenAI
@@ -45,6 +49,7 @@ export function getDefaultModel(providerId: string): string {
 
   // Fallback based on provider
   const defaults: Record<string, string> = {
+    doubao: "doubao-pro-256k",
     deepseek: "deepseek-chat",
     openai: "gpt-5.1",
     anthropic: "claude-sonnet-4-5",
