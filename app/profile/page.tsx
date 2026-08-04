@@ -9,17 +9,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Coins, ShoppingCart, Loader2 } from "lucide-react";
 
 const PACKAGES = [
-  { id: "basic", credits: 100, price: 5, name: "Starter" },
-  { id: "standard", credits: 500, price: 20, name: "Standard" },
-  { id: "premium", credits: 1500, price: 50, name: "Premium" },
+  { id: "basic", credits: 50, price: 5, name: "Starter" },
+  { id: "standard", credits: 200, price: 15, name: "Standard" },
+  { id: "premium", credits: 600, price: 35, name: "Premium" },
 ];
 
 const creditUsageCosts = [
   { tool: "AI Chat", cost: "1 credit" },
-  { tool: "AI Writing", cost: "2 credits" },
-  { tool: "Data Analysis", cost: "3 credits" },
-  { tool: "Image Generation", cost: "5 credits" },
-  { tool: "Video Generation", cost: "10 credits" },
+  { tool: "AI Writing", cost: "3 credits" },
+  { tool: "Data Analysis", cost: "5 credits" },
+  { tool: "Image Generation", cost: "10 credits" },
+  { tool: "Video Generation", cost: "25 credits" },
 ];
 
 export default function ProfilePage() {

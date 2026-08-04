@@ -8,10 +8,10 @@ import { auth } from "./auth";
 
 export const CREDIT_COSTS: Record<string, number> = {
   chat: 1,
-  image: 5,
-  writing: 2,
-  analysis: 3,
-  video: 10,
+  writing: 3,
+  analysis: 5,
+  image: 10,
+  video: 25,
 };
 
 export async function getCredits(): Promise<number> {

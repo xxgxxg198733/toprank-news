@@ -11,6 +11,8 @@ const navLinks = [
   { href: "/tools/video", label: "Video" },
 ];
 
+const pricingLink = { href: "/pricing", label: "Pricing" };
+
 export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -29,6 +31,12 @@ export function Header() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href={pricingLink.href}
+            className="px-3 py-1.5 text-sm font-medium bg-primary/10 text-primary hover:bg-primary/20 rounded-md transition-colors"
+          >
+            {pricingLink.label}
+          </Link>
         </nav>
         <div className="flex items-center gap-2">
           <UserMenu />
