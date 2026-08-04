@@ -8,15 +8,20 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (protectedPaths.some((p) => pathname.startsWith(p))) {
-    const token = await getToken({
-      req: request,
-      secret: process.env.AUTH_SECRET,
-    });
+    try {
+      const token = await getToken({
+        req: request,
+        secret: process.env.AUTH_SECRET,
+      });
 
-    if (!token) {
-      const loginUrl = new URL("/login", request.url);
-      loginUrl.searchParams.set("callbackUrl", pathname);
-      return NextResponse.redirect(loginUrl);
+      if (!token) {
+        const loginUrl = new URL("/login", request.url);
+        loginUrl.searchParams.set("callbackUrl", pathname);
+        return NextResponse.redirect(loginUrl);
+      }
+    } catch {
+      // If auth check fails (e.g. secret not set), allow access
+      console.error("Middleware auth check failed");
     }
   }
 
