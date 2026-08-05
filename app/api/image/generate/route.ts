@@ -1,6 +1,20 @@
 import { env } from "@/lib/env";
+import { auth } from "@/lib/auth";
+import { deductCredits } from "@/lib/credits";
 
 export async function POST(request: Request) {
+  // Auth check
+  const session = await auth();
+  if (!session?.user) {
+    return new Response("请先登录后再使用 AI 工具。", { status: 401 });
+  }
+
+  // Credit check
+  const creditCheck = await deductCredits("image");
+  if (!creditCheck.success) {
+    return new Response(creditCheck.message, { status: 402 });
+  }
+
   try {
     const body = await request.json();
     const { prompt, providerId = "doubao", modelId = "doubao-seedream-5-0-pro-260628", size = "1024x1024", n = 1 } = body;

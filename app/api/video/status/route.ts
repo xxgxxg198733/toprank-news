@@ -1,8 +1,14 @@
 import { env } from "@/lib/env";
+import { auth } from "@/lib/auth";
 
 const VOLC_BASE = "https://ark.cn-beijing.volces.com/api/v3";
 
 export async function GET(request: Request) {
+  // Auth check
+  const session = await auth();
+  if (!session?.user) {
+    return new Response("请先登录后再使用 AI 工具。", { status: 401 });
+  }
   const { searchParams } = new URL(request.url);
   const taskId = searchParams.get("id");
 

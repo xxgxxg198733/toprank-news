@@ -1,8 +1,22 @@
 import { env } from "@/lib/env";
+import { auth } from "@/lib/auth";
+import { deductCredits } from "@/lib/credits";
 
 const VOLC_BASE = "https://ark.cn-beijing.volces.com/api/v3";
 
 export async function POST(request: Request) {
+  // Auth check
+  const session = await auth();
+  if (!session?.user) {
+    return new Response("请先登录后再使用 AI 工具。", { status: 401 });
+  }
+
+  // Credit check
+  const creditCheck = await deductCredits("video");
+  if (!creditCheck.success) {
+    return new Response(creditCheck.message, { status: 402 });
+  }
+
   try {
     const body = await request.json();
     const {

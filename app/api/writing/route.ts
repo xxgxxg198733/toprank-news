@@ -3,8 +3,22 @@ import { getProvider, getDefaultProvider } from "@/lib/ai/providers";
 import { isModelIdValid, getDefaultModel } from "@/lib/ai/models";
 import { writingPrompts } from "@/lib/ai/prompts";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { auth } from "@/lib/auth";
+import { deductCredits } from "@/lib/credits";
 
 export async function POST(request: Request) {
+  // Auth check
+  const session = await auth();
+  if (!session?.user) {
+    return new Response("请先登录后再使用 AI 工具。", { status: 401 });
+  }
+
+  // Credit check
+  const creditCheck = await deductCredits("writing");
+  if (!creditCheck.success) {
+    return new Response(creditCheck.message, { status: 402 });
+  }
+
   const ip = getClientIp(request);
   const rateLimit = checkRateLimit(ip, { interval: 60000, maxRequests: 20 });
   if (!rateLimit.allowed) {
