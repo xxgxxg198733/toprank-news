@@ -6,13 +6,8 @@ export const metadata: Metadata = {
   description:
     "DALL·E vs Midjourney vs Seedream in 2026: hands-on comparison of the best AI image generators for quality, speed and price. Text to image, AI art, tested.",
   keywords: [
-    "AI image generator",
-    "text to image",
-    "AI art",
-    "DALL·E vs Midjourney",
-    "Seedream",
-    "Volcano Engine",
-    "best AI image generator 2026",
+    "AI image generator", "text to image", "AI art", "DALL·E vs Midjourney", "Seedream",
+    "AI图片生成", "AI绘画", "文字转图片", "免费AI生图", "豆包Seedream", "DALL·E生图",
   ],
   alternates: {
     canonical: "https://zicisi.fun/blog/ai-image-generator-comparison",

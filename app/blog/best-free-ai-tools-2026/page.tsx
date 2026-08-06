@@ -6,12 +6,8 @@ export const metadata: Metadata = {
   description:
     "Tested 10 best free AI tools in 2026 — chat, image, writing and more. Find the perfect free AI toolkit with hands-on reviews. No credit card needed.",
   keywords: [
-    "free AI tools 2026",
-    "best AI tools",
-    "AI toolkit",
-    "free AI chatbot",
-    "free AI image generator",
-    "best free AI tools 2026",
+    "free AI tools 2026", "best AI tools", "AI toolkit", "free AI chatbot",
+    "免费AI工具", "AI工具推荐", "免费AI聊天", "AI工具箱", "2026AI工具",
   ],
   alternates: {
     canonical: "https://zicisi.fun/blog/best-free-ai-tools-2026",

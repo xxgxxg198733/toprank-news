@@ -6,12 +6,8 @@ export const metadata: Metadata = {
   description:
     "DeepSeek vs ChatGPT 2026: we test reasoning, coding, speed and price to crown the best AI chatbot. Honest AI chat comparison with real benchmarks.",
   keywords: [
-    "DeepSeek vs ChatGPT",
-    "best AI chatbot",
-    "AI chat comparison",
-    "DeepSeek R1",
-    "ChatGPT 2026",
-    "free AI chatbot",
+    "DeepSeek vs ChatGPT", "best AI chatbot", "AI chat comparison",
+    "DeepSeek对比ChatGPT", "AI聊天对比", "免费AI聊天", "DeepSeek免费", "AI聊天推荐",
   ],
   alternates: {
     canonical: "https://zicisi.fun/blog/deepseek-vs-chatgpt",
