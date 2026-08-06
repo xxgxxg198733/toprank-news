@@ -11,7 +11,7 @@ export default function LoginPage() {
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Welcome to Zicisi AI</CardTitle>
-          <CardDescription>Log in to access AI tools. Purchase credits to get started.</CardDescription>
+          <CardDescription>Sign in to access all AI tools. Get 50 free credits instantly — no credit card needed.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <Button
