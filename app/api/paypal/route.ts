@@ -9,21 +9,50 @@ const PACKAGES: Record<string, { credits: number; price: number; name: string }>
   premium: { credits: 1500, price: 80, name: "Premium - 1500 Credits" },
 };
 
-// Auto-detect sandbox vs production based on client ID prefix
+/**
+ * Get PayPal API base URL.
+ * Priority: PAYPAL_API_BASE env var > auto-detect from client ID > sandbox fallback
+ */
 function getPayPalBase(): string {
+  // Explicit override
+  if (process.env.PAYPAL_API_BASE) {
+    return process.env.PAYPAL_API_BASE;
+  }
+
   const clientId = process.env.PAYPAL_CLIENT_ID || "";
-  // Sandbox client IDs start with "SB" or "BA" (sandbox REST app)
-  // Production client IDs start with "AQ" or "AR" or similar
-  if (clientId.startsWith("SB") || clientId.startsWith("BA")) {
+
+  // PayPal Sandbox client IDs: start with "SB" or have "sandbox" in them
+  // PayPal Live client IDs: start with "AQ", "AR", "Ab", "Af", etc.
+  if (clientId.startsWith("SB")) {
     return "https://api-m.sandbox.paypal.com";
   }
-  return "https://api-m.paypal.com";
+
+  // For any other prefix (BA, A*, etc.) — default to sandbox since
+  // sandbox apps can have various prefixes depending on when they were created.
+  // Only use production if explicitly set via PAYPAL_API_BASE.
+  return "https://api-m.sandbox.paypal.com";
 }
 
-function getPayPalAuth(): string {
-  return Buffer.from(
-    `${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_CLIENT_SECRET}`
-  ).toString("base64");
+async function getPayPalAccessToken(base: string): Promise<string> {
+  const clientId = process.env.PAYPAL_CLIENT_ID || "";
+  const clientSecret = process.env.PAYPAL_CLIENT_SECRET || "";
+
+  const res = await fetch(`${base}/v1/oauth2/token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString("base64")}`,
+    },
+    body: "grant_type=client_credentials",
+  });
+
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`PayPal auth failed: ${res.status} ${errText}`);
+  }
+
+  const data = await res.json();
+  return data.access_token;
 }
 
 export async function POST(request: Request) {
@@ -32,11 +61,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "请先登录" }, { status: 401 });
   }
 
+  let accessToken: string;
+
   try {
+    const base = getPayPalBase();
+    accessToken = await getPayPalAccessToken(base);
+
     const body = await request.json();
     const { action, pkg, orderId } = body;
-    const base = getPayPalBase();
-    const auth = getPayPalAuth();
 
     // Step 1: Create PayPal order
     if (action === "create-order") {
@@ -49,7 +81,7 @@ export async function POST(request: Request) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Basic ${auth}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           intent: "CAPTURE",
@@ -80,7 +112,6 @@ export async function POST(request: Request) {
       }
 
       const order = await paypalRes.json();
-      // Find the approval URL — PayPal returns rel="payer-action" (v2 REST API)
       const approveLink =
         order.links?.find((l: { rel: string; href: string }) =>
           l.rel === "payer-action" || l.rel === "approve"
@@ -99,13 +130,17 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "缺少订单 ID" }, { status: 400 });
       }
 
+      const base = getPayPalBase();
+      // Refresh token for capture
+      const captureToken = await getPayPalAccessToken(base);
+
       const captureRes = await fetch(
         `${base}/v2/checkout/orders/${orderId}/capture`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Basic ${auth}`,
+            Authorization: `Bearer ${captureToken}`,
           },
         }
       );
@@ -127,7 +162,6 @@ export async function POST(request: Request) {
         );
       }
 
-      // Determine credits from purchase amount
       const paidAmount = parseFloat(
         capture.purchase_units[0].payments.captures[0].amount.value
       );
@@ -155,7 +189,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "无效的操作" }, { status: 400 });
   } catch (error) {
     console.error("PayPal API error:", error);
-    return NextResponse.json({ error: "支付处理失败" }, { status: 500 });
+    const message = error instanceof Error ? error.message : "支付处理失败";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
