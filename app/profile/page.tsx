@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Coins, ShoppingCart, Loader2, CheckCircle2 } from "lucide-react";
 
 const PACKAGES = [
+  { id: "trial", credits: 50, price: 1, name: "Trial", badge: "新手首选" },
   { id: "basic", credits: 100, price: 20.1, name: "Starter" },
   { id: "standard", credits: 500, price: 45, name: "Standard" },
   { id: "premium", credits: 1500, price: 80, name: "Premium" },
@@ -71,7 +72,11 @@ function ProfileContent() {
         })
         .then(async (result) => {
           setBalance(result.balance);
-          setSuccessMsg(`购买成功！获得 ${result.credits} 积分`);
+          if (result.isFirstPurchase) {
+            setSuccessMsg(`🎉 首购成功！获得 ${result.credits} 积分 (含 +50% 赠送)`);
+          } else {
+            setSuccessMsg(`购买成功！获得 ${result.credits} 积分`);
+          }
           // Refresh session to update JWT credits
           await update();
           // Clean URL
@@ -164,7 +169,7 @@ function ProfileContent() {
                 {balance !== null ? balance : "..."}
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                新用户登录即送 20 免费积分
+                新用户登录即送 50 免费积分
               </p>
             </div>
             <Coins className="h-10 w-10 text-primary/50" />
@@ -179,24 +184,31 @@ function ProfileContent() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-3 gap-3 mb-4">
+          <div className="grid grid-cols-4 gap-2 mb-4">
             {PACKAGES.map((pkg) => (
               <Button
                 key={pkg.id}
-                variant="outline"
-                className="h-auto py-4 flex flex-col gap-1"
+                variant={pkg.badge ? "default" : "outline"}
+                className={`h-auto py-3 flex flex-col gap-0.5 relative ${
+                  pkg.badge ? "bg-amber-500 hover:bg-amber-600 text-white" : ""
+                }`}
                 disabled={buying !== null}
                 onClick={() => handleBuy(pkg.id)}
               >
+                {pkg.badge && (
+                  <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-white text-amber-600 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200">
+                    {pkg.badge}
+                  </span>
+                )}
                 {buying === pkg.id ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
                 ) : (
-                  <span className="text-lg font-bold text-primary">
+                  <span className={`text-lg font-bold ${pkg.badge ? "" : "text-primary"}`}>
                     {pkg.credits}
                   </span>
                 )}
-                <span className="text-xs text-muted-foreground">credits</span>
-                <span className="text-xs font-medium mt-1">${pkg.price}</span>
+                <span className="text-[10px] opacity-70">credits</span>
+                <span className="text-xs font-medium mt-0.5">${pkg.price}</span>
               </Button>
             ))}
           </div>

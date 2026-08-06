@@ -35,7 +35,7 @@ export async function getCredits(): Promise<number> {
 
   if (!user?.id) return 0;
 
-  const baseCredits = user.credits ?? 20;
+  const baseCredits = user.credits ?? 50;
   const purchased = getPurchasedCredits(user.id);
 
   return baseCredits + purchased;
@@ -53,7 +53,7 @@ export async function deductCredits(
     return { success: false, remaining: 0, message: "请先登录" };
   }
 
-  const baseCredits = user.credits ?? 20;
+  const baseCredits = user.credits ?? 50;
   const purchased = getPurchasedCredits(user.id);
   const totalBalance = baseCredits + purchased;
 

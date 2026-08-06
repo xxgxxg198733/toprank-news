@@ -2,12 +2,16 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { addCredits } from "@/lib/credits";
 
-// Credit packages
+// Credit packages — micro entry point to lower first-purchase barrier
 const PACKAGES: Record<string, { credits: number; price: number; name: string }> = {
+  trial: { credits: 50, price: 1, name: "Trial - 50 Credits (50% OFF first time)" },
   basic: { credits: 100, price: 20.1, name: "Starter - 100 Credits" },
   standard: { credits: 500, price: 45, name: "Standard - 500 Credits" },
   premium: { credits: 1500, price: 80, name: "Premium - 1500 Credits" },
 };
+
+// Track purchase count per user for first-purchase bonus
+const purchaseCount = new Map<string, number>();
 
 /**
  * Get PayPal API base URL.
@@ -168,14 +172,28 @@ export async function POST(request: Request) {
       const pkgEntry = Object.entries(PACKAGES).find(
         ([, v]) => v.price === paidAmount
       );
-      const credits = pkgEntry ? pkgEntry[1].credits : Math.floor(paidAmount * 20);
+      let credits = pkgEntry ? pkgEntry[1].credits : Math.floor(paidAmount * 20);
 
       const userId = (session.user as { id: string }).id;
+
+      // First-purchase bonus: +50% extra credits
+      const purchases = purchaseCount.get(userId) || 0;
+      const isFirstPurchase = purchases === 0;
+      if (isFirstPurchase) {
+        const bonus = Math.floor(credits * 0.5);
+        credits += bonus;
+      }
+      purchaseCount.set(userId, purchases + 1);
+
+      const description = isFirstPurchase
+        ? `首次购买！${credits} 积分 (含 +${Math.floor(credits * 0.33)} 首购赠送)`
+        : `PayPal 购买 ${credits} 积分`;
+
       const newBalance = await addCredits(
         userId,
         credits,
         "purchase",
-        `PayPal 购买 ${credits} 积分`,
+        description,
         orderId
       );
 
@@ -183,6 +201,7 @@ export async function POST(request: Request) {
         success: true,
         balance: newBalance,
         credits,
+        isFirstPurchase,
       });
     }
 

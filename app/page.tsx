@@ -83,6 +83,12 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Launch Offer */}
+      <section className="py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-center text-sm font-bold">
+        🚀 Limited Launch Offer — 500 credits for just $20.10 (normally 100 credits) —
+        <Link href="/profile" className="underline ml-1">Claim Now</Link>
+      </section>
+
       {/* Tool Cards */}
       <section className="py-16">
         <div className="container mx-auto px-4 max-w-6xl">
