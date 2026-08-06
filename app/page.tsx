@@ -67,17 +67,19 @@ export default function Home() {
         <div className="container mx-auto px-4 max-w-6xl relative">
           <div className="text-center max-w-3xl mx-auto animate-fade-in">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
-              All-in-One <span className="text-primary">AI Toolkit</span>
+              免费在线 <span className="text-primary">AI 工具箱</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-              An integrated collection of AI tools — Chat, Image Generation, Writing, Data Analysis, Video Creation.
-              No subscription — purchase credits and pay as you go.
+              AI 聊天 · 图片生成 · 写作助手 · 数据分析 · 视频生成<br />
+              一个平台，五大工具，多模型随心切换。注册即送 <strong className="text-foreground">50 免费积分</strong>，$1 即可继续使用。
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              <Link href="/tools/chat" className="inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/80 h-9 gap-1.5 px-8 text-sm font-medium transition-all">
-                Get Started <ArrowRight className="ml-2 h-4 w-4" />
+              <Link href="/login" className="inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/80 h-12 gap-2 px-10 text-base font-bold transition-all shadow-lg shadow-primary/25 hover:shadow-xl">
+                免费注册体验 <ArrowRight className="h-5 w-5" />
               </Link>
-              <Link href="#features" className="inline-flex items-center justify-center rounded-full border border-border bg-background hover:bg-muted hover:text-foreground h-9 gap-1.5 px-8 text-sm font-medium transition-all">Learn More</Link>
+              <Link href="/pricing" className="inline-flex items-center justify-center rounded-full border-2 border-amber-500 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950 h-12 gap-1.5 px-8 text-sm font-bold transition-all">
+                🔥 $1 体验全部功能
+              </Link>
             </div>
           </div>
         </div>
@@ -85,8 +87,8 @@ export default function Home() {
 
       {/* Launch Offer */}
       <section className="py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-center text-sm font-bold">
-        🚀 Limited Launch Offer — 500 credits for just $20.10 (normally 100 credits) —
-        <Link href="/profile" className="underline ml-1">Claim Now</Link>
+        🎉 新用户福利：注册即送 50 积分 + 首购额外赠送 50% 积分 —
+        <Link href="/pricing" className="underline ml-1">立即抢购</Link>
       </section>
 
       {/* Tool Cards */}
