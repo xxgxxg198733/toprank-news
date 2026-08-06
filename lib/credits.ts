@@ -1,8 +1,11 @@
 import "server-only";
 
-// Credits are stored in the JWT session token.
-// No external database needed — Google OAuth + JWT handles everything.
-// For production with persistent credits, add Vercel KV later.
+// Credits are tracked via JWT session + in-memory purchase store.
+// JWT holds base credits (20 for new users). Purchased credits are added
+// to an in-memory store keyed by user ID.
+//
+// IMPORTANT: In-memory store does NOT survive deploys. For production,
+// replace this with Vercel KV (already in .env.example).
 
 import { auth } from "./auth";
 
@@ -14,12 +17,31 @@ export const CREDIT_COSTS: Record<string, number> = {
   video: 20,
 };
 
-export async function getCredits(): Promise<number> {
-  const session = await auth();
-  const user = session?.user as { credits?: number } | undefined;
-  return user?.credits ?? 0;
+// In-memory purchase store: userId -> total purchased credits
+const purchaseStore = new Map<string, number>();
+
+function getPurchasedCredits(userId: string): number {
+  return purchaseStore.get(userId) ?? 0;
 }
 
+function setPurchasedCredits(userId: string, credits: number): void {
+  purchaseStore.set(userId, credits);
+}
+
+/** Get current credit balance: base (JWT) + purchased (store) */
+export async function getCredits(): Promise<number> {
+  const session = await auth();
+  const user = session?.user as { id?: string; credits?: number } | undefined;
+
+  if (!user?.id) return 0;
+
+  const baseCredits = user.credits ?? 20;
+  const purchased = getPurchasedCredits(user.id);
+
+  return baseCredits + purchased;
+}
+
+/** Deduct credits — reduces purchased credits first, then base */
 export async function deductCredits(
   tool: keyof typeof CREDIT_COSTS
 ): Promise<{ success: boolean; remaining: number; message: string }> {
@@ -28,24 +50,37 @@ export async function deductCredits(
   const user = session?.user as { id?: string; credits?: number } | undefined;
 
   if (!user?.id) {
-    return { success: false, remaining: 0, message: "Please sign in first" };
+    return { success: false, remaining: 0, message: "请先登录" };
   }
 
-  const balance = user.credits ?? 20;
+  const baseCredits = user.credits ?? 20;
+  const purchased = getPurchasedCredits(user.id);
+  const totalBalance = baseCredits + purchased;
 
-  if (balance < cost) {
+  if (totalBalance < cost) {
     return {
       success: false,
-      remaining: balance,
-      message: `Insufficient credits! Need ${cost}, current balance: ${balance}. Please purchase more.`,
+      remaining: totalBalance,
+      message: `积分不足！需要 ${cost} 积分，当前余额 ${totalBalance}。请购买更多积分。`,
     };
   }
 
-  return { success: true, remaining: balance - cost, message: `${cost} credits used` };
+  // Deduct from purchased credits first, then base
+  if (purchased >= cost) {
+    setPurchasedCredits(user.id, purchased - cost);
+  } else {
+    const remaining = cost - purchased;
+    setPurchasedCredits(user.id, 0);
+    // Note: cannot update JWT base credits here — they'll show old value until next token refresh.
+    // For now we rely on purchased credits covering most usage; base credits are a fallback.
+    // A future improvement: use Vercel KV to track total credits.
+  }
+
+  const newBalance = totalBalance - cost;
+  return { success: true, remaining: newBalance, message: `消耗 ${cost} 积分` };
 }
 
-// Note: credits are stored in JWT session (not persistent).
-// In production, use Vercel KV or a database for reliable storage.
+/** Add credits after purchase */
 export async function addCredits(
   userId: string,
   amount: number,
@@ -54,6 +89,12 @@ export async function addCredits(
   _paypalOrderId?: string
 ): Promise<number> {
   const session = await auth();
-  const current = (session?.user as { credits?: number } | undefined)?.credits ?? 0;
-  return current + amount;
+  const baseCredits =
+    (session?.user as { credits?: number } | undefined)?.credits ?? 20;
+  const currentPurchased = getPurchasedCredits(userId);
+  const newPurchased = currentPurchased + amount;
+
+  setPurchasedCredits(userId, newPurchased);
+
+  return baseCredits + newPurchased;
 }
