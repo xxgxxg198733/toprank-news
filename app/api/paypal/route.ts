@@ -11,26 +11,26 @@ const PACKAGES: Record<string, { credits: number; price: number; name: string }>
 
 /**
  * Get PayPal API base URL.
- * Priority: PAYPAL_API_BASE env var > auto-detect from client ID > sandbox fallback
+ * Priority: PAYPAL_API_BASE env var > auto-detect from client ID prefix
+ *
+ * PayPal Client ID prefixes:
+ *   Sandbox: "SB" (e.g. SB_xxx)
+ *   Live:    "BA", "AQ", "AR", "Ab", "Af", "AS", etc.
  */
 function getPayPalBase(): string {
-  // Explicit override
+  // Explicit override via env var
   if (process.env.PAYPAL_API_BASE) {
     return process.env.PAYPAL_API_BASE;
   }
 
   const clientId = process.env.PAYPAL_CLIENT_ID || "";
 
-  // PayPal Sandbox client IDs: start with "SB" or have "sandbox" in them
-  // PayPal Live client IDs: start with "AQ", "AR", "Ab", "Af", etc.
+  // Only "SB" prefix is sandbox. Everything else is production.
   if (clientId.startsWith("SB")) {
     return "https://api-m.sandbox.paypal.com";
   }
 
-  // For any other prefix (BA, A*, etc.) — default to sandbox since
-  // sandbox apps can have various prefixes depending on when they were created.
-  // Only use production if explicitly set via PAYPAL_API_BASE.
-  return "https://api-m.sandbox.paypal.com";
+  return "https://api-m.paypal.com";
 }
 
 async function getPayPalAccessToken(base: string): Promise<string> {
